@@ -25,9 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
-
-        Gate::policy(\App\Models\Content::class, \App\Policies\ContentPolicy::class);
-        Gate::policy(\App\Models\Category::class, \App\Policies\CategoryPolicy::class);
     }
 
     protected function configureDefaults(): void

@@ -24,11 +24,11 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuthRoles } from '@/composables/useAuthRoles';
 import { route } from 'ziggy-js';
-import type { Content, Category } from '@/types';
+import type { Lesson, Category } from '@/types';
 
 const props = defineProps<{
-    contents: {
-        data: Content[];
+    lessons: {
+        data: Lesson[];
         links: Array<{
             url: string | null;
             label: string;
@@ -48,7 +48,7 @@ const props = defineProps<{
     };
 }>();
 
-const { isAdmin, canManageContent } = useAuthRoles();
+const { isAdmin, canManageLessons } = useAuthRoles();
 
 const search = ref(props.filters.search || '');
 const category = ref(props.filters.category || '');
@@ -56,7 +56,7 @@ const status = ref(props.filters.status || '');
 
 const debouncedSearch = useDebounceFn(() => {
     router.get(
-        route('admin.contents.index'),
+        route('admin.lessons.index'),
         {
             search: search.value,
             category: category.value,
@@ -74,13 +74,13 @@ watch([search, category, status], () => {
     debouncedSearch();
 });
 
-function handleDelete(content: Content) {
-    if (confirm(`Are you sure you want to delete "${content.title}"?`)) {
-        router.delete(route('admin.contents.destroy', { content: content.id }));
+function handleDelete(lesson: Lesson) {
+    if (confirm(`Are you sure you want to delete "${lesson.title}"?`)) {
+        router.delete(route('admin.lessons.destroy', { lesson: lesson.id }));
     }
 }
 
-function getContentTypeBadgeVariant(type: Content['content_type']) {
+function getLessonTypeBadgeVariant(type: Lesson['content_type']) {
     switch (type) {
         case 'text':
             return 'default';
@@ -95,24 +95,24 @@ function getContentTypeBadgeVariant(type: Content['content_type']) {
     }
 }
 
-function getContentStatus(content: Content) {
+function getLessonStatus(lesson: Lesson) {
     const now = new Date();
 
-    if (content.archived_at) {
+    if (lesson.archived_at) {
         return { label: 'Archived', variant: 'destructive' };
     }
 
-    if (content.expires_at && new Date(content.expires_at) <= now) {
+    if (lesson.expires_at && new Date(lesson.expires_at) <= now) {
         return { label: 'Expired', variant: 'destructive' };
     }
 
-    if (content.publish_status === 'published') {
+    if (lesson.publish_status === 'published') {
         return { label: 'Active', variant: 'default' };
     }
 
     if (
-        content.scheduled_publish_at &&
-        new Date(content.scheduled_publish_at) > now
+        lesson.scheduled_publish_at &&
+        new Date(lesson.scheduled_publish_at) > now
     ) {
         return { label: 'Scheduled', variant: 'secondary' };
     }
@@ -126,14 +126,14 @@ const breadcrumbs = [
         href: route('admin.dashboard'),
     },
     {
-        title: 'Content Management',
-        href: route('admin.contents.index'),
+        title: 'Lesson Management',
+        href: route('admin.lessons.index'),
     },
 ];
 </script>
 
 <template>
-    <Head title="Content Management" />
+    <Head title="Lesson Management" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6">
@@ -148,8 +148,8 @@ const breadcrumbs = [
                         links)
                     </p>
                 </div>
-                <Button as-child v-if="canManageContent()">
-                    <Link :href="route('admin.contents.create')">
+                <Button as-child v-if="canManageLessons()">
+                    <Link :href="route('admin.lessons.create')">
                         Create New Content
                     </Link>
                 </Button>
@@ -224,41 +224,41 @@ const breadcrumbs = [
                         </TableHeader>
                         <TableBody>
                             <TableRow
-                                v-for="content in contents.data"
-                                :key="content.id"
+                                v-for="lesson in lessons.data"
+                                :key="lesson.id"
                             >
                                 <TableCell class="font-medium">
                                     <Link
                                         :href="
-                                            route('admin.contents.show', {
-                                                content: content.id,
+                                            route('admin.lessons.show', {
+                                                lesson: lesson.slug,
                                             })
                                         "
                                         class="hover:text-primary hover:underline"
                                     >
-                                        {{ content.title }}
+                                        {{ lesson.title }}
                                     </Link>
                                     <p
                                         class="line-clamp-1 text-sm text-muted-foreground"
                                     >
-                                        {{ content.description }}
+                                        {{ lesson.description }}
                                     </p>
                                 </TableCell>
                                 <TableCell>
                                     <Badge
                                         :variant="
-                                            getContentTypeBadgeVariant(
-                                                content.content_type,
+                                            getLessonTypeBadgeVariant(
+                                                lesson.content_type,
                                             )
                                         "
                                     >
-                                        {{ content.content_type }}
+                                        {{ lesson.content_type }}
                                     </Badge>
                                 </TableCell>
                                 <TableCell>
                                     <div class="flex flex-wrap gap-1">
                                         <Badge
-                                            v-for="cat in content.categories"
+                                            v-for="cat in lesson.categories"
                                             :key="cat.id"
                                             variant="outline"
                                             class="text-xs"
@@ -266,7 +266,7 @@ const breadcrumbs = [
                                             {{ cat.name }}
                                         </Badge>
                                         <span
-                                            v-if="!content.categories?.length"
+                                            v-if="!lesson.categories?.length"
                                             class="text-sm text-muted-foreground"
                                         >
                                             No categories
@@ -277,44 +277,47 @@ const breadcrumbs = [
                                     <div class="space-y-1">
                                         <Badge
                                             :variant="
-                                                getContentStatus(content).variant
+                                                getLessonStatus(lesson)
+                                                    .variant
                                             "
                                         >
-                                            {{ getContentStatus(content).label }}
+                                            {{
+                                                getLessonStatus(lesson).label
+                                            }}
                                         </Badge>
                                         <p
-                                            v-if="content.scheduled_publish_at"
+                                            v-if="lesson.scheduled_publish_at"
                                             class="text-xs text-muted-foreground"
                                         >
                                             Scheduled:
                                             {{
                                                 new Date(
-                                                    content.scheduled_publish_at,
+                                                    lesson.scheduled_publish_at,
                                                 ).toLocaleDateString()
                                             }}
                                         </p>
                                         <p
-                                            v-if="content.expires_at"
+                                            v-if="lesson.expires_at"
                                             class="text-xs text-muted-foreground"
                                         >
                                             Expires:
                                             {{
                                                 new Date(
-                                                    content.expires_at,
+                                                    lesson.expires_at,
                                                 ).toLocaleDateString()
                                             }}
                                         </p>
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    {{ content.author?.name || 'Unknown' }}
+                                    {{ lesson.author?.name || 'Unknown' }}
                                 </TableCell>
                                 <TableCell
                                     class="text-sm text-muted-foreground"
                                 >
                                     {{
                                         new Date(
-                                            content.created_at,
+                                            lesson.created_at,
                                         ).toLocaleDateString()
                                     }}
                                 </TableCell>
@@ -330,10 +333,10 @@ const breadcrumbs = [
                                                 <Link
                                                     :href="
                                                         route(
-                                                            'admin.contents.show',
+                                                            'admin.lessons.show',
                                                             {
-                                                                content:
-                                                                    content.id,
+                                                                lesson:
+                                                                    lesson.id,
                                                             },
                                                         )
                                                     "
@@ -342,16 +345,16 @@ const breadcrumbs = [
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
-                                                v-if="canManageContent()"
+                                                v-if="canManageLessons()"
                                                 as-child
                                             >
                                                 <Link
                                                     :href="
                                                         route(
-                                                            'admin.contents.edit',
+                                                            'admin.lessons.edit',
                                                             {
-                                                                content:
-                                                                    content.id,
+                                                                lesson:
+                                                                    lesson.id,
                                                             },
                                                         )
                                                     "
@@ -360,8 +363,8 @@ const breadcrumbs = [
                                                 </Link>
                                             </DropdownMenuItem>
                                             <DropdownMenuItem
-                                                v-if="canManageContent()"
-                                                @click="handleDelete(content)"
+                                                v-if="canManageLessons()"
+                                                @click="handleDelete(lesson)"
                                                 class="text-destructive"
                                             >
                                                 Delete
@@ -370,15 +373,15 @@ const breadcrumbs = [
                                     </DropdownMenu>
                                 </TableCell>
                             </TableRow>
-                            <TableRow v-if="contents.data.length === 0">
+                            <TableRow v-if="lessons.data.length === 0">
                                 <TableCell
                                     colspan="7"
                                     class="py-8 text-center text-muted-foreground"
                                 >
                                     No content found.
                                     <Link
-                                        v-if="canManageContent()"
-                                        :href="route('admin.contents.create')"
+                                        v-if="canManageLessons()"
+                                        :href="route('admin.lessons.create')"
                                         class="text-primary hover:underline"
                                     >
                                         Create your first content
@@ -393,11 +396,11 @@ const breadcrumbs = [
             <!-- Pagination -->
             <div class="flex items-center justify-between">
                 <div class="text-sm text-muted-foreground">
-                    Showing {{ contents.from }} to
-                    {{ contents.to }} of {{ contents.total }} results
+                    Showing {{ lessons.from }} to {{ lessons.to }} of
+                    {{ lessons.total }} results
                 </div>
                 <div class="flex gap-2">
-                    <template v-for="link in contents.links" :key="link.label">
+                    <template v-for="link in lessons.links" :key="link.label">
                         <Link
                             v-if="link.url"
                             :href="link.url"

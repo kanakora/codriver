@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ContentStoreRequest;
-use App\Http\Requests\ContentUpdateRequest;
-use App\Models\Content;
+use App\Http\Requests\LessonStoreRequest;
+use App\Http\Requests\LessonUpdateRequest;
+use App\Models\Lesson;
 use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,20 +12,20 @@ use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ContentController extends Controller
+class LessonController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): Response
     {
-        $this->authorize('viewAny', Content::class);
+        $this->authorize('viewAny', Lesson::class);
 
         $view = $request->routeIs('student.*')
-            ? 'Student/Contents/Index'
-            : 'Admin/Contents/Index';
+            ? 'Student/Lessons/Index'
+            : 'Admin/Lessons/Index';
 
-        $query = Content::with(['author', 'categories'])
+        $query = Lesson::with(['author', 'categories'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
@@ -36,7 +36,7 @@ class ContentController extends Controller
                 });
             });
 
-        if (! $request->user()?->can('manage content')) {
+        if (! $request->user()?->can('manage lessons')) {
             $query->published();
         } else {
             $query->when($request->input('status'), function ($query, $status) {
@@ -60,12 +60,12 @@ class ContentController extends Controller
             });
         }
 
-        $contents = $query->latest()->paginate(10)->withQueryString();
+        $lessons = $query->latest()->paginate(10)->withQueryString();
 
         $categories = Category::all();
 
         return Inertia::render($view, [
-            'contents' => $contents,
+            'lessons' => $lessons,
             'categories' => $categories,
             'filters' => $request->only(['search', 'category', 'status']),
         ]);
@@ -76,11 +76,11 @@ class ContentController extends Controller
      */
     public function create(): Response
     {
-        $this->authorize('create', Content::class);
+        $this->authorize('create', Lesson::class);
 
         $categories = Category::all();
 
-        return Inertia::render('Admin/Contents/Create', [
+        return Inertia::render('Admin/Lessons/Create', [
             'categories' => $categories,
         ]);
     }
@@ -88,9 +88,9 @@ class ContentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ContentStoreRequest $request): RedirectResponse
+    public function store(LessonStoreRequest $request): RedirectResponse
     {
-        $this->authorize('create', Content::class);
+        $this->authorize('create', Lesson::class);
 
         $validated = $request->validated();
         $validated = $this->applyScheduling($validated);
@@ -100,37 +100,37 @@ class ContentController extends Controller
             $validated['file_path'] = $request->file('file_path')->store('content_files', 'public');
         }
 
-        $content = new Content($validated);
-        $content->author_id = auth('web')->id();
-        $content->shouldRecordRevision = false;
-        $content->save();
+        $lesson = new Lesson($validated);
+        $lesson->author_id = auth('web')->id();
+        $lesson->shouldRecordRevision = false;
+        $lesson->save();
 
         if (! empty($validated['category_ids'])) {
-            $content->categories()->sync($validated['category_ids']);
+            $lesson->categories()->sync($validated['category_ids']);
         }
 
-        $content->shouldRecordRevision = true;
-        $content->recordRevision();
+        $lesson->shouldRecordRevision = true;
+        $lesson->recordRevision();
 
-        return redirect()->route('admin.contents.index')->with('success', 'Content created successfully.');
+        return redirect()->route('admin.lessons.index')->with('success', 'Lesson created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Content $content): Response
+    public function show(Lesson $lesson): Response
     {
-        $this->authorize('view', $content);
+        $this->authorize('view', $lesson);
 
         $view = request()->routeIs('student.*')
-            ? 'Student/Contents/Show'
-            : 'Admin/Contents/Show';
+            ? 'Student/Lessons/Show'
+            : 'Admin/Lessons/Show';
 
-        $content->load(['author', 'categories']);
+        $lesson->load(['author', 'categories']);
         $revisions = [];
 
         if (request()->routeIs('admin.*')) {
-            $revisions = $content->revisions()
+            $revisions = $lesson->revisions()
                 ->with('user')
                 ->latest()
                 ->take(config('content.revisions.limit', 25))
@@ -138,7 +138,7 @@ class ContentController extends Controller
         }
 
         return Inertia::render($view, [
-            'content' => $content,
+            'lesson' => $lesson,
             'revisions' => $revisions,
         ]);
     }
@@ -146,15 +146,15 @@ class ContentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Content $content): Response
+    public function edit(Lesson $lesson): Response
     {
-        $this->authorize('update', $content);
+        $this->authorize('update', $lesson);
 
         $categories = Category::all();
-        $content->load('categories');
+        $lesson->load('categories');
 
-        return Inertia::render('Admin/Contents/Edit', [
-            'content' => $content,
+        return Inertia::render('Admin/Lessons/Edit', [
+            'lesson' => $lesson,
             'categories' => $categories,
         ]);
     }
@@ -162,47 +162,47 @@ class ContentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ContentUpdateRequest $request, Content $content): RedirectResponse
+    public function update(LessonUpdateRequest $request, Lesson $lesson): RedirectResponse
     {
-        $this->authorize('update', $content);
+        $this->authorize('update', $lesson);
 
         $validated = $request->validated();
-        $validated = $this->applyScheduling($validated, $content);
+        $validated = $this->applyScheduling($validated, $lesson);
 
         // Handle file upload
         if ($request->hasFile('file_path')) {
             $validated['file_path'] = $request->file('file_path')->store('content_files', 'public');
         }
 
-        $content->shouldRecordRevision = false;
-        $content->fill($validated);
-        $content->save();
+        $lesson->shouldRecordRevision = false;
+        $lesson->fill($validated);
+        $lesson->save();
 
-        $content->categories()->sync($validated['category_ids'] ?? []);
+        $lesson->categories()->sync($validated['category_ids'] ?? []);
 
-        $content->shouldRecordRevision = true;
-        $content->recordRevision();
+        $lesson->shouldRecordRevision = true;
+        $lesson->recordRevision();
 
-        return redirect()->route('admin.contents.index')->with('success', 'Content updated successfully.');
+        return redirect()->route('admin.lessons.index')->with('success', 'Lesson updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Content $content): RedirectResponse
+    public function destroy(Lesson $lesson): RedirectResponse
     {
-        $this->authorize('delete', $content);
+        $this->authorize('delete', $lesson);
 
-        $content->delete();
+        $lesson->delete();
 
-        return redirect()->route('admin.contents.index')->with('success', 'Content deleted successfully.');
+        return redirect()->route('admin.lessons.index')->with('success', 'Lesson deleted successfully.');
     }
 
     /**
      * @param  array<string, mixed>  $validated
      * @return array<string, mixed>
      */
-    private function applyScheduling(array $validated, ?Content $content = null): array
+    private function applyScheduling(array $validated, ?Lesson $lesson = null): array
     {
         foreach (['scheduled_publish_at', 'expires_at', 'archived_at'] as $field) {
             if (array_key_exists($field, $validated) && $validated[$field] === '') {
@@ -222,14 +222,14 @@ class ContentController extends Controller
             $validated['publish_status'] = 'draft';
             $validated['published_at'] = null;
         } elseif (($validated['publish_status'] ?? null) === 'published') {
-            $validated['published_at'] = $content?->published_at ?? $now;
+            $validated['published_at'] = $lesson?->published_at ?? $now;
         } else {
             $validated['published_at'] = null;
         }
 
         if ($scheduledAt && $scheduledAt->lessThanOrEqualTo($now) && ($validated['publish_status'] ?? null) === 'draft') {
             $validated['publish_status'] = 'published';
-            $validated['published_at'] = $content?->published_at ?? $now;
+            $validated['published_at'] = $lesson?->published_at ?? $now;
         }
 
         if ($expiresAt && $expiresAt->lessThanOrEqualTo($now)) {

@@ -12,7 +12,7 @@ import { useAuthRoles } from '@/composables/useAuthRoles';
 import { route } from 'ziggy-js';
 
 const props = defineProps<{
-    collections: {
+    classrooms: {
         data: Array<{
             id: number;
             title: string;
@@ -39,13 +39,13 @@ const props = defineProps<{
     };
 }>();
 
-const { canManageCollections } = useAuthRoles();
+const { canManageClassRooms } = useAuthRoles();
 
 const search = ref(props.filters.search || '');
 
 const debouncedSearch = useDebounceFn(() => {
     router.get(
-        route('admin.collections.index'),
+        route('admin.classrooms.index'),
         { search: search.value },
         {
             preserveState: true,
@@ -65,29 +65,29 @@ const breadcrumbs = [
         href: route('admin.dashboard'),
     },
     {
-        title: 'Collections',
-        href: route('admin.collections.index'),
+        title: 'Classes',
+        href: route('admin.classrooms.index'),
     },
 ];
 </script>
 
 <template>
-    <Head title="Collections" />
+    <Head title="Classes" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight">
-                        Learning Collections
+                        Learning Classes
                     </h1>
                     <p class="text-muted-foreground">
                         Group related content into guided learning paths.
                     </p>
                 </div>
-                <Button v-if="canManageCollections()" as-child>
-                    <Link :href="route('admin.collections.create')">
-                        Create collection
+                <Button v-if="canManageClassRooms()" as-child>
+                    <Link :href="route('admin.classrooms.create')">
+                        Create class
                     </Link>
                 </Button>
             </div>
@@ -98,7 +98,7 @@ const breadcrumbs = [
                 </CardHeader>
                 <CardContent class="grid gap-4 md:grid-cols-2">
                     <div class="space-y-2">
-                        <Label for="search">Search collections</Label>
+                        <Label for="search">Search classes</Label>
                         <Input
                             id="search"
                             v-model="search"
@@ -108,7 +108,7 @@ const breadcrumbs = [
                     </div>
                     <div class="hidden items-end md:flex">
                         <div class="text-sm text-muted-foreground">
-                            {{ collections.total }} total collections
+                            {{ classrooms.total }} total classes
                         </div>
                     </div>
                 </CardContent>
@@ -116,64 +116,64 @@ const breadcrumbs = [
 
             <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 <Card
-                    v-for="collection in collections.data"
-                    :key="collection.id"
+                    v-for="classroom in classrooms.data"
+                    :key="classroom.id"
                     class="flex h-full flex-col"
                 >
                     <CardHeader class="space-y-3">
                         <div class="flex items-center justify-between">
                             <Badge
                                 :variant="
-                                    collection.is_public
+                                    classroom.is_public
                                         ? 'default'
                                         : 'outline'
                                 "
                             >
-                                {{ collection.is_public ? 'Public' : 'Internal' }}
+                                {{ classroom.is_public ? 'Public' : 'Internal' }}
                             </Badge>
                             <span class="text-xs text-muted-foreground">
-                                Order #{{ collection.sort_order }}
+                                Order #{{ classroom.sort_order }}
                             </span>
                         </div>
                         <div>
                             <Link
                                 :href="
-                                    route('admin.collections.show', {
-                                        collection: collection.id,
+                                    route('admin.classrooms.show', {
+                                        classroom: classroom.id,
                                     })
                                 "
                                 class="text-lg font-semibold hover:text-primary"
                             >
-                                {{ collection.title }}
+                                {{ classroom.title }}
                             </Link>
                             <p class="mt-1 text-sm text-muted-foreground">
-                                {{ collection.description || 'No description' }}
+                                {{ classroom.description || 'No description' }}
                             </p>
                         </div>
                     </CardHeader>
                     <CardContent class="mt-auto space-y-3">
                         <div class="flex items-center justify-between text-xs text-muted-foreground">
-                            <span>{{ collection.contents_count }} items</span>
-                            <span v-if="collection.prerequisite">
-                                Requires {{ collection.prerequisite.title }}
+                            <span>{{ classroom.contents_count }} items</span>
+                            <span v-if="classroom.prerequisite">
+                                Requires {{ classroom.prerequisite.title }}
                             </span>
                         </div>
                         <div class="flex items-center justify-between">
                             <Link
                                 :href="
-                                    route('admin.collections.show', {
-                                        collection: collection.id,
+                                    route('admin.classrooms.show', {
+                                        classroom: classroom.id,
                                     })
                                 "
                                 class="text-sm font-medium text-primary hover:underline"
                             >
-                                View collection
+                                View classroom
                             </Link>
                             <Link
-                                v-if="canManageCollections()"
+                                v-if="canManageClassRooms()"
                                 :href="
-                                    route('admin.collections.edit', {
-                                        collection: collection.id,
+                                    route('admin.classrooms.edit', {
+                                        classroom: classroom.id,
                                     })
                                 "
                                 class="text-sm text-muted-foreground hover:text-primary"
@@ -185,19 +185,19 @@ const breadcrumbs = [
                 </Card>
             </div>
 
-            <Card v-if="collections.data.length === 0">
+            <Card v-if="classrooms.data.length === 0">
                 <CardContent class="py-12 text-center text-muted-foreground">
-                    No collections found.
+                    No classes found.
                 </CardContent>
             </Card>
 
             <div class="flex items-center justify-between">
                 <div class="text-sm text-muted-foreground">
-                    Showing {{ collections.from }} to
-                    {{ collections.to }} of {{ collections.total }} results
+                    Showing {{ classrooms.from }} to
+                    {{ classrooms.to }} of {{ classrooms.total }} results
                 </div>
                 <div class="flex gap-2">
-                    <template v-for="link in collections.links" :key="link.label">
+                    <template v-for="link in classrooms.links" :key="link.label">
                         <Link
                             v-if="link.url"
                             :href="link.url"

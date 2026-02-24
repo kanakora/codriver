@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContentStoreRequest extends FormRequest
+class LessonUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class ContentStoreRequest extends FormRequest
     {
         $user = $this->user();
 
-        return $user ? $user->can('manage content') : false;
+        return $user ? $user->can('manage lessons') : false;
     }
 
     /**
@@ -26,7 +26,6 @@ class ContentStoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'unique:contents,slug'],
             'description' => ['nullable', 'string'],
             'content_type' => ['required', 'in:text,pdf,video,link'],
             'file_path' => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
@@ -51,9 +50,6 @@ class ContentStoreRequest extends FormRequest
         return [
             'title.required' => 'A title is required.',
             'title.max' => 'Titles may not be longer than 255 characters.',
-            'slug.required' => 'A slug is required.',
-            'slug.unique' => 'That slug is already in use.',
-            'slug.max' => 'Slugs may not be longer than 255 characters.',
             'content_type.required' => 'Select a content type.',
             'content_type.in' => 'Select a valid content type.',
             'file_path.mimes' => 'Uploaded files must be a PDF.',

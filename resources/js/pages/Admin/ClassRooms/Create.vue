@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { route } from 'ziggy-js';
 
 const props = defineProps<{
-    contents: Array<{
+    lessons: Array<{
         id: number;
         title: string;
         description?: string | null;
@@ -39,11 +39,11 @@ const form = useForm({
 
 const contentSearch = ref('');
 
-const availableContents = computed(() => {
+const availableClasses = computed(() => {
     const term = contentSearch.value.toLowerCase();
 
-    return props.contents.filter((content) => {
-        if (form.content_ids.includes(content.id)) {
+    return props.lessons.filter((lesson) => {
+        if (form.content_ids.includes(lesson.id)) {
             return false;
         }
 
@@ -52,30 +52,30 @@ const availableContents = computed(() => {
         }
 
         return (
-            content.title.toLowerCase().includes(term) ||
-            (content.description || '').toLowerCase().includes(term)
+            lesson.title.toLowerCase().includes(term) ||
+            (lesson.description || '').toLowerCase().includes(term)
         );
     });
 });
 
-const selectedContents = computed(() => {
+const selectedLessons = computed(() => {
     return form.content_ids
-        .map((id) => props.contents.find((content) => content.id === id))
+        .map((id) => props.lessons.find((lesson) => lesson.id === id))
         .filter(Boolean);
 });
 
-function addContent(contentId: number) {
-    if (!form.content_ids.includes(contentId)) {
-        form.content_ids.push(contentId);
+function addLesson(lessonId: number) {
+    if (!form.content_ids.includes(lessonId)) {
+        form.content_ids.push(lessonId);
     }
 }
 
-function removeContent(contentId: number) {
-    form.content_ids = form.content_ids.filter((id) => id !== contentId);
+function removeLesson(lessonId: number) {
+    form.content_ids = form.content_ids.filter((id) => id !== lessonId);
 }
 
-function moveContent(contentId: number, direction: 'up' | 'down') {
-    const index = form.content_ids.indexOf(contentId);
+function moveLesson(lessonId: number, direction: 'up' | 'down') {
+    const index = form.content_ids.indexOf(lessonId);
 
     if (index === -1) {
         return;
@@ -111,7 +111,7 @@ function getStatusBadge(content: { publish_status: string; scheduled_publish_at?
 }
 
 function handleSubmit() {
-    form.post(route('admin.collections.store'), {
+    form.post(route('admin.classrooms.store'), {
         preserveScroll: true,
     });
 }
@@ -122,24 +122,24 @@ const breadcrumbs = [
         href: route('admin.dashboard'),
     },
     {
-        title: 'Collections',
-        href: route('admin.collections.index'),
+        title: 'Classes Management',
+        href: route('admin.classrooms.index'),
     },
     {
         title: 'Create',
-        href: route('admin.collections.create'),
+        href: route('admin.classrooms.create'),
     },
 ];
 </script>
 
 <template>
-    <Head title="Create Collection" />
+    <Head title="Create Class" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6 mx-auto max-w-5xl">
             <div>
                 <h1 class="text-2xl font-bold tracking-tight">
-                    Create Collection
+                    Create Class
                 </h1>
                 <p class="text-muted-foreground">
                     Bundle lessons into a guided learning path for students.
@@ -148,47 +148,27 @@ const breadcrumbs = [
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Collection details</CardTitle>
+                    <CardTitle>Class details</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form @submit.prevent="handleSubmit" class="space-y-6">
-                        <div class="grid gap-4 md:grid-cols-2">
-                            <div class="space-y-2">
-                                <Label for="title">Title *</Label>
-                                <Input
-                                    id="title"
-                                    v-model="form.title"
-                                    required
-                                    placeholder="New hire onboarding"
-                                    :class="{
-                                        'border-destructive': form.errors.title,
-                                    }"
-                                />
-                                <p
-                                    v-if="form.errors.title"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.title }}
-                                </p>
-                            </div>
-                            <div class="space-y-2">
-                                <Label for="slug">Slug *</Label>
-                                <Input
-                                    id="slug"
-                                    v-model="form.slug"
-                                    required
-                                    placeholder="new-hire-onboarding"
-                                    :class="{
-                                        'border-destructive': form.errors.slug,
-                                    }"
-                                />
-                                <p
-                                    v-if="form.errors.slug"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.slug }}
-                                </p>
-                            </div>
+                        <div class="space-y-2">
+                            <Label for="title">Title *</Label>
+                            <Input
+                                id="title"
+                                v-model="form.title"
+                                required
+                                placeholder="New hire onboarding"
+                                :class="{
+                                    'border-destructive': form.errors.title,
+                                }"
+                            />
+                            <p
+                                v-if="form.errors.title"
+                                class="text-sm text-destructive"
+                            >
+                                {{ form.errors.title }}
+                            </p>
                         </div>
 
                         <div class="space-y-2">
@@ -278,7 +258,7 @@ const breadcrumbs = [
                                     />
                                     <div class="space-y-3">
                                         <div
-                                            v-for="content in availableContents"
+                                            v-for="content in availableClasses"
                                             :key="content.id"
                                             class="flex items-start justify-between gap-3 rounded-xl border border-border/60 p-3"
                                         >
@@ -304,7 +284,7 @@ const breadcrumbs = [
                                                 size="sm"
                                                 variant="secondary"
                                                 type="button"
-                                                @click="addContent(content.id)"
+                                                @click="addLesson(content.id)"
                                             >
                                                 Add
                                             </Button>
@@ -319,14 +299,14 @@ const breadcrumbs = [
                                 </CardHeader>
                                 <CardContent>
                                     <div
-                                        v-if="selectedContents.length === 0"
+                                        v-if="selectedLessons.length === 0"
                                         class="rounded-xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground"
                                     >
                                         Add items from the left panel to build this collection.
                                     </div>
                                     <div v-else class="space-y-3">
                                         <div
-                                            v-for="content in selectedContents"
+                                            v-for="content in selectedLessons"
                                             :key="content?.id"
                                             class="flex items-start justify-between gap-3 rounded-xl border border-border/60 p-3"
                                         >
@@ -351,7 +331,7 @@ const breadcrumbs = [
                                                     size="sm"
                                                     variant="outline"
                                                     type="button"
-                                                    @click="moveContent(content!.id, 'up')"
+                                                    @click="moveLesson(content!.id, 'up')"
                                                 >
                                                     Up
                                                 </Button>
@@ -359,7 +339,7 @@ const breadcrumbs = [
                                                     size="sm"
                                                     variant="outline"
                                                     type="button"
-                                                    @click="moveContent(content!.id, 'down')"
+                                                    @click="moveLesson(content!.id, 'down')"
                                                 >
                                                     Down
                                                 </Button>
@@ -367,7 +347,7 @@ const breadcrumbs = [
                                                     size="sm"
                                                     variant="destructive"
                                                     type="button"
-                                                    @click="removeContent(content!.id)"
+                                                    @click="removeLesson(content!.id)"
                                                 >
                                                     Remove
                                                 </Button>
@@ -386,7 +366,7 @@ const breadcrumbs = [
 
                         <div class="flex items-center justify-end gap-4">
                             <Button type="button" variant="outline" as-child>
-                                <Link :href="route('admin.collections.index')">
+                                <Link :href="route('admin.classrooms.index')">
                                     Cancel
                                 </Link>
                             </Button>

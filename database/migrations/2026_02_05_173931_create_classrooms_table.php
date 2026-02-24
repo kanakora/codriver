@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('collections', function (Blueprint $table) {
+        Schema::create('classrooms', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
@@ -19,9 +19,9 @@ return new class extends Migration
             $table->boolean('is_public')->default(false);
             $table->unsignedInteger('sort_order')->default(0);
             $table
-                ->foreignId('prerequisite_collection_id')
+                ->foreignId('prerequisite_classroom_id')
                 ->nullable()
-                ->constrained('collections')
+                ->constrained('classrooms')
                 ->nullOnDelete();
             $table->timestamps();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('collections');
+        Schema::dropIfExists('classrooms');
     }
 };

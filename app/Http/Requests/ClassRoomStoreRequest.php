@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CollectionStoreRequest extends FormRequest
+class ClassRoomStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class CollectionStoreRequest extends FormRequest
     {
         $user = $this->user();
 
-        return $user ? $user->can('manage collections') : false;
+        return $user ? $user->can('manage classrooms') : false;
     }
 
     /**
@@ -25,11 +25,10 @@ class CollectionStoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'unique:collections,slug'],
             'description' => ['nullable', 'string'],
             'is_public' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'prerequisite_collection_id' => ['nullable', 'exists:collections,id'],
+            'prerequisite_collection_id' => ['nullable', 'exists:classrooms,id'],
             'content_ids' => ['nullable', 'array'],
             'content_ids.*' => ['exists:contents,id'],
         ];
@@ -43,14 +42,11 @@ class CollectionStoreRequest extends FormRequest
         return [
             'title.required' => 'A title is required.',
             'title.max' => 'Titles may not be longer than 255 characters.',
-            'slug.required' => 'A slug is required.',
-            'slug.unique' => 'That slug is already in use.',
-            'slug.max' => 'Slugs may not be longer than 255 characters.',
             'is_public.boolean' => 'Visibility must be true or false.',
             'sort_order.integer' => 'Order must be a number.',
             'sort_order.min' => 'Order must be zero or higher.',
             'prerequisite_collection_id.exists' => 'Select a valid prerequisite.',
-            'content_ids.array' => 'Contents must be an array.',
+            'content_ids.array' => 'Lessons must be an array.',
             'content_ids.*.exists' => 'Select valid content items.',
         ];
     }

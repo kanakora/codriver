@@ -14,12 +14,12 @@ import {
 
 type Props = {
     stats: {
-        totalContents: number;
-        publishedContents: number;
-        draftContents: number;
+        totalLessons: number;
+        publishedLessons: number;
+        draftLessons: number;
         categoryCount: number;
     };
-    recentContents: Array<{
+    recentLessons: Array<{
         id: number;
         title: string;
         publish_status: 'draft' | 'published';
@@ -33,17 +33,17 @@ const props = defineProps<Props>();
 const statCards = [
     {
         label: 'Total Content',
-        value: props.stats.totalContents,
+        value: props.stats.totalLessons,
         icon: FileText,
     },
     {
         label: 'Published',
-        value: props.stats.publishedContents,
+        value: props.stats.publishedLessons,
         icon: CheckCircle2,
     },
     {
         label: 'Drafts',
-        value: props.stats.draftContents,
+        value: props.stats.draftLessons,
         icon: Clock3,
     },
     {
@@ -53,7 +53,7 @@ const statCards = [
     },
 ];
 
-function statusBadgeVariant(status: Props['recentContents'][number]['publish_status']) {
+function statusBadgeVariant(status: Props['recentLessons'][number]['publish_status']) {
     return status === 'published' ? 'success' : 'warning';
 }
 
@@ -71,7 +71,7 @@ const breadcrumbs = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6">
             <section
-                class="rounded-2xl border border-border/60 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-6 shadow-sm dark:border-border dark:from-slate-900 dark:via-slate-950 dark:to-slate-900"
+                class="rounded-2xl border border-border/60 bg-linear-to-br from-amber-50 via-white to-emerald-50 p-6 shadow-sm dark:border-border dark:from-slate-900 dark:via-slate-950 dark:to-slate-900"
             >
                 <div
                     class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between"
@@ -91,8 +91,8 @@ const breadcrumbs = [
                     </div>
                     <div class="flex flex-wrap gap-3">
                         <Button as-child>
-                            <Link :href="route('admin.contents.create')">
-                                Create content
+                            <Link :href="route('admin.lessons.create')">
+                                Create Lesson
                             </Link>
                         </Button>
                         <Button variant="secondary" as-child>
@@ -140,36 +140,36 @@ const breadcrumbs = [
                     </CardHeader>
                     <CardContent class="space-y-4">
                         <div
-                            v-for="content in recentContents"
-                            :key="content.id"
+                            v-for="lesson in recentLessons"
+                            :key="lesson.id"
                             class="flex items-center justify-between gap-4 rounded-lg border border-border/60 p-4"
                         >
                             <div class="space-y-1">
                                 <Link
                                     :href="
-                                        route('admin.contents.show', {
-                                            content: content.id,
+                                        route('admin.lessons.show', {
+                                            lesson: lesson.id,
                                         })
                                     "
                                     class="text-sm font-semibold hover:text-primary"
                                 >
-                                    {{ content.title }}
+                                    {{ lesson.title }}
                                 </Link>
                                 <p class="text-xs text-muted-foreground">
                                     {{
                                         new Date(
-                                            content.published_at ??
-                                                content.created_at,
+                                            lesson.published_at ??
+                                                lesson.created_at,
                                         ).toLocaleDateString()
                                     }}
                                 </p>
                             </div>
-                            <Badge :variant="statusBadgeVariant(content.publish_status)">
-                                {{ content.publish_status }}
+                            <Badge :variant="statusBadgeVariant(lesson.publish_status)">
+                                {{ lesson.publish_status }}
                             </Badge>
                         </div>
-                        <div v-if="recentContents.length === 0" class="text-sm text-muted-foreground">
-                            No content has been created yet.
+                        <div v-if="recentLessons.length === 0" class="text-sm text-muted-foreground">
+                            No lesson has been created yet.
                         </div>
                     </CardContent>
                 </Card>
@@ -180,12 +180,12 @@ const breadcrumbs = [
                     </CardHeader>
                     <CardContent class="space-y-3">
                         <Link
-                            :href="route('admin.contents.index')"
+                            :href="route('admin.lessons.index')"
                             class="flex items-center justify-between rounded-lg border border-border/60 px-4 py-3 text-sm font-medium hover:border-primary/50 hover:text-primary"
                         >
-                            Manage content
+                            Manage lessons
                             <span class="text-xs text-muted-foreground">
-                                {{ props.stats.totalContents }} total
+                                {{ props.stats.totalLessons }} total
                             </span>
                         </Link>
                         <Link
@@ -216,12 +216,12 @@ const breadcrumbs = [
                             </span>
                         </Link>
                         <Link
-                            :href="route('admin.contents.index')"
+                            :href="route('admin.lessons.index')"
                             class="flex items-center justify-between rounded-lg border border-border/60 px-4 py-3 text-sm font-medium hover:border-primary/50 hover:text-primary"
                         >
-                            Review content
+                            Review lessons
                             <span class="text-xs text-muted-foreground">
-                                {{ props.stats.totalContents }} total
+                                {{ props.stats.totalLessons }} total
                             </span>
                         </Link>
                     </CardContent>

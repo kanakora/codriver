@@ -14,10 +14,10 @@ import {
 } from '@/components/ui/dialog';
 import { useAuthRoles } from '@/composables/useAuthRoles';
 import { route } from 'ziggy-js';
-import type { Content } from '@/types';
+import type { Lesson } from '@/types';
 
 const props = defineProps<{
-    content: Content & {
+    lesson: Lesson & {
         author?: { name: string };
         categories?: Array<{ id: number; name: string }>;
     };
@@ -29,17 +29,17 @@ const props = defineProps<{
     }>;
 }>();
 
-const { canManageContent } = useAuthRoles();
+const { canManageLessons } = useAuthRoles();
 
 function handleDelete() {
-    if (confirm(`Are you sure you want to delete "${props.content.title}"?`)) {
+    if (confirm(`Are you sure you want to delete "${props.lesson.title}"?`)) {
         router.delete(
-            route('admin.contents.destroy', { content: props.content.id }),
+            route('admin.lessons.destroy', { content: props.lesson.id }),
         );
     }
 }
 
-function getContentTypeBadgeVariant(type: Content['content_type']) {
+function getLessonTypeBadgeVariant(type: Lesson['content_type']) {
     switch (type) {
         case 'text':
             return 'default';
@@ -54,7 +54,7 @@ function getContentTypeBadgeVariant(type: Content['content_type']) {
     }
 }
 
-function getPublishStatusBadgeVariant(status: Content['publish_status']) {
+function getPublishStatusBadgeVariant(status: Lesson['publish_status']) {
     switch (status) {
         case 'published':
             return 'default';
@@ -69,8 +69,8 @@ const revisionFields = [
     { key: 'title', label: 'Title' },
     { key: 'slug', label: 'Slug' },
     { key: 'description', label: 'Description' },
-    { key: 'content_type', label: 'Content type' },
-    { key: 'content_text', label: 'Content text' },
+    { key: 'content_type', label: 'Lesson type' },
+    { key: 'content_text', label: 'Lesson text' },
     { key: 'external_url', label: 'External URL' },
     { key: 'publish_status', label: 'Publish status' },
     { key: 'published_at', label: 'Published at' },
@@ -82,7 +82,11 @@ const revisionFields = [
 const selectedRevisionId = ref(props.revisions?.[0]?.id ?? null);
 
 const selectedRevision = computed(() => {
-    return props.revisions?.find((revision) => revision.id === selectedRevisionId.value) || null;
+    return (
+        props.revisions?.find(
+            (revision) => revision.id === selectedRevisionId.value,
+        ) || null
+    );
 });
 
 function formatDate(value?: string | null) {
@@ -106,7 +110,7 @@ function formatValue(value: unknown) {
 }
 
 function getCurrentValue(key: string) {
-    const value = (props.content as Record<string, unknown>)[key];
+    const value = (props.lesson as Record<string, unknown>)[key];
 
     if (key.endsWith('_at')) {
         return formatDate(value as string | null);
@@ -116,7 +120,9 @@ function getCurrentValue(key: string) {
 }
 
 function getRevisionValue(key: string) {
-    const data = selectedRevision.value?.data as Record<string, unknown> | undefined;
+    const data = selectedRevision.value?.data as
+        | Record<string, unknown>
+        | undefined;
     const value = data ? data[key] : null;
 
     if (key.endsWith('_at')) {
@@ -134,13 +140,17 @@ function valuesDiffer(key: string) {
 }
 
 function restoreRevision(revisionId: number) {
-    if (!confirm('Restore this revision? This will overwrite the current content.')) {
+    if (
+        !confirm(
+            'Restore this revision? This will overwrite the current lesson.',
+        )
+    ) {
         return;
     }
 
     router.post(
-        route('admin.contents.revisions.restore', {
-            content: props.content.id,
+        route('admin.lessons.revisions.restore', {
+            lesson: props.lesson.id,
             revision: revisionId,
         }),
     );
@@ -152,18 +162,18 @@ const breadcrumbs = [
         href: route('admin.dashboard'),
     },
     {
-        title: 'Content Management',
-        href: route('admin.contents.index'),
+        title: 'Lesson Management',
+        href: route('admin.lessons.index'),
     },
     {
-        title: props.content.title,
-        href: route('admin.contents.show', { content: props.content.id }),
+        title: props.lesson.title,
+        href: route('admin.lessons.show', { lesson: props.lesson.id }),
     },
 ];
 </script>
 
 <template>
-    <Head :title="content.title" />
+    <Head :title="lesson.title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6">
@@ -171,47 +181,45 @@ const breadcrumbs = [
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight">
-                        {{ content.title }}
+                        {{ lesson.title }}
                     </h1>
                     <div class="mt-2 flex items-center gap-2">
                         <Badge
                             :variant="
-                                getContentTypeBadgeVariant(content.content_type)
+                                getLessonTypeBadgeVariant(lesson.content_type)
                             "
                         >
-                            {{ content.content_type }}
+                            {{ lesson.content_type }}
                         </Badge>
                         <Badge
                             :variant="
                                 getPublishStatusBadgeVariant(
-                                    content.publish_status,
+                                    lesson.publish_status,
                                 )
                             "
                         >
-                            {{ content.publish_status }}
+                            {{ lesson.publish_status }}
                         </Badge>
                         <span class="text-sm text-muted-foreground">
-                            by {{ content.author?.name || 'Unknown' }}
+                            by {{ lesson.author?.name || 'Unknown' }}
                         </span>
                         <span
-                            v-if="content.scheduled_publish_at"
+                            v-if="lesson.scheduled_publish_at"
                             class="text-xs text-muted-foreground"
                         >
                             Scheduled:
                             {{
                                 new Date(
-                                    content.scheduled_publish_at,
+                                    lesson.scheduled_publish_at,
                                 ).toLocaleDateString()
                             }}
                         </span>
                     </div>
                 </div>
-                <div class="flex gap-2" v-if="canManageContent()">
-                    <Dialog v-if="revisions?.length">
+                <div class="flex gap-2" v-if="canManageLessons()">
+                    <!-- <Dialog v-if="revisions?.length">
                         <DialogTrigger as-child>
-                            <Button variant="outline">
-                                View history
-                            </Button>
+                            <Button variant="outline"> View history </Button>
                         </DialogTrigger>
                         <DialogContent class="max-w-5xl">
                             <DialogHeader>
@@ -232,24 +240,47 @@ const breadcrumbs = [
                                         <button
                                             type="button"
                                             class="w-full text-left"
-                                            @click="selectedRevisionId = revision.id"
+                                            @click="
+                                                selectedRevisionId = revision.id
+                                            "
                                         >
-                                            <div class="flex items-center justify-between">
+                                            <div
+                                                class="flex items-center justify-between"
+                                            >
                                                 <div>
-                                                    <p class="text-sm font-semibold">
-                                                        Revision {{ revision.id }}
+                                                    <p
+                                                        class="text-sm font-semibold"
+                                                    >
+                                                        Revision
+                                                        {{ revision.id }}
                                                     </p>
-                                                    <p class="text-xs text-muted-foreground">
-                                                        {{ new Date(revision.created_at).toLocaleString() }}
+                                                    <p
+                                                        class="text-xs text-muted-foreground"
+                                                    >
+                                                        {{
+                                                            new Date(
+                                                                revision.created_at,
+                                                            ).toLocaleString()
+                                                        }}
                                                     </p>
-                                                    <p class="text-xs text-muted-foreground">
-                                                        {{ revision.user?.name || 'System' }}
+                                                    <p
+                                                        class="text-xs text-muted-foreground"
+                                                    >
+                                                        {{
+                                                            revision.user
+                                                                ?.name ||
+                                                            'System'
+                                                        }}
                                                     </p>
                                                 </div>
                                                 <Button
                                                     size="sm"
                                                     variant="secondary"
-                                                    @click.stop="restoreRevision(revision.id)"
+                                                    @click.stop="
+                                                        restoreRevision(
+                                                            revision.id,
+                                                        )
+                                                    "
                                                 >
                                                     Restore
                                                 </Button>
@@ -257,7 +288,7 @@ const breadcrumbs = [
                                         </button>
                                     </div>
                                 </div>
-                                <!-- <div
+                                <div
                                     v-if="selectedRevision"
                                     class="rounded-xl border border-border/60 p-4"
                                 >
@@ -297,15 +328,15 @@ const breadcrumbs = [
                                             </div>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </DialogContent>
-                    </Dialog>
+                    </Dialog> -->
                     <Button variant="outline" as-child>
                         <Link
                             :href="
-                                route('admin.contents.edit', {
-                                    content: content.id,
+                                route('admin.lessons.edit', {
+                                    lesson: lesson.id,
                                 })
                             "
                         >
@@ -318,44 +349,44 @@ const breadcrumbs = [
                 </div>
             </div>
 
-            <!-- Content Details -->
+            <!-- Lesson Details -->
             <div class="grid gap-6 md:grid-cols-3">
-                <!-- Main Content -->
+                <!-- Main Lesson -->
                 <Card class="md:col-span-2">
                     <CardHeader>
-                        <CardTitle>Content</CardTitle>
+                        <CardTitle>Lesson</CardTitle>
                     </CardHeader>
                     <CardContent class="space-y-4">
-                        <div v-if="content.description">
+                        <div v-if="lesson.description">
                             <h3 class="mb-2 font-semibold">Description</h3>
                             <p class="text-muted-foreground">
-                                {{ content.description }}
+                                {{ lesson.description }}
                             </p>
                         </div>
 
                         <div
                             v-if="
-                                content.content_type === 'text' &&
-                                content.content_text
+                                lesson.content_type === 'text' &&
+                                lesson.content_text
                             "
                         >
-                            <h3 class="mb-2 font-semibold">Text Content</h3>
+                            <h3 class="mb-2 font-semibold">Text Lesson</h3>
                             <div
-                                class="prose max-w-none"
-                                v-html="content.content_text"
+                                class="prose dark:prose-invert max-w-none"
+                                v-html="lesson.content_text"
                             ></div>
                         </div>
 
                         <div
                             v-if="
-                                content.content_type === 'pdf' &&
-                                content.file_path
+                                lesson.content_type === 'pdf' &&
+                                lesson.file_path
                             "
                         >
                             <h3 class="mb-2 font-semibold">PDF Document</h3>
                             <Button as-child>
                                 <a
-                                    :href="`/storage/${content.file_path}`"
+                                    :href="`/storage/${lesson.file_path}`"
                                     target="_blank"
                                 >
                                     View PDF
@@ -365,33 +396,33 @@ const breadcrumbs = [
 
                         <div
                             v-if="
-                                content.content_type === 'video' &&
-                                content.external_url
+                                lesson.content_type === 'video' &&
+                                lesson.external_url
                             "
                         >
                             <h3 class="mb-2 font-semibold">Video</h3>
                             <a
-                                :href="content.external_url"
+                                :href="lesson.external_url"
                                 target="_blank"
                                 class="text-primary hover:underline"
                             >
-                                {{ content.external_url }}
+                                {{ lesson.external_url }}
                             </a>
                         </div>
 
                         <div
                             v-if="
-                                content.content_type === 'link' &&
-                                content.external_url
+                                lesson.content_type === 'link' &&
+                                lesson.external_url
                             "
                         >
                             <h3 class="mb-2 font-semibold">External Link</h3>
                             <a
-                                :href="content.external_url"
+                                :href="lesson.external_url"
                                 target="_blank"
                                 class="text-primary hover:underline"
                             >
-                                {{ content.external_url }}
+                                {{ lesson.external_url }}
                             </a>
                         </div>
                     </CardContent>
@@ -412,7 +443,7 @@ const breadcrumbs = [
                                     Slug
                                 </h3>
                                 <p class="font-mono text-sm">
-                                    {{ content.slug }}
+                                    {{ lesson.slug }}
                                 </p>
                             </div>
                             <div>
@@ -424,12 +455,12 @@ const breadcrumbs = [
                                 <p>
                                     {{
                                         new Date(
-                                            content.created_at,
+                                            lesson.created_at,
                                         ).toLocaleDateString()
                                     }}
                                 </p>
                             </div>
-                            <div v-if="content.published_at">
+                            <div v-if="lesson.published_at">
                                 <h3
                                     class="text-sm font-medium text-muted-foreground"
                                 >
@@ -438,7 +469,7 @@ const breadcrumbs = [
                                 <p>
                                     {{
                                         new Date(
-                                            content.published_at,
+                                            lesson.published_at,
                                         ).toLocaleDateString()
                                     }}
                                 </p>
@@ -452,12 +483,12 @@ const breadcrumbs = [
                                 <p>
                                     {{
                                         new Date(
-                                            content.updated_at,
+                                            lesson.updated_at,
                                         ).toLocaleDateString()
                                     }}
                                 </p>
                             </div>
-                            <div v-if="content.scheduled_publish_at">
+                            <div v-if="lesson.scheduled_publish_at">
                                 <h3
                                     class="text-sm font-medium text-muted-foreground"
                                 >
@@ -466,12 +497,12 @@ const breadcrumbs = [
                                 <p>
                                     {{
                                         new Date(
-                                            content.scheduled_publish_at,
+                                            lesson.scheduled_publish_at,
                                         ).toLocaleString()
                                     }}
                                 </p>
                             </div>
-                            <div v-if="content.expires_at">
+                            <div v-if="lesson.expires_at">
                                 <h3
                                     class="text-sm font-medium text-muted-foreground"
                                 >
@@ -480,12 +511,12 @@ const breadcrumbs = [
                                 <p>
                                     {{
                                         new Date(
-                                            content.expires_at,
+                                            lesson.expires_at,
                                         ).toLocaleString()
                                     }}
                                 </p>
                             </div>
-                            <div v-if="content.archived_at">
+                            <div v-if="lesson.archived_at">
                                 <h3
                                     class="text-sm font-medium text-muted-foreground"
                                 >
@@ -494,7 +525,7 @@ const breadcrumbs = [
                                 <p>
                                     {{
                                         new Date(
-                                            content.archived_at,
+                                            lesson.archived_at,
                                         ).toLocaleString()
                                     }}
                                 </p>
@@ -510,14 +541,14 @@ const breadcrumbs = [
                         <CardContent>
                             <div class="flex flex-wrap gap-2">
                                 <Badge
-                                    v-for="cat in content.categories"
+                                    v-for="cat in lesson.categories"
                                     :key="cat.id"
                                     variant="outline"
                                 >
                                     {{ cat.name }}
                                 </Badge>
                                 <span
-                                    v-if="!content.categories?.length"
+                                    v-if="!lesson.categories?.length"
                                     class="text-sm text-muted-foreground"
                                 >
                                     No categories assigned

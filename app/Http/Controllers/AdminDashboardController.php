@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Content;
+use App\Models\Lesson;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -11,12 +11,12 @@ class AdminDashboardController extends Controller
 {
     public function index(): Response
     {
-        $totalContents = Content::query()->count();
-        $publishedContents = Content::query()->published()->count();
-        $draftContents = Content::query()->draft()->count();
+        $totalLessons = Lesson::query()->count();
+        $publishedLessons = Lesson::query()->published()->count();
+        $draftLessons = Lesson::query()->draft()->count();
         $categoryCount = Category::query()->count();
 
-        $recentContents = Content::query()
+        $recentLessons = Lesson::query()
             ->latest()
             ->take(6)
             ->get([
@@ -29,12 +29,12 @@ class AdminDashboardController extends Controller
 
         return Inertia::render('Admin/Dashboard', [
             'stats' => [
-                'totalContents' => $totalContents,
-                'publishedContents' => $publishedContents,
-                'draftContents' => $draftContents,
+                'totalLessons' => $totalLessons,
+                'publishedLessons' => $publishedLessons,
+                'draftLessons' => $draftLessons,
                 'categoryCount' => $categoryCount,
             ],
-            'recentContents' => $recentContents,
+            'recentLessons' => $recentLessons,
         ]);
     }
 }

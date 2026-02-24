@@ -29,8 +29,8 @@ defineProps({
         <HeroSection :can-register="canRegister" />
         <FeaturesSection />
         <HowItWorksSection />
-        <PricingSection :can-register="canRegister" />
-        <TestimonialsSection />
+        <!-- <PricingSection :can-register="canRegister" /> -->
+        <!-- <TestimonialsSection /> -->
         <CTASection :can-register="canRegister" />
         <Footer />
     </div>

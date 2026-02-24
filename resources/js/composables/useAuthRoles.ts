@@ -8,9 +8,9 @@ export type UseAuthRolesReturn = {
     isStudent: () => boolean;
     hasRole: (role: string) => boolean;
     hasPermission: (permission: string) => boolean;
-    canManageContent: () => boolean;
+    canManageLessons: () => boolean;
     canManageCategories: () => boolean;
-    canManageCollections: () => boolean;
+    canManageClassRooms: () => boolean;
     canViewContent: () => boolean;
     canViewCollections: () => boolean;
 };
@@ -44,7 +44,7 @@ export function useAuthRoles(): UseAuthRolesReturn {
             : false;
     };
 
-    const canManageContent = () => {
+    const canManageLessons = () => {
         return hasPermission('manage content') || isAdmin();
     };
 
@@ -52,7 +52,7 @@ export function useAuthRoles(): UseAuthRolesReturn {
         return hasPermission('manage categories') || isAdmin();
     };
 
-    const canManageCollections = () => {
+    const canManageClassRooms = () => {
         return hasPermission('manage collections') || isAdmin();
     };
 
@@ -70,9 +70,9 @@ export function useAuthRoles(): UseAuthRolesReturn {
         isStudent,
         hasRole,
         hasPermission,
-        canManageContent,
+        canManageLessons,
         canManageCategories,
-        canManageCollections,
+        canManageClassRooms,
         canViewContent,
         canViewCollections,
     };

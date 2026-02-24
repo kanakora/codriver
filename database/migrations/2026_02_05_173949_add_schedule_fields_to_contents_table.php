@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('contents', function (Blueprint $table) {
+        Schema::table('lessons', function (Blueprint $table) {
             $table->timestamp('scheduled_publish_at')->nullable()->after('published_at');
             $table->timestamp('expires_at')->nullable()->after('scheduled_publish_at');
             $table->timestamp('archived_at')->nullable()->after('expires_at');
@@ -33,7 +33,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('contents', function (Blueprint $table) {
+        Schema::table('lessons', function (Blueprint $table) {
             $table->dropForeign(['current_revision_id']);
             $table->dropColumn([
                 'scheduled_publish_at',

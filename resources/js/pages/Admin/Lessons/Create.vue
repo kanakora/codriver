@@ -25,7 +25,6 @@ const props = defineProps<{
 
 const form = useForm({
     title: '',
-    slug: '',
     description: '',
     content_type: 'text' as 'text' | 'pdf' | 'video' | 'link',
     file_path: null as File | null,
@@ -52,7 +51,7 @@ function handleSubmit() {
         }
     });
 
-    form.post(route('admin.contents.store'), {
+    form.post(route('admin.lessons.store'), {
         forceFormData: true,
         preserveScroll: true,
     });
@@ -80,25 +79,25 @@ const breadcrumbs = [
         href: route('admin.dashboard'),
     },
     {
-        title: 'Content Management',
-        href: route('admin.contents.index'),
+        title: 'Lesson Management',
+        href: route('admin.lessons.index'),
     },
     {
-        title: 'Create Content',
-        href: route('admin.contents.create'),
+        title: 'Create Lesson',
+        href: route('admin.lessons.create'),
     },
 ];
 </script>
 
 <template>
-    <Head title="Create Content" />
+    <Head title="Create Lesson" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="space-y-6 p-6 mx-auto max-w-4xl">
+        <div class="mx-auto md:w-3xl space-y-6 p-6">
             <!-- Header -->
             <div>
                 <h1 class="text-2xl font-bold tracking-tight">
-                    Create New Content
+                    Create New Lesson
                 </h1>
                 <p class="text-muted-foreground">
                     Add new e-learning content (text, PDF, video, or link)
@@ -108,48 +107,27 @@ const breadcrumbs = [
             <!-- Form -->
             <Card>
                 <CardHeader>
-                    <CardTitle>Content Details</CardTitle>
+                    <CardTitle>Lesson Details</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form @submit.prevent="handleSubmit" class="space-y-6">
-                        <!-- Title & Slug -->
-                        <div class="grid gap-4 md:grid-cols-2">
-                            <div class="space-y-2">
-                                <Label for="title">Title *</Label>
-                                <Input
-                                    id="title"
-                                    v-model="form.title"
-                                    required
-                                    placeholder="Enter content title"
-                                    :class="{
-                                        'border-destructive': form.errors.title,
-                                    }"
-                                />
-                                <p
-                                    v-if="form.errors.title"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.title }}
-                                </p>
-                            </div>
-                            <div class="space-y-2">
-                                <Label for="slug">Slug *</Label>
-                                <Input
-                                    id="slug"
-                                    v-model="form.slug"
-                                    required
-                                    placeholder="url-friendly-slug"
-                                    :class="{
-                                        'border-destructive': form.errors.slug,
-                                    }"
-                                />
-                                <p
-                                    v-if="form.errors.slug"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.slug }}
-                                </p>
-                            </div>
+                        <div class="space-y-2">
+                            <Label for="title">Title *</Label>
+                            <Input
+                                id="title"
+                                v-model="form.title"
+                                required
+                                placeholder="Enter content title"
+                                :class="{
+                                    'border-destructive': form.errors.title,
+                                }"
+                            />
+                            <p
+                                v-if="form.errors.title"
+                                class="text-sm text-destructive"
+                            >
+                                {{ form.errors.title }}
+                            </p>
                         </div>
 
                         <!-- Description -->
@@ -173,22 +151,27 @@ const breadcrumbs = [
                             </p>
                         </div>
 
-                        <!-- Content Type & Publish Status -->
+                        <!-- Lesson Type & Publish Status -->
                         <div class="grid gap-4 md:grid-cols-2">
                             <div class="space-y-2">
-                                <Label for="content_type">Content Type *</Label>
+                                <Label for="content_type">Lesson Type *</Label>
                                 <Select v-model="form.content_type">
-                                    <SelectTrigger class="w-full"
+                                    <SelectTrigger
+                                        class="w-full"
                                         :class="{
                                             'border-destructive':
                                                 form.errors.content_type,
                                         }"
                                     >
-                                        <SelectValue placeholder="Select a type" />
+                                        <SelectValue
+                                            placeholder="Select a type"
+                                        />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            <SelectLabel>Content Types</SelectLabel>
+                                            <SelectLabel
+                                                >Lesson Types</SelectLabel
+                                            >
                                             <SelectItem value="text">
                                                 Text
                                             </SelectItem>
@@ -216,17 +199,22 @@ const breadcrumbs = [
                                     >Publish Status *</Label
                                 >
                                 <Select v-model="form.publish_status">
-                                    <SelectTrigger class="w-full"
+                                    <SelectTrigger
+                                        class="w-full"
                                         :class="{
                                             'border-destructive':
                                                 form.errors.publish_status,
                                         }"
                                     >
-                                        <SelectValue placeholder="Select a type" />
+                                        <SelectValue
+                                            placeholder="Select a type"
+                                        />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            <SelectLabel>Publish Status</SelectLabel>
+                                            <SelectLabel
+                                                >Publish Status</SelectLabel
+                                            >
                                             <SelectItem value="draft">
                                                 Draft
                                             </SelectItem>
@@ -245,7 +233,9 @@ const breadcrumbs = [
                             </div>
                         </div>
 
-                        <div class="rounded-xl border border-border/60 bg-muted/20 p-4">
+                        <!-- <div
+                            class="rounded-xl border border-border/60 bg-muted/20 p-4"
+                        >
                             <div class="space-y-2">
                                 <h3 class="text-sm font-semibold">
                                     Scheduling & lifecycle
@@ -302,21 +292,21 @@ const breadcrumbs = [
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <!-- Dynamic Fields based on Content Type -->
+                        <!-- Dynamic Fields based on Lesson Type -->
                         <div
                             v-if="form.content_type === 'text'"
                             class="space-y-2"
                         >
-                            <Label for="content_text">Content Text *</Label>
-                            <Editor 
+                            <Label for="content_text">Lesson Text *</Label>
+                            <Editor
                                 v-model="form.content_text"
                                 :class="{
                                     'border-destructive':
                                         form.errors.content_text,
                                 }"
-                             />
+                            />
                             <p
                                 v-if="form.errors.content_text"
                                 class="text-sm text-destructive"
@@ -408,7 +398,9 @@ const breadcrumbs = [
                                     <input
                                         type="checkbox"
                                         :id="`category-${cat.id}`"
-                                        :checked="form.category_ids.includes(cat.id)"
+                                        :checked="
+                                            form.category_ids.includes(cat.id)
+                                        "
                                         @change="toggleCategory(cat.id)"
                                         class="h-4 w-4 rounded border-gray-300"
                                     />
@@ -431,13 +423,13 @@ const breadcrumbs = [
                         <!-- Actions -->
                         <div class="flex items-center justify-end gap-4">
                             <Button type="button" variant="outline" as-child>
-                                <Link :href="route('admin.contents.index')">
+                                <Link :href="route('admin.lessons.index')">
                                     Cancel
                                 </Link>
                             </Button>
                             <Button type="submit" :disabled="form.processing">
                                 <span v-if="form.processing">Creating...</span>
-                                <span v-else>Create Content</span>
+                                <span v-else>Create Lesson</span>
                             </Button>
                         </div>
                     </form>

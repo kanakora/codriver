@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contents', function (Blueprint $table) {
+        Schema::create('lessons', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->enum('content_type', ['text', 'pdf', 'video', 'link']);
-            $table->string('file_path')->nullable(); // for uploaded files
-            $table->string('external_url')->nullable(); // for external links
-            $table->text('content_text')->nullable(); // for text content
+            $table->string('file_path')->nullable();
+            $table->string('external_url')->nullable();
+            $table->text('content_text')->nullable();
             $table->enum('publish_status', ['draft', 'published'])->default('draft');
             $table->timestamp('published_at')->nullable();
-            $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contents');
+        Schema::dropIfExists('lessons');
     }
 };

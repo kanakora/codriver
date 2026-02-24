@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Policies\LessonPolicy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,10 +11,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
-class Content extends Model
+#[UsePolicy(LessonPolicy::class)]
+class Lesson extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasSlug;
 
     public bool $shouldRecordRevision = true;
 
@@ -41,17 +46,27 @@ class Content extends Model
 
     protected static function booted(): void
     {
-        static::saved(function (Content $content) {
-            if (! $content->shouldRecordRevision) {
+        static::saved(function (Lesson $lesson) {
+            if (! $lesson->shouldRecordRevision) {
                 return;
             }
 
-            if (! $content->shouldCreateRevision()) {
+            if (! $lesson->shouldCreateRevision()) {
                 return;
             }
 
-            $content->recordRevision();
+            $lesson->recordRevision();
         });
+    }
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
     }
 
     public function author(): BelongsTo
@@ -66,7 +81,7 @@ class Content extends Model
 
     public function revisions(): HasMany
     {
-        return $this->hasMany(ContentRevision::class);
+        return $this->hasMany(LessonRevision::class);
     }
 
     public function currentRevision(): BelongsTo
@@ -74,12 +89,11 @@ class Content extends Model
         return $this->belongsTo(ContentRevision::class, 'current_revision_id');
     }
 
-    public function collections(): BelongsToMany
+    public function classrooms(): BelongsToMany
     {
-        return $this->belongsToMany(Collection::class)
+        return $this->belongsToMany(ClassRoom::class)
             ->withPivot('sort_order')
-            ->withTimestamps()
-            ->orderBy('collection_content.sort_order');
+            ->withTimestamps();
     }
 
     public function scopePublished(Builder $query): Builder
@@ -123,7 +137,7 @@ class Content extends Model
         return $query->whereNotNull('archived_at');
     }
 
-    public function recordRevision(): ContentRevision
+    public function recordRevision(): LessonRevision
     {
         $revision = $this->revisions()->create([
             'user_id' => auth('web')->id(),

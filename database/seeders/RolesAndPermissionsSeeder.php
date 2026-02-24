@@ -15,11 +15,11 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create permissions
         $permissions = [
-            'manage content',
+            'manage lessons',
             'manage categories',
-            'manage collections',
-            'view content',
-            'view collections',
+            'manage classrooms',
+            'view lessons',
+            'view classrooms',
         ];
 
         foreach ($permissions as $permission) {
@@ -29,14 +29,14 @@ class RolesAndPermissionsSeeder extends Seeder
         // Create roles and assign permissions
         $adminRole = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $adminRole->givePermissionTo([
-            'manage content',
+            'manage lessons',
             'manage categories',
-            'manage collections',
-            'view content',
-            'view collections',
+            'manage classrooms',
+            'view lessons',
+            'view classrooms',
         ]);
 
         $studentRole = Role::firstOrCreate(['name' => 'student', 'guard_name' => 'web']);
-        $studentRole->givePermissionTo(['view content', 'view collections']);
+        $studentRole->givePermissionTo(['view lessons', 'view classrooms']);
     }
 }

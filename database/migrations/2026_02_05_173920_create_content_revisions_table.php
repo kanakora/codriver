@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('content_revisions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('content_id')->constrained('contents')->cascadeOnDelete();
+            $table->foreignId('lesson_id')->constrained('lessons')->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->json('data');
             $table->timestamps();

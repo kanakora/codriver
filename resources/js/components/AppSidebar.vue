@@ -33,8 +33,7 @@ const {
     canManageCategories,
     canManageCollections,
     canViewCollections,
-} =
-    useAuthRoles();
+} = useAuthRoles();
 
 const dashboardItem = computed(() => {
     if (isAdmin()) {
@@ -65,22 +64,22 @@ const mainNavItems = computed(() => {
 
     if (isAdmin() || canManageContent()) {
         items.push({
-            title: 'Content',
-            href: route('admin.contents.index'),
+            title: 'Lesson',
+            href: route('admin.lessons.index'),
             icon: FileText,
         });
     }
 
     if (isAdmin() || canManageCollections()) {
         items.push({
-            title: 'Collections',
-            href: route('admin.collections.index'),
+            title: 'Classes',
+            href: route('admin.classrooms.index'),
             icon: BookOpen,
         });
     } else if (isStudent() || canViewCollections()) {
         items.push({
-            title: 'Collections',
-            href: route('student.collections.index'),
+            title: 'Classes',
+            href: route('student.classrooms.index'),
             icon: BookOpen,
         });
     }

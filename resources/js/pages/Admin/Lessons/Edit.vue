@@ -1,39 +1,61 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
+
 import AppLayout from '@/layouts/AppLayout.vue';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { route } from 'ziggy-js';
-import type { Content, Category } from '@/types';
+import type { Lesson, Category } from '@/types';
 import { Textarea } from '@/components/ui/textarea';
 import Editor from '@/components/Editor.vue';
-import {Link} from '@inertiajs/vue3'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import ImageUpload from '@/components/ImageUpload.vue';
 
 const props = defineProps<{
-    content: Content & { categories?: Category[] };
+    lesson: Lesson & { categories?: Category[] };
     categories: Category[];
 }>();
 
+const server = {
+    url: route('admin.lessons.upload', props.lesson.id),
+    headers: {
+        'X-CSRF-TOKEN':
+            document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute('lesson') || '',
+    },
+};
+
 const form = useForm({
-    title: props.content.title,
-    slug: props.content.slug,
-    description: props.content.description || '',
-    content_type: props.content.content_type as
+    title: props.lesson.title,
+    slug: props.lesson.slug,
+    description: props.lesson.description || '',
+    content_type: props.lesson.content_type as
         | 'text'
         | 'pdf'
         | 'video'
         | 'link',
     file_path: null as File | null,
-    external_url: props.content.external_url || '',
-    content_text: props.content.content_text || '',
-    publish_status: props.content.publish_status as 'draft' | 'published',
-    scheduled_publish_at: formatDateTime(props.content.scheduled_publish_at),
-    expires_at: formatDateTime(props.content.expires_at),
-    archived_at: formatDateTime(props.content.archived_at),
+    external_url: props.lesson.external_url || '',
+    content_text: props.lesson.content_text || '',
+    publish_status: props.lesson.publish_status as 'draft' | 'published',
+    scheduled_publish_at: formatDateTime(props.lesson.scheduled_publish_at),
+    expires_at: formatDateTime(props.lesson.expires_at),
+    archived_at: formatDateTime(props.lesson.archived_at),
     category_ids:
-        props.content.categories?.map((c) => c.id) || ([] as number[]),
+        props.lesson.categories?.map((c: any) => c.id) || ([] as number[]),
 });
 
 function handleSubmit() {
@@ -50,18 +72,17 @@ function handleSubmit() {
         }
     });
 
-    form.put(route('admin.contents.update', { content: props.content.id }), {
-        forceFormData: true,
+    form.put(route('admin.lessons.update', { lesson: props.lesson.id }), {
         preserveScroll: true,
     });
 }
 
-function handleFileChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-        form.file_path = target.files[0];
-    }
+// Updated to handle the ImageUpload component
+function handleFileUpdate(file: File | File[] | null) {
+    form.file_path = file as File | null;
 }
+
+// Remove the old handleFileChange function
 
 function toggleCategory(id: number) {
     const index = form.category_ids.indexOf(id);
@@ -90,24 +111,24 @@ const breadcrumbs = [
         href: route('admin.dashboard'),
     },
     {
-        title: 'Content Management',
-        href: route('admin.contents.index'),
+        title: 'Lesson Management',
+        href: route('admin.lessons.index'),
     },
     {
-        title: 'Edit Content',
-        href: route('admin.contents.edit', { content: props.content.id }),
+        title: 'Edit Lesson',
+        href: route('admin.lessons.edit', { lesson: props.lesson.id }),
     },
 ];
 </script>
 
 <template>
-    <Head title="Edit Content" />
+    <Head title="Edit Lesson" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="space-y-6 p-6 mx-auto max-w-4xl">
+        <div class="mx-auto max-w-4xl space-y-6 p-6">
             <!-- Header -->
             <div>
-                <h1 class="text-2xl font-bold tracking-tight">Edit Content</h1>
+                <h1 class="text-2xl font-bold tracking-tight">Edit Lesson</h1>
                 <p class="text-muted-foreground">
                     Update e-learning content (text, PDF, video, or link)
                 </p>
@@ -116,48 +137,27 @@ const breadcrumbs = [
             <!-- Form -->
             <Card>
                 <CardHeader>
-                    <CardTitle>Content Details</CardTitle>
+                    <CardTitle>Lesson Details</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form @submit.prevent="handleSubmit" class="space-y-6">
-                        <!-- Title & Slug -->
-                        <div class="grid gap-4 md:grid-cols-2">
-                            <div class="space-y-2">
-                                <Label for="title">Title *</Label>
-                                <Input
-                                    id="title"
-                                    v-model="form.title"
-                                    required
-                                    placeholder="Enter content title"
-                                    :class="{
-                                        'border-destructive': form.errors.title,
-                                    }"
-                                />
-                                <p
-                                    v-if="form.errors.title"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.title }}
-                                </p>
-                            </div>
-                            <div class="space-y-2">
-                                <Label for="slug">Slug *</Label>
-                                <Input
-                                    id="slug"
-                                    v-model="form.slug"
-                                    required
-                                    placeholder="url-friendly-slug"
-                                    :class="{
-                                        'border-destructive': form.errors.slug,
-                                    }"
-                                />
-                                <p
-                                    v-if="form.errors.slug"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.slug }}
-                                </p>
-                            </div>
+                       <div class="space-y-2">
+                            <Label for="title">Title *</Label>
+                            <Input
+                                id="title"
+                                v-model="form.title"
+                                required
+                                placeholder="Enter content title"
+                                :class="{
+                                    'border-destructive': form.errors.title,
+                                }"
+                            />
+                            <p
+                                v-if="form.errors.title"
+                                class="text-sm text-destructive"
+                            >
+                                {{ form.errors.title }}
+                            </p>
                         </div>
 
                         <!-- Description -->
@@ -181,24 +181,42 @@ const breadcrumbs = [
                             </p>
                         </div>
 
-                        <!-- Content Type & Publish Status -->
+                        <!-- Lesson Type & Publish Status -->
                         <div class="grid gap-4 md:grid-cols-2">
                             <div class="space-y-2">
-                                <Label for="content_type">Content Type *</Label>
-                                <select
-                                    id="content_type"
-                                    v-model="form.content_type"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-                                    :class="{
-                                        'border-destructive':
-                                            form.errors.content_type,
-                                    }"
-                                >
-                                    <option value="text">Text</option>
-                                    <option value="pdf">PDF Document</option>
-                                    <option value="video">Video</option>
-                                    <option value="link">External Link</option>
-                                </select>
+                                <Label for="content_type">Lesson Type *</Label>
+                                <Select v-model="form.content_type">
+                                    <SelectTrigger
+                                        class="w-full"
+                                        :class="{
+                                            'border-destructive':
+                                                form.errors.content_type,
+                                        }"
+                                    >
+                                        <SelectValue
+                                            placeholder="Select a type"
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel
+                                                >Lesson Types</SelectLabel
+                                            >
+                                            <SelectItem value="text">
+                                                Text
+                                            </SelectItem>
+                                            <SelectItem value="pdf">
+                                                PDF Document
+                                            </SelectItem>
+                                            <SelectItem value="video">
+                                                Video
+                                            </SelectItem>
+                                            <SelectItem value="link">
+                                                External Link
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
                                 <p
                                     v-if="form.errors.content_type"
                                     class="text-sm text-destructive"
@@ -210,18 +228,32 @@ const breadcrumbs = [
                                 <Label for="publish_status"
                                     >Publish Status *</Label
                                 >
-                                <select
-                                    id="publish_status"
-                                    v-model="form.publish_status"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-                                    :class="{
-                                        'border-destructive':
-                                            form.errors.publish_status,
-                                    }"
-                                >
-                                    <option value="draft">Draft</option>
-                                    <option value="published">Published</option>
-                                </select>
+                                <Select v-model="form.publish_status">
+                                    <SelectTrigger
+                                        class="w-full"
+                                        :class="{
+                                            'border-destructive':
+                                                form.errors.publish_status,
+                                        }"
+                                    >
+                                        <SelectValue
+                                            placeholder="Select a type"
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel
+                                                >Publish Status</SelectLabel
+                                            >
+                                            <SelectItem value="draft">
+                                                Draft
+                                            </SelectItem>
+                                            <SelectItem value="published">
+                                                Published
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
                                 <p
                                     v-if="form.errors.publish_status"
                                     class="text-sm text-destructive"
@@ -231,7 +263,7 @@ const breadcrumbs = [
                             </div>
                         </div>
 
-                        <div class="rounded-xl border border-border/60 bg-muted/20 p-4">
+                        <!-- <div class="rounded-xl border border-border/60 bg-muted/20 p-4">
                             <div class="space-y-2">
                                 <h3 class="text-sm font-semibold">
                                     Scheduling & lifecycle
@@ -287,14 +319,14 @@ const breadcrumbs = [
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <!-- Dynamic Fields based on Content Type -->
+                        <!-- Dynamic Fields based on Lesson Type -->
                         <div
                             v-if="form.content_type === 'text'"
                             class="space-y-2"
                         >
-                            <Label for="content_text">Content Text *</Label>
+                            <Label for="content_text">Lesson Text *</Label>
                             <Editor
                                 v-model="form.content_text"
                                 :class="{
@@ -310,34 +342,44 @@ const breadcrumbs = [
                             </p>
                         </div>
 
+                        <!-- Updated PDF Upload Section -->
                         <div
                             v-if="form.content_type === 'pdf'"
                             class="space-y-2"
                         >
                             <Label for="file_path">PDF File</Label>
-                            <Input
-                                id="file_path"
-                                type="file"
-                                accept=".pdf"
-                                @change="handleFileChange"
-                                :class="{
-                                    'border-destructive': form.errors.file_path,
-                                }"
-                            />
+                            <ImageUpload
+                                v-model="form.file_path"
+                                @update:model-value="handleFileUpdate"
+                                :label="'PDF File'"
+                                :accepted-file-types="['application/pdf']"
+                                :max-file-size="'2MB'"
+                                :multiple="false"
+                                :instant-upload="false"
+                                :credits="false"
+                                :server="server"
+                                :name="'file_path'"
+                                :disabled="form.processing"
+                            >
+                                <template #help>
+                                    <p class="text-sm text-muted-foreground">
+                                        Maximum file size: 2MB. Only PDF files
+                                        allowed.
+                                        <span
+                                            v-if="lesson.file_path"
+                                            class="mt-1 block"
+                                        >
+                                            Current file:
+                                            {{ lesson.file_path }}
+                                        </span>
+                                    </p>
+                                </template>
+                            </ImageUpload>
                             <p
                                 v-if="form.errors.file_path"
                                 class="text-sm text-destructive"
                             >
                                 {{ form.errors.file_path }}
-                            </p>
-                            <p class="text-sm text-muted-foreground">
-                                Maximum file size: 2MB. Only PDF files allowed.
-                                <span
-                                    v-if="content.file_path"
-                                    class="mt-1 block"
-                                >
-                                    Current file: {{ content.file_path }}
-                                </span>
                             </p>
                         </div>
 
@@ -424,13 +466,13 @@ const breadcrumbs = [
                         <!-- Actions -->
                         <div class="flex items-center justify-end gap-4">
                             <Button type="button" variant="outline" as-child>
-                                <Link :href="route('admin.contents.index')">
+                                <Link :href="route('admin.lessons.index')">
                                     Cancel
                                 </Link>
                             </Button>
                             <Button type="submit" :disabled="form.processing">
                                 <span v-if="form.processing">Updating...</span>
-                                <span v-else>Update Content</span>
+                                <span v-else>Update Lesson</span>
                             </Button>
                         </div>
                     </form>
