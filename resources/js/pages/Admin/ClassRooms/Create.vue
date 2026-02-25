@@ -21,7 +21,7 @@ const props = defineProps<{
         scheduled_publish_at?: string | null;
         expires_at?: string | null;
     }>;
-    collections: Array<{
+    classes: Array<{
         id: number;
         title: string;
     }>;
@@ -136,7 +136,7 @@ const breadcrumbs = [
     <Head title="Create Class" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="space-y-6 p-6 mx-auto max-w-5xl">
+        <div class="space-y-6 p-6 mx-auto w-full md:w-5xl">
             <div>
                 <h1 class="text-2xl font-bold tracking-tight">
                     Create Class
@@ -190,56 +190,13 @@ const breadcrumbs = [
                             </p>
                         </div>
 
-                        <div class="grid gap-4 md:grid-cols-3">
-                            <div class="space-y-2">
-                                <Label for="sort_order">Display order</Label>
-                                <Input
-                                    id="sort_order"
-                                    v-model.number="form.sort_order"
-                                    type="number"
-                                    min="0"
-                                />
-                                <p
-                                    v-if="form.errors.sort_order"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.sort_order }}
-                                </p>
-                            </div>
-                            <div class="space-y-2 md:col-span-2">
-                                <Label for="prerequisite_collection_id">
-                                    Prerequisite collection
-                                </Label>
-                                <select
-                                    id="prerequisite_collection_id"
-                                    v-model="form.prerequisite_collection_id"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-                                >
-                                    <option value="">None</option>
-                                    <option
-                                        v-for="collection in collections"
-                                        :key="collection.id"
-                                        :value="collection.id"
-                                    >
-                                        {{ collection.title }}
-                                    </option>
-                                </select>
-                                <p
-                                    v-if="form.errors.prerequisite_collection_id"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.prerequisite_collection_id }}
-                                </p>
-                            </div>
-                        </div>
-
                         <div class="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 px-4 py-3">
                             <div>
                                 <p class="text-sm font-semibold">
-                                    Public collection
+                                    Public class
                                 </p>
                                 <p class="text-xs text-muted-foreground">
-                                    Public collections appear in the student catalog.
+                                    Public classes appear in the student catalog.
                                 </p>
                             </div>
                             <Switch v-model="form.is_public" />
@@ -372,7 +329,7 @@ const breadcrumbs = [
                             </Button>
                             <Button type="submit" :disabled="form.processing">
                                 <span v-if="form.processing">Creating...</span>
-                                <span v-else>Create collection</span>
+                                <span v-else>Create class</span>
                             </Button>
                         </div>
                     </form>

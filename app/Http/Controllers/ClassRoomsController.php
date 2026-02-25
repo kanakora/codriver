@@ -26,7 +26,7 @@ class ClassRoomsController extends Controller
 
         $query = ClassRoom::query()
             ->with(['prerequisite'])
-            ->withCount('contents')
+            ->withCount('lessons')
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
@@ -96,10 +96,10 @@ class ClassRoomsController extends Controller
         if ($request->routeIs('student.*')) {
             $classroom->load([
                 'prerequisite',
-                'contents' => fn ($query) => $query->with('categories')->published(),
+                'lessons' => fn ($query) => $query->with('categories')->published(),
             ]);
         } else {
-            $classroom->load(['prerequisite', 'contents.categories']);
+            $classroom->load(['prerequisite', 'lessons.categories']);
         }
 
         return Inertia::render($view, [
@@ -114,11 +114,11 @@ class ClassRoomsController extends Controller
     {
         $this->authorize('update', $classroom);
 
-        $classroom->load('contents');
+        $classroom->load('lessons');
 
         return Inertia::render('Admin/ClassRooms/Edit', [
             'classroom' => $classroom,
-            'contents' => Lesson::query()
+            'lessons' => Lesson::query()
                 ->with('categories')
                 ->latest()
                 ->get(),

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('classrooms', function (Blueprint $table) {
+        Schema::create('class_rooms', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
@@ -21,7 +21,7 @@ return new class extends Migration
             $table
                 ->foreignId('prerequisite_classroom_id')
                 ->nullable()
-                ->constrained('classrooms')
+                ->constrained('class_rooms')
                 ->nullOnDelete();
             $table->timestamps();
         });
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('classrooms');
+        Schema::dropIfExists('class_rooms');
     }
 };

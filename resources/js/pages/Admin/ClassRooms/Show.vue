@@ -8,7 +8,7 @@ import { useAuthRoles } from '@/composables/useAuthRoles';
 import { route } from 'ziggy-js';
 
 const props = defineProps<{
-    collection: {
+    classroom: {
         id: number;
         title: string;
         slug: string;
@@ -16,9 +16,10 @@ const props = defineProps<{
         is_public: boolean;
         sort_order: number;
         prerequisite?: { id: number; title: string } | null;
-        contents: Array<{
+        lessons: Array<{
             id: number;
             title: string;
+            slug: string;
             description?: string | null;
             content_type: string;
             publish_status: string;
@@ -29,7 +30,7 @@ const props = defineProps<{
     };
 }>();
 
-const { canManageCollections } = useAuthRoles();
+const { canManageClassRooms } = useAuthRoles();
 
 function getStatusBadge(content: { publish_status: string; scheduled_publish_at?: string | null; expires_at?: string | null }) {
     const now = new Date();
@@ -55,40 +56,40 @@ const breadcrumbs = [
         href: route('admin.dashboard'),
     },
     {
-        title: 'Collections',
-        href: route('admin.collections.index'),
+        title: 'Classroom Management',
+        href: route('admin.classrooms.index'),
     },
     {
-        title: props.collection.title,
-        href: route('admin.collections.show', { collection: props.collection.id }),
+        title: props.classroom.title,
+        href: route('admin.classrooms.show', { classroom: props.classroom.id }),
     },
 ];
 </script>
 
 <template>
-    <Head :title="collection.title" />
+    <Head :title="classroom.title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6">
             <div class="flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight">
-                        {{ collection.title }}
+                        {{ classroom.title }}
                     </h1>
                     <p class="text-muted-foreground">
-                        {{ collection.description || 'No description provided.' }}
+                        {{ classroom.description || 'No description provided.' }}
                     </p>
                 </div>
-                <div class="flex items-center gap-2" v-if="canManageCollections()">
+                <div class="flex items-center gap-2" v-if="canManageClassRooms()">
                     <Button variant="outline" as-child>
                         <Link
                             :href="
-                                route('admin.collections.edit', {
-                                    collection: collection.id,
+                                route('admin.classrooms.edit', {
+                                    classroom: classroom.id,
                                 })
                             "
                         >
-                            Edit collection
+                            Edit classroom
                         </Link>
                     </Button>
                 </div>
@@ -97,31 +98,31 @@ const breadcrumbs = [
             <div class="grid gap-6 lg:grid-cols-[2fr,1fr]">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Collection contents</CardTitle>
+                        <CardTitle>Classrooom's lessons</CardTitle>
                     </CardHeader>
                     <CardContent class="space-y-4">
                         <div
-                            v-for="content in collection.contents"
-                            :key="content.id"
+                            v-for="lesson in classroom.lessons"
+                            :key="lesson.id"
                             class="rounded-xl border border-border/60 p-4"
                         >
                             <div class="flex items-start justify-between gap-4">
                                 <div>
                                     <p class="text-sm font-semibold">
-                                        {{ content.title }}
+                                        {{ lesson.title }}
                                     </p>
                                     <p class="text-xs text-muted-foreground">
-                                        {{ content.description || 'No description' }}
+                                        {{ lesson.description || 'No description' }}
                                     </p>
                                     <div class="mt-2 flex flex-wrap gap-2">
                                         <Badge variant="outline">
-                                            {{ content.content_type }}
+                                            {{ lesson.content_type }}
                                         </Badge>
-                                        <Badge :variant="getStatusBadge(content).variant">
-                                            {{ getStatusBadge(content).label }}
+                                        <Badge :variant="getStatusBadge(lesson).variant">
+                                            {{ getStatusBadge(lesson).label }}
                                         </Badge>
                                         <Badge
-                                            v-for="cat in content.categories || []"
+                                            v-for="cat in lesson.categories || []"
                                             :key="cat.id"
                                             variant="outline"
                                             class="text-xs"
@@ -132,8 +133,8 @@ const breadcrumbs = [
                                 </div>
                                 <Link
                                     :href="
-                                        route('admin.contents.show', {
-                                            content: content.id,
+                                        route('admin.lessons.show', {
+                                            lesson: lesson.slug,
                                         })
                                     "
                                     class="text-sm font-medium text-primary hover:underline"
@@ -143,7 +144,7 @@ const breadcrumbs = [
                             </div>
                         </div>
                         <div
-                            v-if="collection.contents.length === 0"
+                            v-if="classroom.lessons.length === 0"
                             class="rounded-xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground"
                         >
                             No content has been added yet.
@@ -160,24 +161,24 @@ const breadcrumbs = [
                             <div>
                                 <div class="text-muted-foreground">Slug</div>
                                 <div class="font-mono text-xs">
-                                    {{ collection.slug }}
+                                    {{ classroom.slug }}
                                 </div>
                             </div>
                             <div>
                                 <div class="text-muted-foreground">Visibility</div>
                                 <div>
-                                    {{ collection.is_public ? 'Public' : 'Internal' }}
+                                    {{ classroom.is_public ? 'Public' : 'Internal' }}
                                 </div>
                             </div>
                             <div>
                                 <div class="text-muted-foreground">Sort order</div>
-                                <div>{{ collection.sort_order }}</div>
+                                <div>{{ classroom.sort_order }}</div>
                             </div>
-                            <div v-if="collection.prerequisite">
+                            <div v-if="classroom.prerequisite">
                                 <div class="text-muted-foreground">
                                     Prerequisite
                                 </div>
-                                <div>{{ collection.prerequisite.title }}</div>
+                                <div>{{ classroom.prerequisite.title }}</div>
                             </div>
                         </CardContent>
                     </Card>

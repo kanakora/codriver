@@ -30,8 +30,6 @@ class ClassRoom extends Model
         'prerequisite_classroom_id',
     ];
 
-    protected $table = 'classrooms';
-
     protected $casts = [
         'is_public' => 'boolean',
     ];

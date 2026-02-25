@@ -20,7 +20,7 @@ const props = defineProps<{
             description?: string | null;
             is_public: boolean;
             sort_order: number;
-            contents_count: number;
+            lessons_count: number;
             prerequisite?: { id: number; title: string } | null;
         }>;
         links: Array<{
@@ -153,7 +153,7 @@ const breadcrumbs = [
                     </CardHeader>
                     <CardContent class="mt-auto space-y-3">
                         <div class="flex items-center justify-between text-xs text-muted-foreground">
-                            <span>{{ classroom.contents_count }} items</span>
+                            <span>{{ classroom.lessons_count }} items</span>
                             <span v-if="classroom.prerequisite">
                                 Requires {{ classroom.prerequisite.title }}
                             </span>

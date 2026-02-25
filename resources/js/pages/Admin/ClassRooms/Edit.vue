@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { route } from 'ziggy-js';
 
 const props = defineProps<{
-    collection: {
+    classroom: {
         id: number;
         title: string;
         slug: string;
@@ -20,8 +20,9 @@ const props = defineProps<{
         is_public: boolean;
         sort_order: number;
         prerequisite_collection_id?: number | null;
-        contents?: Array<{
+        lessons?: Array<{
             id: number;
+            slug: string;
             title: string;
             description?: string | null;
             content_type: string;
@@ -30,29 +31,29 @@ const props = defineProps<{
             expires_at?: string | null;
         }>;
     };
-    contents: Array<{
+    lessons: Array<{
         id: number;
         title: string;
+        slug: string;
         description?: string | null;
         content_type: string;
         publish_status: string;
         scheduled_publish_at?: string | null;
         expires_at?: string | null;
     }>;
-    collections: Array<{
+    classrooms: Array<{
         id: number;
         title: string;
     }>;
 }>();
 
 const form = useForm({
-    title: props.collection.title,
-    slug: props.collection.slug,
-    description: props.collection.description || '',
-    is_public: props.collection.is_public,
-    sort_order: props.collection.sort_order,
-    prerequisite_collection_id: props.collection.prerequisite_collection_id ?? '',
-    content_ids: props.collection.contents?.map((content) => content.id) || [],
+    title: props.classroom.title,
+    description: props.classroom.description || '',
+    is_public: props.classroom.is_public,
+    sort_order: props.classroom.sort_order,
+    prerequisite_collection_id: props.classroom.prerequisite_collection_id ?? '',
+    content_ids: props.classroom.lessons?.map((lesson) => lesson.id) || [],
 });
 
 const contentSearch = ref('');
@@ -60,7 +61,7 @@ const contentSearch = ref('');
 const availableContents = computed(() => {
     const term = contentSearch.value.toLowerCase();
 
-    return props.contents.filter((content) => {
+    return props.lessons.filter((content) => {
         if (form.content_ids.includes(content.id)) {
             return false;
         }
@@ -78,7 +79,7 @@ const availableContents = computed(() => {
 
 const selectedContents = computed(() => {
     return form.content_ids
-        .map((id) => props.contents.find((content) => content.id === id))
+        .map((id) => props.lessons.find((content) => content.id === id))
         .filter(Boolean);
 });
 
@@ -130,8 +131,8 @@ function getStatusBadge(content: { publish_status: string; scheduled_publish_at?
 
 function handleSubmit() {
     form.put(
-        route('admin.collections.update', {
-            collection: props.collection.id,
+        route('admin.classrooms.update', {
+            classroom: props.classroom.id,
         }),
         {
             preserveScroll: true,
@@ -145,26 +146,32 @@ const breadcrumbs = [
         href: route('admin.dashboard'),
     },
     {
-        title: 'Collections',
-        href: route('admin.collections.index'),
+        title: 'Classroom Management',
+        href: route('admin.classrooms.index'),
     },
     {
-        title: props.collection.title,
-        href: route('admin.collections.edit', {
-            collection: props.collection.id,
+        title: props.classroom.title,
+        href: route('admin.classrooms.show', {
+            classroom: props.classroom.id,
+        }),
+    },
+    {
+        title: "Edit Classroom",
+        href: route('admin.classrooms.edit', {
+            classroom: props.classroom.id,
         }),
     },
 ];
 </script>
 
 <template>
-    <Head title="Edit Collection" />
+    <Head title="Edit Classroom" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="space-y-6 p-6 mx-auto max-w-5xl">
+        <div class="space-y-6 p-6 mx-auto w-full md:w-5xl">
             <div>
                 <h1 class="text-2xl font-bold tracking-tight">
-                    Edit Collection
+                    Edit Classroom
                 </h1>
                 <p class="text-muted-foreground">
                     Update the structure and content for this learning path.
@@ -173,47 +180,27 @@ const breadcrumbs = [
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Collection details</CardTitle>
+                    <CardTitle>Classroom details</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form @submit.prevent="handleSubmit" class="space-y-6">
-                        <div class="grid gap-4 md:grid-cols-2">
-                            <div class="space-y-2">
-                                <Label for="title">Title *</Label>
-                                <Input
-                                    id="title"
-                                    v-model="form.title"
-                                    required
-                                    placeholder="New hire onboarding"
-                                    :class="{
-                                        'border-destructive': form.errors.title,
-                                    }"
-                                />
-                                <p
-                                    v-if="form.errors.title"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.title }}
-                                </p>
-                            </div>
-                            <div class="space-y-2">
-                                <Label for="slug">Slug *</Label>
-                                <Input
-                                    id="slug"
-                                    v-model="form.slug"
-                                    required
-                                    placeholder="new-hire-onboarding"
-                                    :class="{
-                                        'border-destructive': form.errors.slug,
-                                    }"
-                                />
-                                <p
-                                    v-if="form.errors.slug"
-                                    class="text-sm text-destructive"
-                                >
-                                    {{ form.errors.slug }}
-                                </p>
-                            </div>
+                        <div class="space-y-2">
+                            <Label for="title">Title *</Label>
+                            <Input
+                                id="title"
+                                v-model="form.title"
+                                required
+                                placeholder="New hire onboarding"
+                                :class="{
+                                    'border-destructive': form.errors.title,
+                                }"
+                            />
+                            <p
+                                v-if="form.errors.title"
+                                class="text-sm text-destructive"
+                            >
+                                {{ form.errors.title }}
+                            </p>
                         </div>
 
                         <div class="space-y-2">
@@ -235,7 +222,7 @@ const breadcrumbs = [
                             </p>
                         </div>
 
-                        <div class="grid gap-4 md:grid-cols-3">
+                        <!-- <div class="grid gap-4 md:grid-cols-3">
                             <div class="space-y-2">
                                 <Label for="sort_order">Display order</Label>
                                 <Input
@@ -276,15 +263,15 @@ const breadcrumbs = [
                                     {{ form.errors.prerequisite_collection_id }}
                                 </p>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 px-4 py-3">
                             <div>
                                 <p class="text-sm font-semibold">
-                                    Public collection
+                                    Public classroom
                                 </p>
                                 <p class="text-xs text-muted-foreground">
-                                    Public collections appear in the student catalog.
+                                    Public classrooms appear in the student catalog.
                                 </p>
                             </div>
                             <Switch v-model="form.is_public" />
@@ -411,7 +398,7 @@ const breadcrumbs = [
 
                         <div class="flex items-center justify-end gap-4">
                             <Button type="button" variant="outline" as-child>
-                                <Link :href="route('admin.collections.index')">
+                                <Link :href="route('admin.classrooms.index')">
                                     Cancel
                                 </Link>
                             </Button>

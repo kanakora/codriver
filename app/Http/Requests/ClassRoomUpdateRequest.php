@@ -13,7 +13,7 @@ class ClassRoomUpdateRequest extends FormRequest
     {
         $user = $this->user();
 
-        return $user ? $user->can('manage classroom') : false;
+        return $user ? $user->can('manage classrooms') : false;
     }
 
     /**
@@ -28,9 +28,9 @@ class ClassRoomUpdateRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'is_public' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
-            'prerequisite_collection_id' => ['nullable', 'exists:classrooms,id'],
+            'prerequisite_collection_id' => ['nullable', 'exists:class_rooms,id'],
             'content_ids' => ['nullable', 'array'],
-            'content_ids.*' => ['exists:contents,id'],
+            'content_ids.*' => ['exists:lessons,id'],
         ];
     }
 
