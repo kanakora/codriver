@@ -29,9 +29,9 @@ import { useAuthRoles } from '@/composables/useAuthRoles';
 const {
     isAdmin,
     isStudent,
-    canManageContent,
+    canManageLessons,
     canManageCategories,
-    canManageCollections,
+    canManageClassRooms,
     canViewCollections,
 } = useAuthRoles();
 
@@ -62,7 +62,7 @@ const dashboardItem = computed(() => {
 const mainNavItems = computed(() => {
     const items = [dashboardItem.value];
 
-    if (isAdmin() || canManageContent()) {
+    if (isAdmin() || canManageLessons()) {
         items.push({
             title: 'Lesson',
             href: route('admin.lessons.index'),
@@ -70,7 +70,7 @@ const mainNavItems = computed(() => {
         });
     }
 
-    if (isAdmin() || canManageCollections()) {
+    if (isAdmin() || canManageClassRooms()) {
         items.push({
             title: 'Classes',
             href: route('admin.classrooms.index'),

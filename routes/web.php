@@ -8,10 +8,11 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
-use App\Http\Controllers\LessonController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClassRoomsController;
 use App\Http\Controllers\ContentRevisionController;
+use App\Http\Controllers\LessonController;
+use App\Http\Controllers\Student\LessonsController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -82,13 +83,15 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     // Dashboard
     Route::get('dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
     
-    // Lessons - view only
-    Route::get('lessons', [LessonController::class, 'index'])->name('lessons.index');
-    Route::get('lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
-    
     // Classrooms - view only
     Route::get('classrooms', [ClassRoomsController::class, 'index'])->name('classrooms.index');
     Route::get('classrooms/{classroom}', [ClassRoomsController::class, 'show'])->name('classrooms.show');
+
+    Route::prefix('classrooms/{classroom}')->group(function() {
+        // Lessons - view only
+        Route::get('lessons', [LessonsController::class, 'index'])->name('lessons.index');
+        Route::get('lessons/{lesson:slug}', [LessonsController::class, 'show'])->name('lessons.show');
+    });
 });
 
 require __DIR__.'/settings.php';

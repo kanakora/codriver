@@ -7,14 +7,15 @@ import { Button } from '@/components/ui/button';
 import { route } from 'ziggy-js';
 
 const props = defineProps<{
-    collection: {
+    classroom: {
         id: number;
         title: string;
         description?: string | null;
         prerequisite?: { id: number; title: string } | null;
-        contents: Array<{
+        lessons: Array<{
             id: number;
             title: string;
+            slug: string;
             description?: string | null;
             content_type: string;
             published_at?: string | null;
@@ -29,20 +30,20 @@ const breadcrumbs = [
         href: route('student.dashboard'),
     },
     {
-        title: 'Collections',
-        href: route('student.collections.index'),
+        title: 'Classrooms',
+        href: route('student.classrooms.index'),
     },
     {
-        title: props.collection.title,
-        href: route('student.collections.show', {
-            collection: props.collection.id,
+        title: props.classroom.title,
+        href: route('student.classrooms.show', {
+            classroom: props.classroom.id,
         }),
     },
 ];
 </script>
 
 <template>
-    <Head :title="collection.title" />
+    <Head :title="classroom.title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6">
@@ -52,31 +53,31 @@ const breadcrumbs = [
                 <div class="space-y-3">
                     <div class="flex flex-wrap items-center gap-3">
                         <Badge variant="outline">
-                            {{ collection.contents.length }} items
+                            {{ classroom.lessons.length }} items
                         </Badge>
                         <span
-                            v-if="collection.prerequisite"
+                            v-if="classroom.prerequisite"
                             class="text-xs text-muted-foreground"
                         >
-                            Prerequisite: {{ collection.prerequisite.title }}
+                            Prerequisite: {{ classroom.prerequisite.title }}
                         </span>
                     </div>
                     <h1 class="text-2xl font-semibold tracking-tight">
-                        {{ collection.title }}
+                        {{ classroom.title }}
                     </h1>
                     <p class="text-sm text-muted-foreground">
-                        {{ collection.description || 'No description provided.' }}
+                        {{ classroom.description || 'No description provided.' }}
                     </p>
                 </div>
             </section>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Collection resources</CardTitle>
+                    <CardTitle>Class resources</CardTitle>
                 </CardHeader>
                 <CardContent class="space-y-4">
                     <div
-                        v-for="content in collection.contents"
+                        v-for="content in classroom.lessons"
                         :key="content.id"
                         class="rounded-xl border border-border/60 p-4"
                     >
@@ -105,8 +106,9 @@ const breadcrumbs = [
                             <Button variant="secondary" as-child>
                                 <Link
                                     :href="
-                                        route('student.contents.show', {
-                                            content: content.id,
+                                        route('student.lessons.show', {
+                                            classroom: classroom.id,
+                                            lesson: content.slug,
                                         })
                                     "
                                 >
@@ -116,10 +118,10 @@ const breadcrumbs = [
                         </div>
                     </div>
                     <div
-                        v-if="collection.contents.length === 0"
+                        v-if="classroom.lessons.length === 0"
                         class="rounded-xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground"
                     >
-                        No published content is available in this collection yet.
+                        No published content is available in this classroom yet.
                     </div>
                 </CardContent>
             </Card>

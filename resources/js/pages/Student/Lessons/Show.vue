@@ -8,7 +8,13 @@ import { route } from 'ziggy-js';
 import type { Content } from '@/types';
 
 const props = defineProps<{
-    content: Content & {
+    classroom: {
+        id: number;
+        title: string;
+        description?: string | null;
+        prerequisite?: { id: number; title: string } | null;
+    };
+    lesson: Content & {
         author?: { name: string };
         categories?: Array<{ id: number; name: string }>;
     };
@@ -36,17 +42,20 @@ const breadcrumbs = [
     },
     {
         title: 'Content Library',
-        href: route('student.contents.index'),
+        href: route('student.lessons.index', { classroom: props.classroom.id }),
     },
     {
-        title: props.content.title,
-        href: route('student.contents.show', { content: props.content.id }),
+        title: props.lesson.title,
+        href: route('student.lessons.show', { 
+            classroom: props.classroom.id,
+            lesson: props.lesson.id
+         }),
     },
 ];
 </script>
 
 <template>
-    <Head :title="content.title" />
+    <Head :title="lesson.title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6">
@@ -58,30 +67,30 @@ const breadcrumbs = [
                         <Badge
                             :variant="
                                 getContentTypeBadgeVariant(
-                                    content.content_type,
+                                    lesson.content_type,
                                 )
                             "
                         >
-                            {{ content.content_type }}
+                            {{ lesson.content_type }}
                         </Badge>
                         <span class="text-xs text-muted-foreground">
-                            By {{ content.author?.name || 'Unknown' }}
+                            By {{ lesson.author?.name || 'Unknown' }}
                         </span>
                         <span class="text-xs text-muted-foreground">
                             {{
-                                content.published_at
+                                lesson.published_at
                                     ? new Date(
-                                          content.published_at,
+                                          lesson.published_at,
                                       ).toLocaleDateString()
                                     : 'Recently added'
                             }}
                         </span>
                     </div>
                     <h1 class="text-2xl font-semibold tracking-tight">
-                        {{ content.title }}
+                        {{ lesson.title }}
                     </h1>
                     <p class="text-sm text-muted-foreground">
-                        {{ content.description || 'No description provided.' }}
+                        {{ lesson.description || 'No description provided.' }}
                     </p>
                 </div>
             </section>
@@ -94,17 +103,17 @@ const breadcrumbs = [
                     <CardContent class="space-y-6">
                         <div
                             v-if="
-                                content.content_type === 'text' &&
-                                content.content_text
+                                lesson.content_type === 'text' &&
+                                lesson.content_text
                             "
-                            class="prose max-w-none"
-                            v-html="content.content_text"
+                            class="prose dark:prose-invert max-w-none"
+                            v-html="lesson.content_text"
                         ></div>
 
                         <div
                             v-if="
-                                content.content_type === 'pdf' &&
-                                content.file_path
+                                lesson.content_type === 'pdf' &&
+                                lesson.file_path
                             "
                             class="rounded-lg border border-border/60 p-4"
                         >
@@ -114,7 +123,7 @@ const breadcrumbs = [
                             </p>
                             <Button as-child class="mt-4">
                                 <a
-                                    :href="`/storage/${content.file_path}`"
+                                    :href="`/storage/${lesson.file_path}`"
                                     target="_blank"
                                 >
                                     View PDF
@@ -124,8 +133,8 @@ const breadcrumbs = [
 
                         <div
                             v-if="
-                                content.content_type === 'video' &&
-                                content.external_url
+                                lesson.content_type === 'video' &&
+                                lesson.external_url
                             "
                             class="rounded-lg border border-border/60 p-4"
                         >
@@ -134,7 +143,7 @@ const breadcrumbs = [
                                 Watch the lesson using the link below.
                             </p>
                             <Button variant="secondary" as-child class="mt-4">
-                                <a :href="content.external_url" target="_blank">
+                                <a :href="lesson.external_url" target="_blank">
                                     Watch video
                                 </a>
                             </Button>
@@ -142,8 +151,8 @@ const breadcrumbs = [
 
                         <div
                             v-if="
-                                content.content_type === 'link' &&
-                                content.external_url
+                                lesson.content_type === 'link' &&
+                                lesson.external_url
                             "
                             class="rounded-lg border border-border/60 p-4"
                         >
@@ -152,7 +161,7 @@ const breadcrumbs = [
                                 Visit the resource to continue learning.
                             </p>
                             <Button variant="secondary" as-child class="mt-4">
-                                <a :href="content.external_url" target="_blank">
+                                <a :href="lesson.external_url" target="_blank">
                                     Open resource
                                 </a>
                             </Button>
@@ -171,7 +180,7 @@ const breadcrumbs = [
                                 <div>
                                     {{
                                         new Date(
-                                            content.created_at,
+                                            lesson.created_at,
                                         ).toLocaleDateString()
                                     }}
                                 </div>
@@ -182,9 +191,9 @@ const breadcrumbs = [
                                 </div>
                                 <div>
                                     {{
-                                        content.published_at
+                                        lesson.published_at
                                             ? new Date(
-                                                  content.published_at,
+                                                  lesson.published_at,
                                               ).toLocaleDateString()
                                             : 'Not published'
                                     }}
@@ -197,7 +206,7 @@ const breadcrumbs = [
                                 <div>
                                     {{
                                         new Date(
-                                            content.updated_at,
+                                            lesson.updated_at,
                                         ).toLocaleDateString()
                                     }}
                                 </div>
@@ -212,14 +221,14 @@ const breadcrumbs = [
                         <CardContent>
                             <div class="flex flex-wrap gap-2">
                                 <Badge
-                                    v-for="cat in content.categories"
+                                    v-for="cat in lesson.categories"
                                     :key="cat.id"
                                     variant="outline"
                                 >
                                     {{ cat.name }}
                                 </Badge>
                                 <span
-                                    v-if="!content.categories?.length"
+                                    v-if="!lesson.categories?.length"
                                     class="text-sm text-muted-foreground"
                                 >
                                     No categories assigned

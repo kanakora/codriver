@@ -12,7 +12,7 @@ import { route } from 'ziggy-js';
 import type { Content, Category } from '@/types';
 
 const props = defineProps<{
-    contents: {
+    lessons: {
         data: Content[];
         links: Array<{
             url: string | null;
@@ -39,7 +39,7 @@ const category = ref(props.filters.category || '');
 
 const debouncedSearch = useDebounceFn(() => {
     router.get(
-        route('student.contents.index'),
+        route('student.lessons.index'),
         {
             search: search.value,
             category: category.value,
@@ -78,7 +78,7 @@ const breadcrumbs = [
     },
     {
         title: 'Content Library',
-        href: route('student.contents.index'),
+        href: route('student.lessons.index'),
     },
 ];
 </script>
@@ -139,7 +139,7 @@ const breadcrumbs = [
                     </div>
                     <div class="hidden items-end md:flex">
                         <div class="text-sm text-muted-foreground">
-                            {{ contents.total }} published resources
+                            {{ lessons.total }} published resources
                         </div>
                     </div>
                 </CardContent>
@@ -147,7 +147,7 @@ const breadcrumbs = [
 
             <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 <Card
-                    v-for="content in contents.data"
+                    v-for="content in lessons.data"
                     :key="content.id"
                     class="flex h-full flex-col"
                 >
@@ -175,7 +175,7 @@ const breadcrumbs = [
                         <div>
                             <Link
                                 :href="
-                                    route('student.contents.show', {
+                                    route('student.lessons.show', {
                                         content: content.id,
                                     })
                                 "
@@ -211,7 +211,7 @@ const breadcrumbs = [
                             </span>
                             <Link
                                 :href="
-                                    route('student.contents.show', {
+                                    route('student.lessons.show', {
                                         content: content.id,
                                     })
                                 "
@@ -224,7 +224,7 @@ const breadcrumbs = [
                 </Card>
             </div>
 
-            <Card v-if="contents.data.length === 0">
+            <Card v-if="lessons.data.length === 0">
                 <CardContent class="py-12 text-center text-muted-foreground">
                     No published content found.
                 </CardContent>
@@ -233,11 +233,11 @@ const breadcrumbs = [
             <!-- Pagination -->
             <div class="flex items-center justify-between">
                 <div class="text-sm text-muted-foreground">
-                    Showing {{ contents.from }} to
-                    {{ contents.to }} of {{ contents.total }} results
+                    Showing {{ lessons.from }} to
+                    {{ lessons.to }} of {{ lessons.total }} results
                 </div>
                 <div class="flex gap-2">
-                    <template v-for="link in contents.links" :key="link.label">
+                    <template v-for="link in lessons.links" :key="link.label">
                         <Link
                             v-if="link.url"
                             :href="link.url"

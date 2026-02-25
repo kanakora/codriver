@@ -12,7 +12,7 @@ type Props = {
         publishedCount: number;
         categoryCount: number;
     };
-    latestContents: Array<{
+    latestLessons: Array<{
         id: number;
         title: string;
         content_type: 'text' | 'pdf' | 'video' | 'link';
@@ -36,7 +36,7 @@ const breadcrumbs = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="space-y-6 p-6">
             <section
-                class="rounded-2xl border border-border/60 bg-gradient-to-br from-blue-50 via-white to-sky-50 p-6 shadow-sm dark:border-border dark:from-slate-950 dark:via-slate-950 dark:to-slate-900"
+                class="rounded-2xl border border-border/60 bg-linear-to-br from-blue-50 via-white to-sky-50 p-6 shadow-sm dark:border-border dark:from-slate-950 dark:via-slate-950 dark:to-slate-900"
             >
                 <div
                     class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between"
@@ -55,7 +55,7 @@ const breadcrumbs = [
                     </div>
                     <div class="flex flex-wrap gap-3">
                         <Button as-child>
-                            <Link :href="route('student.contents.index')">
+                            <Link :href="route('student.lessons.index')">
                                 Browse courses
                             </Link>
                         </Button>
@@ -121,36 +121,36 @@ const breadcrumbs = [
                 </CardHeader>
                 <CardContent class="space-y-4">
                     <div
-                        v-for="content in latestContents"
-                        :key="content.id"
+                        v-for="lesson in latestLessons"
+                        :key="lesson.id"
                         class="flex items-center justify-between gap-4 rounded-lg border border-border/60 p-4"
                     >
                         <div class="space-y-1">
                             <Link
                                 :href="
-                                    route('student.contents.show', {
-                                        content: content.id,
+                                    route('student.lessons.show', {
+                                        lesson: lesson.id,
                                     })
                                 "
                                 class="text-sm font-semibold hover:text-primary"
                             >
-                                {{ content.title }}
+                                {{ lesson.title }}
                             </Link>
                             <p class="text-xs text-muted-foreground">
                                 {{
-                                    content.published_at
+                                    lesson.published_at
                                         ? new Date(
-                                              content.published_at,
+                                              lesson.published_at,
                                           ).toLocaleDateString()
                                         : 'Recently added'
                                 }}
                             </p>
                         </div>
                         <Badge variant="outline">
-                            {{ content.content_type }}
+                            {{ lesson.content_type }}
                         </Badge>
                     </div>
-                    <div v-if="latestContents.length === 0" class="text-sm text-muted-foreground">
+                    <div v-if="latestLessons.length === 0" class="text-sm text-muted-foreground">
                         No lessons published yet.
                     </div>
                 </CardContent>

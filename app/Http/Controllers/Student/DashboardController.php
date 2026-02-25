@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Content;
+use App\Models\Lesson;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -12,9 +12,9 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $publishedCount = Content::query()->published()->count();
+        $publishedCount = Lesson::query()->published()->count();
         $categoryCount = Category::query()->count();
-        $latestContents = Content::query()
+        $latestLessons = Lesson::query()
             ->published()
             ->latest('published_at')
             ->take(5)
@@ -30,7 +30,7 @@ class DashboardController extends Controller
                 'publishedCount' => $publishedCount,
                 'categoryCount' => $categoryCount,
             ],
-            'latestContents' => $latestContents,
+            'latestLessons' => $latestLessons,
         ]);
     }
 }
