@@ -26,3 +26,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+AGENTS.md
+features.md
+MASTER.md
+SKILL.md
