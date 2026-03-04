@@ -47,10 +47,10 @@ const toggleDarkMode = () => {
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-gray-900 dark:text-white">
-                        Kanakora
+                        Codriver
                     </h1>
                     <p class="text-xs text-gray-600 dark:text-gray-300">
-                        Driving School
+                        Platform
                     </p>
                 </div>
             </div>
