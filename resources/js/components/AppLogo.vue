@@ -10,10 +10,10 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
     </div>
     <div class="ml-1 grid flex-1 text-left text-sm">
         <h1 class="font-black text-gray-900 dark:text-white">
-            Kanakora
+            Codriver
         </h1>
         <p class="text-xs text-gray-600 dark:text-gray-300">
-            Driving School
+            Platform
         </p>
     </div>
 </template>
