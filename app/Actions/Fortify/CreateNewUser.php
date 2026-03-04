@@ -30,7 +30,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $input['password'],
         ]);
 
-        if(User::all()->count() == 1) {
+        if(User::all()->count() == 0) {
             $user->assignRole('admin');
         }
 
