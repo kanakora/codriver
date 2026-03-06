@@ -30,6 +30,8 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $input['password'],
         ]);
 
+        $user->assignRole(['admin', 'student']);
+
         return $user;
     }
 }

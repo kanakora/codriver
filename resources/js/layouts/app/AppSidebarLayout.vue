@@ -19,7 +19,7 @@ withDefaults(defineProps<Props>(), {
         <AppSidebar />
     <AppContent
         variant="sidebar"
-        class="overflow-x-hidden bg-gradient-to-br from-blue-50/70 via-white to-slate-50 dark:from-slate-950 dark:via-slate-950 dark:to-slate-900"
+        class="overflow-x-hidden"
     >
         <AppSidebarHeader :breadcrumbs="breadcrumbs" />
         <slot />

@@ -27,7 +27,7 @@ const toggleDarkMode = () => {
 
 <template>
     <div
-        class="min-h-screen bg-linear-to-br from-green-50 to-white dark:from-gray-900 dark:to-gray-950"
+        class="min-h-screen bg-gray-100"
     >
         <!-- Header -->
         <header class="container mx-auto px-4 py-6 lg:px-8 lg:py-8">
@@ -61,11 +61,11 @@ const toggleDarkMode = () => {
         </header>
 
         <!-- Main Content -->
-        <main class="container mx-auto px-4 py-12 lg:px-8 lg:py-24">
+        <main class="container mx-auto px-4 lg:px-8">
             <div class="flex items-center justify-center">
                 <div class="w-full max-w-md">
                     <div
-                        class="rounded-2xl bg-white p-8 shadow-2xl lg:p-10 dark:bg-gray-800"
+                        class="rounded-2xl bg-white p-8 border lg:p-10 dark:bg-gray-800"
                     >
                         <div class="mb-8 text-center">
                             <div
