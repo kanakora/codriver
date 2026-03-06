@@ -8,6 +8,7 @@ import HowItWorksSection from '@/components/welcome/HowItWorksSection.vue';
 import PricingSection from '@/components/welcome/PricingSection.vue';
 import CTASection from '@/components/welcome/CTASection.vue';
 import Footer from '@/components/welcome/Footer.vue';
+import PageLinks from '@/components/welcome/PageLinks.vue';
 
 defineProps({
     canRegister: {
@@ -27,11 +28,12 @@ defineProps({
     >
         <Header :can-register="canRegister" :auth="$page.props.auth" />
         <HeroSection :can-register="canRegister" />
-        <FeaturesSection />
-        <HowItWorksSection />
+        <PageLinks />
+        <!-- <FeaturesSection /> -->
+        <!-- <HowItWorksSection /> -->
         <!-- <PricingSection :can-register="canRegister" /> -->
         <!-- <TestimonialsSection /> -->
-        <CTASection :can-register="canRegister" />
+        <!-- <CTASection :can-register="canRegister" /> -->
         <Footer />
     </div>
 </template>

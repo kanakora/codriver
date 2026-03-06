@@ -14,23 +14,23 @@ defineProps({
     <section class="py-16 lg:py-24">
         <div class="container mx-auto px-4 lg:px-8">
             <div
-                class="rounded-3xl bg-gradient-to-r from-blue-600 to-blue-700 p-8 lg:p-16"
+                class="rounded-3xl border p-8 lg:p-16"
             >
                 <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
                     <div>
-                        <h2 class="text-3xl font-bold text-white lg:text-4xl">
+                        <h2 class="text-3xl font-bold lg:text-4xl">
                             Ready to Start Your Driving Journey?
                         </h2>
-                        <p class="mt-4 text-lg text-blue-100">
+                        <p class="mt-4 text-lg text-neutral-500">
                             Join thousands of successful drivers who started
-                            their journey with DriveSafe. Book your first lesson
+                            their journey with Codriver. Book your first lesson
                             today!
                         </p>
                         <div class="mt-8">
                             <Link
                                 v-if="canRegister"
                                 :href="route('register')"
-                                class="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-semibold text-blue-600 transition-colors hover:bg-gray-100"
+                                class="inline-flex items-center rounded-lg bg-green-500 px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-gray-100"
                             >
                                 Enroll Now
                                 <svg
@@ -50,7 +50,7 @@ defineProps({
                             <Link
                                 v-else
                                 :href="route('login')"
-                                class="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-semibold text-blue-600 transition-colors hover:bg-gray-100"
+                                class="inline-flex items-center rounded-lg bg-green-500 px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-gray-100"
                             >
                                 Sign In to Continue
                             </Link>
@@ -58,38 +58,38 @@ defineProps({
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div
-                            class="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
+                            class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
                         >
-                            <div class="text-4xl font-bold text-white">
+                            <div class="text-4xl font-bold">
                                 100%
                             </div>
-                            <div class="mt-2 text-sm text-blue-100">
+                            <div class="mt-2 text-sm text-green-900">
                                 Satisfaction Rate
                             </div>
                         </div>
                         <div
-                            class="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
+                            class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
                         >
-                            <div class="text-4xl font-bold text-white">
+                            <div class="text-4xl font-bold">
                                 24/7
                             </div>
-                            <div class="mt-2 text-sm text-blue-100">
+                            <div class="mt-2 text-sm text-green-900">
                                 Support Available
                             </div>
                         </div>
                         <div
-                            class="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
+                            class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
                         >
-                            <div class="text-4xl font-bold text-white">5.0</div>
-                            <div class="mt-2 text-sm text-blue-100">
+                            <div class="text-4xl font-bold">5.0</div>
+                            <div class="mt-2 text-sm text-green-900">
                                 Average Rating
                             </div>
                         </div>
                         <div
-                            class="rounded-xl bg-white/10 p-6 backdrop-blur-sm"
+                            class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
                         >
-                            <div class="text-4xl font-bold text-white">30+</div>
-                            <div class="mt-2 text-sm text-blue-100">
+                            <div class="text-4xl font-bold">30+</div>
+                            <div class="mt-2 text-sm text-green-900">
                                 Modern Vehicles
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue';
+import { computed } from 'vue';
 
 defineOptions({
     inheritAttrs: false,
@@ -7,27 +8,30 @@ defineOptions({
 
 type Props = {
     className?: HTMLAttributes['class'];
+    size?: 'sm' | 'md' | 'lg';
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const sizeClasses = computed(() => {
+    switch (props.size) {
+        case 'sm':
+            return 'h-8 w-8';
+        case 'lg':
+            return 'h-12 w-12';
+        case 'md':
+        default:
+            return 'h-10 w-10';
+    }
+});
 </script>
 
 <template>
-    <div
-        class="flex items-center justify-center rounded-full bg-blue-600"
+    <img
+        src="../../img/codriver-icon.png"
+        alt="Codriver"
+        class="object-contain"
+        :class="[sizeClasses, props.className]"
+        v-bind="$attrs"
     >
-        <svg
-            class="h-6 w-6 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-        >
-            <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-        </svg>
-    </div>
 </template>

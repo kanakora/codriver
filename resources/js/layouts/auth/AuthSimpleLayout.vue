@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/vue3';
 import { Moon, Sun } from 'lucide-vue-next';
 import { route } from 'ziggy-js';
 import { useAppearance } from '@/composables/useAppearance';
+import AppLogo from '@/components/AppLogo.vue';
 
 defineProps({
     title: {
@@ -26,7 +27,7 @@ const toggleDarkMode = () => {
 
 <template>
     <div
-        class="min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950"
+        class="min-h-screen bg-linear-to-br from-green-50 to-white dark:from-gray-900 dark:to-gray-950"
     >
         <!-- Header -->
         <header class="container mx-auto px-4 py-6 lg:px-8 lg:py-8">
@@ -34,35 +35,9 @@ const toggleDarkMode = () => {
                 <div class="flex items-center space-x-2">
                     <Link
                         :href="route('home')"
-                        class="flex items-center space-x-2"
+                        class="flex items-center space-x-2 bg-white rounded-xl pl-2 pr-4 py-1.5 border"
                     >
-                        <div
-                            class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600"
-                        >
-                            <svg
-                                class="h-6 w-6 text-white"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                                />
-                            </svg>
-                        </div>
-                        <div>
-                            <h1
-                                class="text-xl font-bold text-gray-900 dark:text-white"
-                            >
-                                DriveSafe
-                            </h1>
-                            <p class="text-xs text-gray-600 dark:text-gray-300">
-                                Driving School
-                            </p>
-                        </div>
+                        <AppLogo />
                     </Link>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -94,7 +69,7 @@ const toggleDarkMode = () => {
                     >
                         <div class="mb-8 text-center">
                             <div
-                                class="mb-4 inline-flex items-center rounded-full bg-blue-100 px-4 py-1.5 text-sm font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                                class="mb-4 inline-flex items-center rounded-full bg-green-100 px-4 py-1.5 text-sm font-medium text-green-700 dark:bg-green-900/30 dark:text-green-300"
                             >
                                 <svg
                                     class="mr-2 h-4 w-4"

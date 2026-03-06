@@ -54,7 +54,7 @@ const steps = [
             <div class="relative">
                 <!-- Connecting line for desktop -->
                 <div
-                    class="absolute top-12 right-0 left-0 hidden h-0.5 bg-gradient-to-r from-blue-500 via-emerald-500 to-amber-500 lg:block"
+                    class="absolute top-12 right-0 left-0 hidden h-0.5 bg-linear-to-r from-blue-500 via-emerald-500 to-amber-500 lg:block"
                 ></div>
 
                 <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
@@ -66,7 +66,7 @@ const steps = [
                         <!-- Step number with background -->
                         <div class="absolute -top-6 left-1/2 -translate-x-1/2">
                             <div
-                                class="flex h-12 w-12 items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-blue-600 to-blue-700 text-lg font-bold text-white dark:border-gray-900"
+                                class="flex h-12 w-12 items-center justify-center rounded-full border-4 border-white bg-linear-to-br from-green-600 to-green-700 text-lg font-bold text-white dark:border-gray-900"
                             >
                                 {{ step.number }}
                             </div>
@@ -101,12 +101,12 @@ const steps = [
                 <p class="text-lg text-gray-700 dark:text-gray-300">
                     Most students complete their training and get licensed
                     within
-                    <span class="font-bold text-blue-600 dark:text-blue-400"
+                    <span class="font-bold text-green-600 dark:text-green-400"
                         >4-6 weeks</span
                     >.
                 </p>
                 <div
-                    class="mt-6 inline-flex items-center rounded-full bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-3 text-white"
+                    class="mt-6 inline-flex items-center rounded-full bg-linear-to-r from-green-600 to-green-700 px-8 py-3 text-white"
                 >
                     <Calendar class="mr-2 h-5 w-5" />
                     <span class="font-medium"
