@@ -6,7 +6,7 @@ enum UserRole: string
 {
     case ADMIN = 'admin';
     case INSTRUCTOR = 'instructor';
-    case USER = 'user';
+    case STUDENT = 'student';
 
     /**
      * Get all the values as an array.
