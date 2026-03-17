@@ -100,7 +100,11 @@ defineProps({
 
             <div class="relative">
                 <div class="relative overflow-hidden rounded-2xl shadow-2xl">
-                    <img src="../../../img/hero-driver.jpg" alt="Hero Image" class="rounded-xl">
+                    <img
+                        src="../../../img/hero-driver.jpg"
+                        alt="Hero Image"
+                        class="rounded-xl"
+                    />
                 </div>
             </div>
         </div>

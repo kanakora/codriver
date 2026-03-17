@@ -13,9 +13,7 @@ defineProps({
 <template>
     <section class="py-16 lg:py-24">
         <div class="container mx-auto px-4 lg:px-8">
-            <div
-                class="rounded-3xl border p-8 lg:p-16"
-            >
+            <div class="rounded-3xl border p-8 lg:p-16">
                 <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
                     <div>
                         <h2 class="text-3xl font-bold lg:text-4xl">
@@ -60,9 +58,7 @@ defineProps({
                         <div
                             class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
                         >
-                            <div class="text-4xl font-bold">
-                                100%
-                            </div>
+                            <div class="text-4xl font-bold">100%</div>
                             <div class="mt-2 text-sm text-green-900">
                                 Satisfaction Rate
                             </div>
@@ -70,9 +66,7 @@ defineProps({
                         <div
                             class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
                         >
-                            <div class="text-4xl font-bold">
-                                24/7
-                            </div>
+                            <div class="text-4xl font-bold">24/7</div>
                             <div class="mt-2 text-sm text-green-900">
                                 Support Available
                             </div>

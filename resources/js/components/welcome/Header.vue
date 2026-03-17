@@ -39,18 +39,26 @@ const menuItems = [
     <header class="container mx-auto px-4 py-6 lg:px-8 lg:py-8">
         <nav class="flex items-center justify-between">
             <!-- Logo -->
-            <div class="flex items-center space-x-2 bg-white rounded-xl pl-2 pr-4 py-1.5 border">
+            <div
+                class="flex items-center space-x-2 rounded-xl border bg-white py-1.5 pr-4 pl-2"
+            >
                 <AppLogo />
             </div>
 
             <!-- Desktop Navigation Menu -->
-            <div class="hidden md:flex items-center space-x-6 bg-white rounded-2xl py-2 px-3 border">
+            <div
+                class="hidden items-center space-x-6 rounded-2xl border bg-white px-3 py-2 md:flex"
+            >
                 <Link
                     v-for="item in menuItems"
                     :key="item.name"
                     :href="route(item.route)"
-                    class="text-sm font-medium text-gray-700 transition-colors hover:text-green-600 dark:text-gray-200 dark:hover:text-green-400 px-2 py-1.5 rounded-lg"
-                    :class="route().current(item.route) ? 'text-green-600 font-semibold bg-green-100 border-green-200 border' : 'hover:bg-green-50'"
+                    class="rounded-lg px-2 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:text-green-600 dark:text-gray-200 dark:hover:text-green-400"
+                    :class="
+                        route().current(item.route)
+                            ? 'border border-green-200 bg-green-100 font-semibold text-green-600'
+                            : 'hover:bg-green-50'
+                    "
                 >
                     {{ item.name }}
                 </Link>
@@ -79,7 +87,7 @@ const menuItems = [
                 <template v-if="auth.user">
                     <Link
                         :href="route('dashboard')"
-                        class="hidden md:inline-block rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700"
+                        class="hidden rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700 md:inline-block"
                     >
                         Dashboard
                     </Link>
@@ -87,14 +95,14 @@ const menuItems = [
                 <template v-else>
                     <Link
                         :href="route('login')"
-                        class="hidden md:inline-block rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                        class="hidden rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 md:inline-block dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                     >
                         Log in
                     </Link>
                     <Link
                         v-if="canRegister"
                         :href="route('register')"
-                        class="hidden md:inline-block rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700"
+                        class="hidden rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700 md:inline-block"
                     >
                         Get Started
                     </Link>
@@ -103,7 +111,7 @@ const menuItems = [
                 <!-- Mobile menu button -->
                 <button
                     @click="isMobileMenuOpen = !isMobileMenuOpen"
-                    class="md:hidden rounded-lg border border-gray-300 bg-white p-2.5 text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                    class="rounded-lg border border-gray-300 bg-white p-2.5 text-gray-700 transition-colors hover:bg-gray-50 md:hidden dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                 >
                     <Menu class="h-5 w-5" />
                 </button>
@@ -113,7 +121,7 @@ const menuItems = [
         <!-- Mobile Navigation Menu -->
         <div
             v-if="isMobileMenuOpen"
-            class="md:hidden mt-4 rounded-lg border border-gray-200 bg-white p-4 shadow-lg dark:border-gray-700 dark:bg-gray-800"
+            class="mt-4 rounded-lg border border-gray-200 bg-white p-4 shadow-lg md:hidden dark:border-gray-700 dark:bg-gray-800"
         >
             <div class="flex flex-col space-y-3">
                 <Link
@@ -125,12 +133,12 @@ const menuItems = [
                 >
                     {{ item.name }}
                 </Link>
-                
+
                 <!-- Mobile auth buttons -->
                 <template v-if="auth.user">
                     <Link
                         :href="route('dashboard')"
-                        class="rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700 text-center"
+                        class="rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-green-700"
                         @click="isMobileMenuOpen = false"
                     >
                         Dashboard
@@ -139,7 +147,7 @@ const menuItems = [
                 <template v-else>
                     <Link
                         :href="route('login')"
-                        class="rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 text-center"
+                        class="rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-center text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                         @click="isMobileMenuOpen = false"
                     >
                         Log in
@@ -147,7 +155,7 @@ const menuItems = [
                     <Link
                         v-if="canRegister"
                         :href="route('register')"
-                        class="rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700 text-center"
+                        class="rounded-lg bg-green-600 px-5 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-green-700"
                         @click="isMobileMenuOpen = false"
                     >
                         Get Started

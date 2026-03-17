@@ -9,11 +9,9 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
         <AppLogoIcon class="size-20 fill-current" size="lg" />
     </div>
     <div class="ml-1 grid flex-1 text-left text-sm">
-        <h1 class="font-black text-gray-900 dark:text-white text-lg">
+        <h1 class="text-lg font-black text-gray-900 dark:text-white">
             Codriver
         </h1>
-        <p class="text-xs text-gray-600 dark:text-gray-300">
-            Platform
-        </p>
+        <p class="text-xs text-gray-600 dark:text-gray-300">Platform</p>
     </div>
 </template>

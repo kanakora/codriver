@@ -186,8 +186,7 @@ const breadcrumbs = [
             <!-- Pagination -->
             <div class="flex items-center justify-between">
                 <div class="text-sm text-muted-foreground">
-                    Showing {{ categories.from }} to
-                    {{ categories.to }} of
+                    Showing {{ categories.from }} to {{ categories.to }} of
                     {{ categories.total }} results
                 </div>
                 <div class="flex gap-2">

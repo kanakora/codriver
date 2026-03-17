@@ -163,7 +163,10 @@ const breadcrumbs = [
                             </span>
                         </div>
                     </div>
-                    <div v-if="roles.length === 0" class="text-sm text-muted-foreground">
+                    <div
+                        v-if="roles.length === 0"
+                        class="text-sm text-muted-foreground"
+                    >
                         No roles yet. Create your first role above.
                     </div>
                 </CardContent>

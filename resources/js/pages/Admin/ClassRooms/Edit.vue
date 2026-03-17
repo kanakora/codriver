@@ -52,7 +52,8 @@ const form = useForm({
     description: props.classroom.description || '',
     is_public: props.classroom.is_public,
     sort_order: props.classroom.sort_order,
-    prerequisite_collection_id: props.classroom.prerequisite_collection_id ?? '',
+    prerequisite_collection_id:
+        props.classroom.prerequisite_collection_id ?? '',
     content_ids: props.classroom.lessons?.map((lesson) => lesson.id) || [],
 });
 
@@ -107,11 +108,18 @@ function moveContent(contentId: number, direction: 'up' | 'down') {
     }
 
     const updated = [...form.content_ids];
-    [updated[index], updated[targetIndex]] = [updated[targetIndex], updated[index]];
+    [updated[index], updated[targetIndex]] = [
+        updated[targetIndex],
+        updated[index],
+    ];
     form.content_ids = updated;
 }
 
-function getStatusBadge(content: { publish_status: string; scheduled_publish_at?: string | null; expires_at?: string | null }) {
+function getStatusBadge(content: {
+    publish_status: string;
+    scheduled_publish_at?: string | null;
+    expires_at?: string | null;
+}) {
     const now = new Date();
 
     if (content.expires_at && new Date(content.expires_at) <= now) {
@@ -122,7 +130,10 @@ function getStatusBadge(content: { publish_status: string; scheduled_publish_at?
         return { label: 'Active', variant: 'default' };
     }
 
-    if (content.scheduled_publish_at && new Date(content.scheduled_publish_at) > now) {
+    if (
+        content.scheduled_publish_at &&
+        new Date(content.scheduled_publish_at) > now
+    ) {
         return { label: 'Scheduled', variant: 'secondary' };
     }
 
@@ -156,7 +167,7 @@ const breadcrumbs = [
         }),
     },
     {
-        title: "Edit Classroom",
+        title: 'Edit Classroom',
         href: route('admin.classrooms.edit', {
             classroom: props.classroom.id,
         }),
@@ -168,7 +179,7 @@ const breadcrumbs = [
     <Head title="Edit Classroom" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="space-y-6 p-6 mx-auto w-full md:w-5xl">
+        <div class="mx-auto w-full space-y-6 p-6 md:w-5xl">
             <div>
                 <h1 class="text-2xl font-bold tracking-tight">
                     Edit Classroom
@@ -211,7 +222,8 @@ const breadcrumbs = [
                                 placeholder="Describe who this collection is for and what it covers."
                                 rows="3"
                                 :class="{
-                                    'border-destructive': form.errors.description,
+                                    'border-destructive':
+                                        form.errors.description,
                                 }"
                             />
                             <p
@@ -265,13 +277,16 @@ const breadcrumbs = [
                             </div>
                         </div> -->
 
-                        <div class="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 px-4 py-3">
+                        <div
+                            class="flex items-center justify-between rounded-xl border border-border/60 bg-muted/20 px-4 py-3"
+                        >
                             <div>
                                 <p class="text-sm font-semibold">
                                     Public classroom
                                 </p>
                                 <p class="text-xs text-muted-foreground">
-                                    Public classrooms appear in the student catalog.
+                                    Public classrooms appear in the student
+                                    catalog.
                                 </p>
                             </div>
                             <Switch v-model="form.is_public" />
@@ -295,20 +310,39 @@ const breadcrumbs = [
                                             class="flex items-start justify-between gap-3 rounded-xl border border-border/60 p-3"
                                         >
                                             <div>
-                                                <p class="text-sm font-semibold">
+                                                <p
+                                                    class="text-sm font-semibold"
+                                                >
                                                     {{ content.title }}
                                                 </p>
-                                                <p class="text-xs text-muted-foreground">
-                                                    {{ content.description || 'No description' }}
+                                                <p
+                                                    class="text-xs text-muted-foreground"
+                                                >
+                                                    {{
+                                                        content.description ||
+                                                        'No description'
+                                                    }}
                                                 </p>
-                                                <div class="mt-2 flex flex-wrap gap-2">
+                                                <div
+                                                    class="mt-2 flex flex-wrap gap-2"
+                                                >
                                                     <Badge variant="outline">
-                                                        {{ content.content_type }}
+                                                        {{
+                                                            content.content_type
+                                                        }}
                                                     </Badge>
                                                     <Badge
-                                                        :variant="getStatusBadge(content).variant"
+                                                        :variant="
+                                                            getStatusBadge(
+                                                                content,
+                                                            ).variant
+                                                        "
                                                     >
-                                                        {{ getStatusBadge(content).label }}
+                                                        {{
+                                                            getStatusBadge(
+                                                                content,
+                                                            ).label
+                                                        }}
                                                     </Badge>
                                                 </div>
                                             </div>
@@ -334,7 +368,8 @@ const breadcrumbs = [
                                         v-if="selectedContents.length === 0"
                                         class="rounded-xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground"
                                     >
-                                        Add items from the left panel to build this collection.
+                                        Add items from the left panel to build
+                                        this collection.
                                     </div>
                                     <div v-else class="space-y-3">
                                         <div
@@ -343,27 +378,48 @@ const breadcrumbs = [
                                             class="flex items-start justify-between gap-3 rounded-xl border border-border/60 p-3"
                                         >
                                             <div>
-                                                <p class="text-sm font-semibold">
+                                                <p
+                                                    class="text-sm font-semibold"
+                                                >
                                                     {{ content?.title }}
                                                 </p>
-                                                <div class="mt-2 flex flex-wrap gap-2">
+                                                <div
+                                                    class="mt-2 flex flex-wrap gap-2"
+                                                >
                                                     <Badge variant="outline">
-                                                        {{ content?.content_type }}
+                                                        {{
+                                                            content?.content_type
+                                                        }}
                                                     </Badge>
                                                     <Badge
                                                         v-if="content"
-                                                        :variant="getStatusBadge(content).variant"
+                                                        :variant="
+                                                            getStatusBadge(
+                                                                content,
+                                                            ).variant
+                                                        "
                                                     >
-                                                        {{ getStatusBadge(content).label }}
+                                                        {{
+                                                            getStatusBadge(
+                                                                content,
+                                                            ).label
+                                                        }}
                                                     </Badge>
                                                 </div>
                                             </div>
-                                            <div class="flex items-center gap-2">
+                                            <div
+                                                class="flex items-center gap-2"
+                                            >
                                                 <Button
                                                     size="sm"
                                                     variant="outline"
                                                     type="button"
-                                                    @click="moveContent(content!.id, 'up')"
+                                                    @click="
+                                                        moveContent(
+                                                            content!.id,
+                                                            'up',
+                                                        )
+                                                    "
                                                 >
                                                     Up
                                                 </Button>
@@ -371,7 +427,12 @@ const breadcrumbs = [
                                                     size="sm"
                                                     variant="outline"
                                                     type="button"
-                                                    @click="moveContent(content!.id, 'down')"
+                                                    @click="
+                                                        moveContent(
+                                                            content!.id,
+                                                            'down',
+                                                        )
+                                                    "
                                                 >
                                                     Down
                                                 </Button>
@@ -379,7 +440,11 @@ const breadcrumbs = [
                                                     size="sm"
                                                     variant="destructive"
                                                     type="button"
-                                                    @click="removeContent(content!.id)"
+                                                    @click="
+                                                        removeContent(
+                                                            content!.id,
+                                                        )
+                                                    "
                                                 >
                                                     Remove
                                                 </Button>

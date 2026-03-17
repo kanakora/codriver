@@ -164,11 +164,14 @@ const breadcrumbs = [
 
             <div class="flex items-center justify-between">
                 <div class="text-sm text-muted-foreground">
-                    Showing {{ classrooms.from }} to
-                    {{ classrooms.to }} of {{ classrooms.total }} results
+                    Showing {{ classrooms.from }} to {{ classrooms.to }} of
+                    {{ classrooms.total }} results
                 </div>
                 <div class="flex gap-2">
-                    <template v-for="link in classrooms.links" :key="link.label">
+                    <template
+                        v-for="link in classrooms.links"
+                        :key="link.label"
+                    >
                         <Link
                             v-if="link.url"
                             :href="link.url"

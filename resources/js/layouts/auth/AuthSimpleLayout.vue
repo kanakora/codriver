@@ -26,16 +26,14 @@ const toggleDarkMode = () => {
 </script>
 
 <template>
-    <div
-        class="min-h-screen bg-gray-100"
-    >
+    <div class="min-h-screen bg-gray-100">
         <!-- Header -->
         <header class="container mx-auto px-4 py-6 lg:px-8 lg:py-8">
             <nav class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <Link
                         :href="route('home')"
-                        class="flex items-center space-x-2 bg-white rounded-xl pl-2 pr-4 py-1.5 border"
+                        class="flex items-center space-x-2 rounded-xl border bg-white py-1.5 pr-4 pl-2"
                     >
                         <AppLogo />
                     </Link>
@@ -65,7 +63,7 @@ const toggleDarkMode = () => {
             <div class="flex items-center justify-center">
                 <div class="w-full max-w-md">
                     <div
-                        class="rounded-2xl bg-white p-8 border lg:p-10 dark:bg-gray-800"
+                        class="rounded-2xl border bg-white p-8 lg:p-10 dark:bg-gray-800"
                     >
                         <div class="mb-8 text-center">
                             <div

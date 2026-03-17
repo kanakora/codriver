@@ -124,12 +124,12 @@ const breadcrumbs = [
                         <div class="flex items-center justify-between">
                             <Badge
                                 :variant="
-                                    classroom.is_public
-                                        ? 'default'
-                                        : 'outline'
+                                    classroom.is_public ? 'default' : 'outline'
                                 "
                             >
-                                {{ classroom.is_public ? 'Public' : 'Internal' }}
+                                {{
+                                    classroom.is_public ? 'Public' : 'Internal'
+                                }}
                             </Badge>
                             <span class="text-xs text-muted-foreground">
                                 Order #{{ classroom.sort_order }}
@@ -152,7 +152,9 @@ const breadcrumbs = [
                         </div>
                     </CardHeader>
                     <CardContent class="mt-auto space-y-3">
-                        <div class="flex items-center justify-between text-xs text-muted-foreground">
+                        <div
+                            class="flex items-center justify-between text-xs text-muted-foreground"
+                        >
                             <span>{{ classroom.lessons_count }} items</span>
                             <span v-if="classroom.prerequisite">
                                 Requires {{ classroom.prerequisite.title }}
@@ -193,11 +195,14 @@ const breadcrumbs = [
 
             <div class="flex items-center justify-between">
                 <div class="text-sm text-muted-foreground">
-                    Showing {{ classrooms.from }} to
-                    {{ classrooms.to }} of {{ classrooms.total }} results
+                    Showing {{ classrooms.from }} to {{ classrooms.to }} of
+                    {{ classrooms.total }} results
                 </div>
                 <div class="flex gap-2">
-                    <template v-for="link in classrooms.links" :key="link.label">
+                    <template
+                        v-for="link in classrooms.links"
+                        :key="link.label"
+                    >
                         <Link
                             v-if="link.url"
                             :href="link.url"

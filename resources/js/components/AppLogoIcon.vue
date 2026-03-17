@@ -33,5 +33,5 @@ const sizeClasses = computed(() => {
         class="object-contain"
         :class="[sizeClasses, props.className]"
         v-bind="$attrs"
-    >
+    />
 </template>

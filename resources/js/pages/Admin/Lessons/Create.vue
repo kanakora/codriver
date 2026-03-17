@@ -93,7 +93,7 @@ const breadcrumbs = [
     <Head title="Create Lesson" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="mx-auto md:w-3xl space-y-6 p-6">
+        <div class="mx-auto space-y-6 p-6 md:w-3xl">
             <!-- Header -->
             <div>
                 <h1 class="text-2xl font-bold tracking-tight">

@@ -141,7 +141,7 @@ const breadcrumbs = [
                 </CardHeader>
                 <CardContent>
                     <form @submit.prevent="handleSubmit" class="space-y-6">
-                       <div class="space-y-2">
+                        <div class="space-y-2">
                             <Label for="title">Title *</Label>
                             <Input
                                 id="title"

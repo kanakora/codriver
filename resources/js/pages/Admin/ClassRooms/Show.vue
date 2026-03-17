@@ -32,7 +32,11 @@ const props = defineProps<{
 
 const { canManageClassRooms } = useAuthRoles();
 
-function getStatusBadge(content: { publish_status: string; scheduled_publish_at?: string | null; expires_at?: string | null }) {
+function getStatusBadge(content: {
+    publish_status: string;
+    scheduled_publish_at?: string | null;
+    expires_at?: string | null;
+}) {
     const now = new Date();
 
     if (content.expires_at && new Date(content.expires_at) <= now) {
@@ -43,7 +47,10 @@ function getStatusBadge(content: { publish_status: string; scheduled_publish_at?
         return { label: 'Active', variant: 'default' };
     }
 
-    if (content.scheduled_publish_at && new Date(content.scheduled_publish_at) > now) {
+    if (
+        content.scheduled_publish_at &&
+        new Date(content.scheduled_publish_at) > now
+    ) {
         return { label: 'Scheduled', variant: 'secondary' };
     }
 
@@ -77,10 +84,15 @@ const breadcrumbs = [
                         {{ classroom.title }}
                     </h1>
                     <p class="text-muted-foreground">
-                        {{ classroom.description || 'No description provided.' }}
+                        {{
+                            classroom.description || 'No description provided.'
+                        }}
                     </p>
                 </div>
-                <div class="flex items-center gap-2" v-if="canManageClassRooms()">
+                <div
+                    class="flex items-center gap-2"
+                    v-if="canManageClassRooms()"
+                >
                     <Button variant="outline" as-child>
                         <Link
                             :href="
@@ -112,17 +124,25 @@ const breadcrumbs = [
                                         {{ lesson.title }}
                                     </p>
                                     <p class="text-xs text-muted-foreground">
-                                        {{ lesson.description || 'No description' }}
+                                        {{
+                                            lesson.description ||
+                                            'No description'
+                                        }}
                                     </p>
                                     <div class="mt-2 flex flex-wrap gap-2">
                                         <Badge variant="outline">
                                             {{ lesson.content_type }}
                                         </Badge>
-                                        <Badge :variant="getStatusBadge(lesson).variant">
+                                        <Badge
+                                            :variant="
+                                                getStatusBadge(lesson).variant
+                                            "
+                                        >
                                             {{ getStatusBadge(lesson).label }}
                                         </Badge>
                                         <Badge
-                                            v-for="cat in lesson.categories || []"
+                                            v-for="cat in lesson.categories ||
+                                            []"
                                             :key="cat.id"
                                             variant="outline"
                                             class="text-xs"
@@ -165,13 +185,21 @@ const breadcrumbs = [
                                 </div>
                             </div>
                             <div>
-                                <div class="text-muted-foreground">Visibility</div>
+                                <div class="text-muted-foreground">
+                                    Visibility
+                                </div>
                                 <div>
-                                    {{ classroom.is_public ? 'Public' : 'Internal' }}
+                                    {{
+                                        classroom.is_public
+                                            ? 'Public'
+                                            : 'Internal'
+                                    }}
                                 </div>
                             </div>
                             <div>
-                                <div class="text-muted-foreground">Sort order</div>
+                                <div class="text-muted-foreground">
+                                    Sort order
+                                </div>
                                 <div>{{ classroom.sort_order }}</div>
                             </div>
                             <div v-if="classroom.prerequisite">

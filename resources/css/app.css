@@ -71,7 +71,6 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
-
     *,
     ::after,
     ::before,
@@ -82,7 +81,6 @@
 }
 
 @layer utilities {
-
     body,
     html {
         --font-sans:
@@ -93,7 +91,7 @@
 }
 
 :root {
---radius: 0.65rem;
+    --radius: 0.65rem;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -129,7 +127,7 @@
 }
 
 .dark {
---background: oklch(0.145 0 0);
+    --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
     --card: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);
@@ -205,23 +203,23 @@
     }
 }
 
-.ProseMirror>h1 {
+.ProseMirror > h1 {
     @apply text-3xl font-bold;
 }
 
-.ProseMirror>h2 {
+.ProseMirror > h2 {
     @apply text-2xl font-bold;
 }
 
-.ProseMirror>h3 {
+.ProseMirror > h3 {
     @apply text-xl font-bold;
 }
 
-.ProseMirror>h4 {
+.ProseMirror > h4 {
     @apply text-lg font-bold;
 }
 
-.ProseMirror>h5 {
+.ProseMirror > h5 {
     @apply font-bold;
 }
 
@@ -270,7 +268,7 @@
     background: var(--black);
     border-radius: 0.5rem;
     color: var(--white);
-    font-family: "JetBrainsMono", monospace;
+    font-family: 'JetBrainsMono', monospace;
     margin: 1.5rem 0;
     padding: 0.75rem 1rem;
 }
@@ -302,11 +300,11 @@
     pointer-events: none;
 }
 
-.ProseMirror>ul {
+.ProseMirror > ul {
     list-style-type: disc;
 }
 
-.ProseMirror>ol {
+.ProseMirror > ol {
     list-style: decimal;
 }
 .title-header {

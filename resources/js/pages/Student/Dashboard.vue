@@ -150,7 +150,10 @@ const breadcrumbs = [
                             {{ lesson.content_type }}
                         </Badge>
                     </div>
-                    <div v-if="latestLessons.length === 0" class="text-sm text-muted-foreground">
+                    <div
+                        v-if="latestLessons.length === 0"
+                        class="text-sm text-muted-foreground"
+                    >
                         No lessons published yet.
                     </div>
                 </CardContent>

@@ -277,13 +277,10 @@ const breadcrumbs = [
                                     <div class="space-y-1">
                                         <Badge
                                             :variant="
-                                                getLessonStatus(lesson)
-                                                    .variant
+                                                getLessonStatus(lesson).variant
                                             "
                                         >
-                                            {{
-                                                getLessonStatus(lesson).label
-                                            }}
+                                            {{ getLessonStatus(lesson).label }}
                                         </Badge>
                                         <p
                                             v-if="lesson.scheduled_publish_at"
@@ -335,8 +332,7 @@ const breadcrumbs = [
                                                         route(
                                                             'admin.lessons.show',
                                                             {
-                                                                lesson:
-                                                                    lesson.id,
+                                                                lesson: lesson.id,
                                                             },
                                                         )
                                                     "
@@ -353,8 +349,7 @@ const breadcrumbs = [
                                                         route(
                                                             'admin.lessons.edit',
                                                             {
-                                                                lesson:
-                                                                    lesson.id,
+                                                                lesson: lesson.id,
                                                             },
                                                         )
                                                     "

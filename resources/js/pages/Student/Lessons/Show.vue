@@ -46,10 +46,10 @@ const breadcrumbs = [
     },
     {
         title: props.lesson.title,
-        href: route('student.lessons.show', { 
+        href: route('student.lessons.show', {
             classroom: props.classroom.id,
-            lesson: props.lesson.id
-         }),
+            lesson: props.lesson.id,
+        }),
     },
 ];
 </script>
@@ -66,9 +66,7 @@ const breadcrumbs = [
                     <div class="flex flex-wrap items-center gap-3">
                         <Badge
                             :variant="
-                                getContentTypeBadgeVariant(
-                                    lesson.content_type,
-                                )
+                                getContentTypeBadgeVariant(lesson.content_type)
                             "
                         >
                             {{ lesson.content_type }}
@@ -106,7 +104,7 @@ const breadcrumbs = [
                                 lesson.content_type === 'text' &&
                                 lesson.content_text
                             "
-                            class="prose dark:prose-invert max-w-none"
+                            class="prose max-w-none dark:prose-invert"
                             v-html="lesson.content_text"
                         ></div>
 

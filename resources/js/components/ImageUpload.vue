@@ -56,9 +56,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
     'update:modelValue': [value: File | File[] | null];
-    'processing': [files: File[]];
-    'processed': [response: any];
-    'error': [error: Error];
+    processing: [files: File[]];
+    processed: [response: any];
+    error: [error: Error];
 }>();
 
 const pond = ref<any>(null);
@@ -67,14 +67,14 @@ const files = ref<any[]>([]);
 // Handle file updates
 const handleUpdateFiles = (fileItems: any[]) => {
     files.value = fileItems;
-    
+
     if (fileItems.length === 0) {
         emit('update:modelValue', null);
         return;
     }
 
     if (props.multiple) {
-        const fileObjects = fileItems.map(item => item.file);
+        const fileObjects = fileItems.map((item) => item.file);
         emit('update:modelValue', fileObjects);
     } else {
         emit('update:modelValue', fileItems[0]?.file || null);
@@ -95,34 +95,45 @@ onMounted(() => {
 });
 
 // Watch for modelValue changes
-watch(() => props.modelValue, (newValue) => {
-    if (!newValue && pond.value) {
-        pond.value.removeFiles();
-    }
-});
+watch(
+    () => props.modelValue,
+    (newValue) => {
+        if (!newValue && pond.value) {
+            pond.value.removeFiles();
+        }
+    },
+);
 
 // Server configuration for instant upload
 const serverConfig = ref({
-    process: (fieldName: string, file: File, metadata: any, load: Function, error: Function, progress: Function, abort: Function) => {
+    process: (
+        fieldName: string,
+        file: File,
+        metadata: any,
+        load: Function,
+        error: Function,
+        progress: Function,
+        abort: Function,
+    ) => {
         // Your upload logic here
         // For now, we'll simulate a successful upload
         const formData = new FormData();
         formData.append(fieldName, file, file.name);
-        
+
         // Example fetch request
         fetch(props.server?.url || '/upload', {
             method: 'POST',
             body: formData,
             headers: props.server?.headers || {},
         })
-        .then(response => response.json())
-        .then(data => {
-            load(data.fileUrl);
-        })
-        .catch(err => {
-            error(err.message);
-        });
-        
+            .then((response) => response.json())
+            .then((data) => {
+                load(data.fileUrl);
+            })
+            .catch((err) => {
+                error(err.message);
+            });
+
         return {
             abort: () => {
                 abort();
@@ -135,24 +146,24 @@ const serverConfig = ref({
             method: 'DELETE',
             headers: props.server?.headers || {},
         })
-        .then(() => load())
-        .catch(err => error(err.message));
+            .then(() => load())
+            .catch((err) => error(err.message));
     },
 });
 
 // Custom file validation
 const checkFileType = (file: File, typePattern: string): boolean => {
     if (typePattern === '*') return true;
-    
+
     const pattern = typePattern.replace('*', '.*');
     const regex = new RegExp(`^${pattern}$`, 'i');
-    
+
     return regex.test(file.type) || regex.test(file.name);
 };
 </script>
 
 <template>
-    <div class="space-y-2 border text-center rounded-md pb-4 shadow-xs">
+    <div class="space-y-2 rounded-md border pb-4 text-center shadow-xs">
         <FilePond
             ref="pond"
             :name="name"
@@ -166,7 +177,9 @@ const checkFileType = (file: File, typePattern: string): boolean => {
             :instant-upload="instantUpload"
             :server="instantUpload ? serverConfig : undefined"
             :allow-image-preview="acceptedFileTypes.includes('image/*')"
-            :allow-image-exif-orientation="acceptedFileTypes.includes('image/*')"
+            :allow-image-exif-orientation="
+                acceptedFileTypes.includes('image/*')
+            "
             :allow-file-type-validation="true"
             :label-idle="`Drag & drop your ${label.toLowerCase()} or <span class='filepond--label-action'>Browse</span>`"
             :label-file-processing="'Uploading...'"
@@ -185,11 +198,19 @@ const checkFileType = (file: File, typePattern: string): boolean => {
             :label-max-file-size-exceeded="'File is too large'"
             :label-max-files-exceeded="'Maximum number of files exceeded'"
             @updatefiles="handleUpdateFiles"
-            @processfile="(error: any, file: any) => !error && emit('processed', file)"
-            @processfiles="(files: any) => emit('processing', files.map((f: { file: any; }) => f.file))"
+            @processfile="
+                (error: any, file: any) => !error && emit('processed', file)
+            "
+            @processfiles="
+                (files: any) =>
+                    emit(
+                        'processing',
+                        files.map((f: { file: any }) => f.file),
+                    )
+            "
             @error="(error: any) => emit('error', error)"
         />
-        
+
         <p v-if="$slots.help" class="text-sm text-muted-foreground">
             <slot name="help" />
         </p>

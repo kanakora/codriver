@@ -99,8 +99,8 @@ const breadcrumbs = [
                         Explore your courses
                     </h1>
                     <p class="text-sm text-muted-foreground">
-                        Find the latest published lessons, resources, and
-                        study materials.
+                        Find the latest published lessons, resources, and study
+                        materials.
                     </p>
                 </div>
             </section>
@@ -233,8 +233,8 @@ const breadcrumbs = [
             <!-- Pagination -->
             <div class="flex items-center justify-between">
                 <div class="text-sm text-muted-foreground">
-                    Showing {{ lessons.from }} to
-                    {{ lessons.to }} of {{ lessons.total }} results
+                    Showing {{ lessons.from }} to {{ lessons.to }} of
+                    {{ lessons.total }} results
                 </div>
                 <div class="flex gap-2">
                     <template v-for="link in lessons.links" :key="link.label">

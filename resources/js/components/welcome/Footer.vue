@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppLogo from '../AppLogo.vue';
-
 </script>
 
 <template>
@@ -30,9 +29,14 @@ import AppLogo from '../AppLogo.vue';
                     >
                 </div>
             </div>
-            <div class="bg-gray-100 px-4 lg:px-8 py-4 mt-10 border flex items-center justify-between">
+            <div
+                class="mt-10 flex items-center justify-between border bg-gray-100 px-4 py-4 lg:px-8"
+            >
                 <p class="text-xs">
-                    Maintained with ❤️ by <a href="https://bretoreta.me/ref=codriver.ke"><b>Bret Oreta</b></a>
+                    Maintained with ❤️ by
+                    <a href="https://bretoreta.me/ref=codriver.ke"
+                        ><b>Bret Oreta</b></a
+                    >
                 </p>
                 <p class="text-sm">
                     &copy; 2026 Codriver. All Rights Reserved.

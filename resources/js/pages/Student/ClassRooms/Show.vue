@@ -66,7 +66,9 @@ const breadcrumbs = [
                         {{ classroom.title }}
                     </h1>
                     <p class="text-sm text-muted-foreground">
-                        {{ classroom.description || 'No description provided.' }}
+                        {{
+                            classroom.description || 'No description provided.'
+                        }}
                     </p>
                 </div>
             </section>
@@ -87,7 +89,9 @@ const breadcrumbs = [
                                     {{ content.title }}
                                 </p>
                                 <p class="text-xs text-muted-foreground">
-                                    {{ content.description || 'No description' }}
+                                    {{
+                                        content.description || 'No description'
+                                    }}
                                 </p>
                                 <div class="mt-2 flex flex-wrap gap-2">
                                     <Badge variant="outline">

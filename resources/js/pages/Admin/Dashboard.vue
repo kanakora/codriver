@@ -5,12 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { route } from 'ziggy-js';
-import {
-    CheckCircle2,
-    Clock3,
-    FileText,
-    Tag,
-} from 'lucide-vue-next';
+import { CheckCircle2, Clock3, FileText, Tag } from 'lucide-vue-next';
 
 type Props = {
     stats: {
@@ -53,7 +48,9 @@ const statCards = [
     },
 ];
 
-function statusBadgeVariant(status: Props['recentLessons'][number]['publish_status']) {
+function statusBadgeVariant(
+    status: Props['recentLessons'][number]['publish_status'],
+) {
     return status === 'published' ? 'success' : 'warning';
 }
 
@@ -164,11 +161,18 @@ const breadcrumbs = [
                                     }}
                                 </p>
                             </div>
-                            <Badge :variant="statusBadgeVariant(lesson.publish_status)">
+                            <Badge
+                                :variant="
+                                    statusBadgeVariant(lesson.publish_status)
+                                "
+                            >
                                 {{ lesson.publish_status }}
                             </Badge>
                         </div>
-                        <div v-if="recentLessons.length === 0" class="text-sm text-muted-foreground">
+                        <div
+                            v-if="recentLessons.length === 0"
+                            class="text-sm text-muted-foreground"
+                        >
                             No lesson has been created yet.
                         </div>
                     </CardContent>

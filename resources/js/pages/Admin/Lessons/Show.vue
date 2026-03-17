@@ -372,7 +372,7 @@ const breadcrumbs = [
                         >
                             <h3 class="mb-2 font-semibold">Text Lesson</h3>
                             <div
-                                class="prose dark:prose-invert max-w-none"
+                                class="prose max-w-none dark:prose-invert"
                                 v-html="lesson.content_text"
                             ></div>
                         </div>
