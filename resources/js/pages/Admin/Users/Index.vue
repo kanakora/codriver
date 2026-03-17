@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { reactive, watch } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,9 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import InputError from '@/components/InputError.vue';
 import { route } from 'ziggy-js';
 
 type Role = {
@@ -45,6 +48,14 @@ const props = defineProps<{
     roles: Role[];
 }>();
 
+const form = useForm({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    roles: [] as number[],
+});
+
 const roleSelections = reactive<Record<number, number[]>>({});
 
 watch(
@@ -67,6 +78,13 @@ function updateRoles(userId: number) {
             preserveScroll: true,
         },
     );
+}
+
+function createUser() {
+    form.post(route('admin.users.store'), {
+        preserveScroll: true,
+        onSuccess: () => form.reset(),
+    });
 }
 
 const breadcrumbs = [
@@ -98,6 +116,86 @@ const breadcrumbs = [
 
             <Card>
                 <CardHeader>
+                    <CardTitle>Create a new user</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <form class="grid gap-6" @submit.prevent="createUser">
+                        <div class="grid gap-2">
+                            <Label for="name">Name</Label>
+                            <Input
+                                id="name"
+                                v-model="form.name"
+                                placeholder="John Doe"
+                            />
+                            <InputError :message="form.errors.name" />
+                        </div>
+
+                        <div class="grid gap-2">
+                            <Label for="email">Email</Label>
+                            <Input
+                                id="email"
+                                v-model="form.email"
+                                type="email"
+                                placeholder="john@example.com"
+                            />
+                            <InputError :message="form.errors.email" />
+                        </div>
+
+                        <div class="grid gap-2">
+                            <Label for="password">Password</Label>
+                            <Input
+                                id="password"
+                                v-model="form.password"
+                                type="password"
+                                placeholder="••••••••"
+                            />
+                            <InputError :message="form.errors.password" />
+                        </div>
+
+                        <div class="grid gap-2">
+                            <Label for="password_confirmation"
+                                >Confirm Password</Label
+                            >
+                            <Input
+                                id="password_confirmation"
+                                v-model="form.password_confirmation"
+                                type="password"
+                                placeholder="••••••••"
+                            />
+                            <InputError
+                                :message="form.errors.password_confirmation"
+                            />
+                        </div>
+
+                        <div class="grid gap-3">
+                            <Label>Roles</Label>
+                            <select
+                                v-model="form.roles"
+                                multiple
+                                class="min-h-[6.5rem] w-full rounded-md border border-input bg-background px-2 py-2 text-sm"
+                            >
+                                <option
+                                    v-for="role in roles"
+                                    :key="role.id"
+                                    :value="role.id"
+                                >
+                                    {{ role.name }}
+                                </option>
+                            </select>
+                            <InputError :message="form.errors.roles" />
+                        </div>
+
+                        <div>
+                            <Button type="submit" :disabled="form.processing">
+                                Create user
+                            </Button>
+                        </div>
+                    </form>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
                     <CardTitle>Users</CardTitle>
                 </CardHeader>
                 <CardContent class="p-0">
@@ -113,10 +211,7 @@ const breadcrumbs = [
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <TableRow
-                                v-for="user in users.data"
-                                :key="user.id"
-                            >
+                            <TableRow v-for="user in users.data" :key="user.id">
                                 <TableCell>
                                     <div class="font-medium">
                                         {{ user.name }}

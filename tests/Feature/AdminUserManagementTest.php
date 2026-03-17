@@ -43,3 +43,30 @@ test('admins can update user roles', function () {
     $response->assertRedirect();
     expect($target->refresh()->hasRole('student'))->toBeTrue();
 });
+
+test('admins can create new users', function () {
+    $this->seed(RolesAndPermissionsSeeder::class);
+
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+
+    $studentRole = Role::firstWhere('name', 'student');
+
+    $response = $this->actingAs($admin)->post(route('admin.users.store'), [
+        'name' => 'New User',
+        'email' => 'newuser@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+        'roles' => [$studentRole->id],
+    ]);
+
+    $response->assertRedirect();
+    $this->assertDatabaseHas('users', [
+        'name' => 'New User',
+        'email' => 'newuser@example.com',
+    ]);
+
+    $user = User::where('email', 'newuser@example.com')->first();
+    expect($user)->not->toBeNull()
+        ->and($user->hasRole('student'))->toBeTrue();
+});

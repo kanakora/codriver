@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRoleUpdateRequest;
+use App\Http\Requests\Admin\UserStoreRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -36,5 +37,22 @@ class UserController extends Controller
         $user->syncRoles($validated['roles'] ?? []);
 
         return back()->with('success', 'User roles updated successfully.');
+    }
+
+    public function store(UserStoreRequest $request): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+        ]);
+
+        if (isset($validated['roles'])) {
+            $user->syncRoles($validated['roles']);
+        }
+
+        return back()->with('success', 'User created successfully.');
     }
 }
