@@ -30,7 +30,7 @@ import AppLogo from '../AppLogo.vue';
                 </div>
             </div>
             <div
-                class="mt-10 flex items-center justify-between border bg-gray-100 px-4 py-4 lg:px-8"
+                class="mt-10 flex flex-col lg:flex-row items-center justify-between border bg-gray-100 dark:bg-gray-800 px-4 py-4 lg:px-8"
             >
                 <p class="text-xs">
                     Maintained with ❤️ by

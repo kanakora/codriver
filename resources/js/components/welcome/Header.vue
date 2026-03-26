@@ -40,14 +40,14 @@ const menuItems = [
         <nav class="flex items-center justify-between">
             <!-- Logo -->
             <div
-                class="flex items-center space-x-2 rounded-xl border bg-white py-1.5 pr-4 pl-2"
+                class="flex items-center space-x-2 rounded-xl border bg-white dark:bg-gray-800 py-1.5 pr-4 pl-2"
             >
                 <AppLogo />
             </div>
 
             <!-- Desktop Navigation Menu -->
             <div
-                class="hidden items-center space-x-6 rounded-2xl border bg-white px-3 py-2 md:flex"
+                class="hidden items-center space-x-6 rounded-2xl border bg-white dark:bg-gray-800 px-3 py-2 md:flex"
             >
                 <Link
                     v-for="item in menuItems"
@@ -56,8 +56,8 @@ const menuItems = [
                     class="rounded-lg px-2 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:text-green-600 dark:text-gray-200 dark:hover:text-green-400"
                     :class="
                         route().current(item.route)
-                            ? 'border border-green-200 bg-green-100 font-semibold text-green-600'
-                            : 'hover:bg-green-50'
+                            ? 'border border-green-200 bg-green-100 dark:bg-gray-700 dark:border-gray-600 font-semibold text-green-600'
+                            : 'hover:bg-green-50 dark:hover:bg-gray-700'
                     "
                 >
                     {{ item.name }}

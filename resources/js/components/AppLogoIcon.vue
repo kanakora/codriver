@@ -30,7 +30,7 @@ const sizeClasses = computed(() => {
     <img
         src="../../img/codriver-icon.png"
         alt="Codriver"
-        class="object-contain"
+        class="object-contain dark:invert"
         :class="[sizeClasses, props.className]"
         v-bind="$attrs"
     />

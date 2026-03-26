@@ -7,7 +7,7 @@ const plans = [
     {
         name: 'Beginner Course',
         description: 'Perfect for first-time drivers',
-        price: '$499',
+        price: 'Ksh. 6,499',
         duration: '6 weeks',
         popular: false,
         features: [
@@ -24,7 +24,7 @@ const plans = [
     {
         name: 'Intermediate Package',
         description: 'Most popular choice',
-        price: '$799',
+        price: 'Ksh. 8,499',
         duration: '8 weeks',
         popular: true,
         features: [
@@ -42,7 +42,7 @@ const plans = [
     {
         name: 'Advanced Mastery',
         description: 'Complete driver training',
-        price: '$1,199',
+        price: 'Ksh. 12,499',
         duration: '12 weeks',
         popular: false,
         features: [
@@ -201,19 +201,12 @@ const props = defineProps({
                     </div>
                     <div class="text-center lg:text-right">
                         <Link
-                            :href="route('register')"
+                            href="#"
                             v-if="canRegister"
                             class="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-bold text-blue-600 transition-colors hover:bg-gray-100"
                         >
                             <Clock class="mr-2 h-5 w-5" />
                             Book Free Consultation
-                        </Link>
-                        <Link
-                            :href="route('login')"
-                            v-else
-                            class="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-bold text-blue-600 transition-colors hover:bg-gray-100"
-                        >
-                            Sign In to Schedule
                         </Link>
                     </div>
                 </div>

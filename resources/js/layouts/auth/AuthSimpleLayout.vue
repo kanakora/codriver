@@ -26,14 +26,14 @@ const toggleDarkMode = () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
         <!-- Header -->
         <header class="container mx-auto px-4 py-6 lg:px-8 lg:py-8">
             <nav class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <Link
                         :href="route('home')"
-                        class="flex items-center space-x-2 rounded-xl border bg-white py-1.5 pr-4 pl-2"
+                        class="flex items-center space-x-2 rounded-xl border bg-white dark:bg-gray-800 py-1.5 pr-4 pl-2"
                     >
                         <AppLogo />
                     </Link>
@@ -59,29 +59,13 @@ const toggleDarkMode = () => {
         </header>
 
         <!-- Main Content -->
-        <main class="container mx-auto px-4 lg:px-8">
+        <main class="container mx-auto px-4 lg:px-8 flex flex-col flex-1 justify-center">
             <div class="flex items-center justify-center">
                 <div class="w-full max-w-md">
                     <div
                         class="rounded-2xl border bg-white p-8 lg:p-10 dark:bg-gray-800"
                     >
                         <div class="mb-8 text-center">
-                            <div
-                                class="mb-4 inline-flex items-center rounded-full bg-green-100 px-4 py-1.5 text-sm font-medium text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                            >
-                                <svg
-                                    class="mr-2 h-4 w-4"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clip-rule="evenodd"
-                                    />
-                                </svg>
-                                Secure Authentication
-                            </div>
                             <h1
                                 class="text-3xl font-bold text-gray-900 dark:text-white"
                             >
