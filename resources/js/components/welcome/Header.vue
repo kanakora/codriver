@@ -31,7 +31,7 @@ const menuItems = [
     { name: 'Duty Calculator', route: 'dashboard' },
     { name: 'Insurance', route: 'dashboard' },
     { name: 'About Us', route: 'dashboard' },
-    { name: 'Contact Us', route: 'dashboard' },
+    { name: 'Contact Us', route: 'contact' },
 ];
 </script>
 
@@ -47,16 +47,16 @@ const menuItems = [
 
             <!-- Desktop Navigation Menu -->
             <div
-                class="hidden items-center space-x-6 rounded-2xl border bg-white dark:bg-gray-800 px-3 py-2 md:flex"
+                class="hidden items-center space-x-6 rounded-lg border bg-white dark:bg-gray-800 px-3 py-2 md:flex"
             >
                 <Link
                     v-for="item in menuItems"
                     :key="item.name"
                     :href="route(item.route)"
-                    class="rounded-lg px-2 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:text-green-600 dark:text-gray-200 dark:hover:text-green-400"
+                    class="px-2 py-1.5 rounded text-sm font-medium text-gray-700 transition-colors hover:text-green-600 dark:text-gray-200"
                     :class="
                         route().current(item.route)
-                            ? 'border border-green-200 bg-green-100 dark:bg-gray-700 dark:border-gray-600 font-semibold text-green-600'
+                            ? 'bg-green-100 dark:bg-gray-700 dark:border-gray-600 font-semibold'
                             : 'hover:bg-green-50 dark:hover:bg-gray-700'
                     "
                 >

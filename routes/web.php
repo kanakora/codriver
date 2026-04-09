@@ -20,6 +20,9 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('contact', [App\Http\Controllers\ContactController::class, 'index'])->name('contact');
+Route::post('contact', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
+
 Route::get('dashboard', function (Request $request) {
     $user = $request->user();
 
