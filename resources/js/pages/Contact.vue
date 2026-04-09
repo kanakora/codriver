@@ -167,7 +167,7 @@ const submit = () => {
                                 placeholder="Tell us how we can help you..."
                                 rows="6"
                                 :disabled="form.processing"
-                                class="min-h-[150px]"
+                                class="min-h-37.5"
                             />
                             <p v-if="form.errors.message" class="text-sm text-red-600 dark:text-red-400">
                                 {{ form.errors.message }}
