@@ -1,5 +1,5 @@
 <script setup>
-import { Check, X, Car, Shield, Clock, Award } from 'lucide-vue-next';
+import { Check, Car, Shield, Award } from 'lucide-vue-next';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 
@@ -19,7 +19,6 @@ const plans = [
             'Mock road test',
         ],
         icon: Car,
-        color: 'bg-blue-600',
     },
     {
         name: 'Intermediate Package',
@@ -37,7 +36,6 @@ const plans = [
             'Free road test booking',
         ],
         icon: Shield,
-        color: 'bg-emerald-600',
     },
     {
         name: 'Advanced Mastery',
@@ -55,7 +53,6 @@ const plans = [
             'Lifetime refresher sessions',
         ],
         icon: Award,
-        color: 'bg-purple-600',
     },
 ];
 
@@ -68,147 +65,72 @@ const props = defineProps({
 </script>
 
 <template>
-    <section class="bg-white py-16 lg:py-24 dark:bg-gray-900">
-        <div class="container mx-auto px-4 lg:px-8">
-            <div class="mb-12 text-center lg:mb-16">
-                <h2
-                    class="text-3xl font-bold text-gray-900 lg:text-4xl dark:text-white"
-                >
+    <section class="border-b border-gray-100 bg-white py-20 dark:border-gray-800 dark:bg-gray-950">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <p class="text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">PRICING</p>
+                <h2 class="mt-3 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
                     Choose Your Learning Path
                 </h2>
-                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
                     Flexible packages designed for every skill level and budget
                 </p>
             </div>
 
-            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-16 grid gap-8 lg:grid-cols-3">
                 <div
                     v-for="plan in plans"
                     :key="plan.name"
                     :class="[
-                        'relative rounded-2xl p-8',
+                        'relative rounded-2xl border bg-white p-8 dark:bg-gray-900',
                         plan.popular
-                            ? 'ring-2 ring-emerald-500 dark:ring-emerald-400'
-                            : 'border border-gray-200 dark:border-gray-800',
+                            ? 'border-emerald-500 ring-1 ring-emerald-500 dark:border-emerald-400'
+                            : 'border-gray-200 dark:border-gray-800',
                     ]"
                 >
-                    <!-- Popular badge -->
                     <div
                         v-if="plan.popular"
                         class="absolute -top-3 left-1/2 -translate-x-1/2"
                     >
-                        <span
-                            class="rounded-full bg-emerald-600 px-6 py-1.5 text-sm font-bold text-white"
-                        >
+                        <span class="rounded-full bg-emerald-600 px-4 py-1 text-xs font-semibold text-white">
                             MOST POPULAR
                         </span>
                     </div>
 
-                    <!-- Plan header -->
-                    <div class="mb-8 text-center">
-                        <div
-                            :class="[
-                                plan.color,
-                                'inline-flex h-16 w-16 items-center justify-center rounded-full',
-                            ]"
-                        >
-                            <component
-                                :is="plan.icon"
-                                class="h-8 w-8 text-white"
-                            />
-                        </div>
-                        <h3
-                            class="mt-6 text-2xl font-bold text-gray-900 dark:text-white"
-                        >
-                            {{ plan.name }}
-                        </h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">
-                            {{ plan.description }}
-                        </p>
-                        <div class="mt-6">
-                            <div
-                                class="text-5xl font-bold text-gray-900 dark:text-white"
-                            >
-                                {{ plan.price }}
-                            </div>
-                            <div class="text-gray-600 dark:text-gray-400">
-                                {{ plan.duration }} program
-                            </div>
-                        </div>
+                    <div class="mb-6 inline-flex size-12 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+                        <component :is="plan.icon" class="size-6 text-emerald-600 dark:text-emerald-400" />
                     </div>
 
-                    <!-- Features list -->
-                    <div class="mb-8 space-y-4">
-                        <div
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ plan.name }}</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ plan.description }}</p>
+
+                    <div class="mt-6 flex items-baseline gap-1">
+                        <span class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">{{ plan.price }}</span>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">/{{ plan.duration }}</span>
+                    </div>
+
+                    <ul class="mt-8 space-y-3">
+                        <li
                             v-for="feature in plan.features"
                             :key="feature"
-                            class="flex items-start"
+                            class="flex items-start gap-3 text-sm"
                         >
-                            <Check
-                                class="mr-3 h-5 w-5 shrink-0 text-emerald-500"
-                            />
-                            <span class="text-gray-700 dark:text-gray-300">{{
-                                feature
-                            }}</span>
-                        </div>
-                    </div>
+                            <Check class="mt-0.5 size-4 shrink-0 text-emerald-500" />
+                            <span class="text-gray-600 dark:text-gray-300">{{ feature }}</span>
+                        </li>
+                    </ul>
 
-                    <!-- CTA button -->
                     <Link
-                        v-if="canRegister"
-                        :href="route('register')"
+                        :href="canRegister ? route('register') : route('login')"
                         :class="[
-                            'w-full rounded-lg p-4 text-center font-bold transition-colors',
+                            'mt-8 flex w-full items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold transition-all',
                             plan.popular
-                                ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                                : 'bg-blue-600 text-white hover:bg-blue-700',
+                                ? 'bg-emerald-600 text-white hover:bg-emerald-500'
+                                : 'border border-gray-200 bg-white text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700',
                         ]"
                     >
-                        {{
-                            plan.popular
-                                ? 'Get Started Today'
-                                : 'Choose This Plan'
-                        }}
+                        {{ canRegister ? 'Get Started' : 'Sign In to Enroll' }}
                     </Link>
-                    <Link
-                        v-else
-                        :href="route('login')"
-                        :class="[
-                            'w-full rounded-lg py-4 text-center font-bold transition-colors',
-                            plan.popular
-                                ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                                : 'bg-blue-600 text-white hover:bg-blue-700',
-                        ]"
-                    >
-                        Sign In to Enroll
-                    </Link>
-                </div>
-            </div>
-
-            <div
-                class="mt-16 rounded-2xl bg-linear-to-r from-blue-600 to-blue-700 p-8"
-            >
-                <div class="grid items-center gap-8 lg:grid-cols-2">
-                    <div>
-                        <h3 class="text-2xl font-bold text-white">
-                            Not sure which plan is right for you?
-                        </h3>
-                        <p class="mt-2 text-blue-100">
-                            Schedule a free consultation with one of our
-                            instructors. We'll assess your current skills and
-                            recommend the perfect training plan.
-                        </p>
-                    </div>
-                    <div class="text-center lg:text-right">
-                        <Link
-                            href="#"
-                            v-if="canRegister"
-                            class="inline-flex items-center rounded-lg bg-white px-8 py-4 text-lg font-bold text-blue-600 transition-colors hover:bg-gray-100"
-                        >
-                            <Clock class="mr-2 h-5 w-5" />
-                            Book Free Consultation
-                        </Link>
-                    </div>
                 </div>
             </div>
         </div>

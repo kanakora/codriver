@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Button } from '../ui/button';
 
-// Import images
 import handIcon from '../../../img/hand-icon.png';
 import carIcon from '../../../img/car-icon.png';
 import carsIcon from '../../../img/cars-icon.png';
@@ -81,64 +80,57 @@ const quickLinks: QuickLink[] = [
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-16 lg:py-24">
-    <!-- Header Section with consistent spacing -->
-    <div class="mb-12 lg:mb-16">
-      <h2 class="title-header text-4xl lg:text-5xl mb-3">
-        Quick Links
-      </h2>
-      <p class="text-muted-foreground text-lg">
-        Access quick links to our platform
-      </p>
-    </div>
-    
-    <!-- Grid with consistent gap based on breakpoints -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-      <div
-        v-for="item in quickLinks"
-        :key="item.id"
-        class="group flex flex-col items-center rounded-2xl border border-border bg-white dark:bg-gray-800 p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-1"
-      >
-        <!-- Icon Container with consistent sizing -->
-        <div class="mb-5 flex size-20 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20">
-          <img :src="item.icon" :alt="item.iconAlt" class="size-14 object-contain dark:invert" />
-        </div>
-        
-        <!-- Content with precise spacing -->
-        <div class="flex flex-col items-center space-y-3 text-center">
-          <div class="space-y-2">
-            <h5 class="text-xl font-bold tracking-tight">
-              {{ item.title }}
-            </h5>
-            <p class="text-sm text-muted-foreground leading-relaxed max-w-70">
-              {{ item.description }}
-            </p>
+  <section class="border-b border-gray-100 bg-white py-20 dark:border-gray-800 dark:bg-gray-950">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">PLATFORM</p>
+        <h2 class="mt-3 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+          Everything You Need
+        </h2>
+        <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
+          Access all driving resources from one place
+        </p>
+      </div>
+
+      <div class="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          v-for="item in quickLinks"
+          :key="item.id"
+          class="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 transition-all hover:border-gray-200 hover:shadow-lg hover:-translate-y-0.5 dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700"
+        >
+          <div class="mb-4 inline-flex size-12 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+            <img :src="item.icon" :alt="item.iconAlt" class="size-7 object-contain dark:invert" />
           </div>
-          
-          <Button 
-            variant="outline" 
-            class="mt-2 group/btn"
-          >
-            Visit Page
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="ml-2 transition-transform group-hover/btn:translate-x-1"
-            >
-              <path d="M15 3h6v6" />
-              <path d="M10 14 21 3" />
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            </svg>
-          </Button>
+
+          <h5 class="text-lg font-semibold text-gray-900 dark:text-white">
+            {{ item.title }}
+          </h5>
+          <p class="mt-1.5 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+            {{ item.description }}
+          </p>
+
+          <div class="mt-4">
+            <Button variant="ghost" size="sm" class="group/btn p-0 text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300">
+              Learn more
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="ml-1.5 transition-transform group-hover/btn:translate-x-0.5"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>

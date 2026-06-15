@@ -1,113 +1,81 @@
 <script setup>
-import { Quote, Star } from 'lucide-vue-next';
+import { Star } from 'lucide-vue-next';
 
 const testimonials = [
     {
         name: 'Sarah Johnson',
-        course: 'Beginner Driving Course',
+        role: 'Beginner Driving Course',
         rating: 5,
         quote: 'The instructors were incredibly patient and professional. I passed my test on the first try thanks to their thorough training.',
-        location: 'Los Angeles, CA',
-        avatarColor: 'bg-pink-500',
+        initials: 'SJ',
     },
     {
         name: 'Michael Chen',
-        course: 'Defensive Driving',
+        role: 'Defensive Driving',
         rating: 5,
         quote: 'As someone who was nervous about highway driving, the defensive driving course gave me the confidence I needed. Highly recommended!',
-        location: 'New York, NY',
-        avatarColor: 'bg-blue-500',
+        initials: 'MC',
     },
     {
         name: 'Jessica Williams',
-        course: 'Advanced Maneuvers',
+        role: 'Advanced Maneuvers',
         rating: 5,
         quote: 'The one-on-one instruction helped me master parallel parking and other tricky maneuvers. Worth every penny!',
-        location: 'Chicago, IL',
-        avatarColor: 'bg-emerald-500',
+        initials: 'JW',
     },
 ];
 </script>
 
 <template>
-    <section class="bg-white py-16 lg:py-24 dark:bg-gray-900">
-        <div class="container mx-auto px-4 lg:px-8">
-            <div class="mb-12 text-center lg:mb-16">
-                <h2
-                    class="text-3xl font-bold text-gray-900 lg:text-4xl dark:text-white"
-                >
+    <section class="border-b border-gray-100 bg-gray-50/50 py-20 dark:border-gray-800 dark:bg-gray-900/30">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <p class="text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">TESTIMONIALS</p>
+                <h2 class="mt-3 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
                     What Our Students Say
                 </h2>
-                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                    Join thousands of satisfied drivers who have mastered the
-                    road with DriveSafe
+                <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
+                    Join thousands of satisfied drivers who mastered the road with us
                 </p>
             </div>
 
-            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <div
                     v-for="testimonial in testimonials"
                     :key="testimonial.name"
-                    class="rounded-2xl bg-gray-50 p-8 dark:bg-gray-800"
+                    class="rounded-2xl border border-gray-100 bg-white p-8 dark:border-gray-800 dark:bg-gray-900"
                 >
-                    <div class="mb-6">
-                        <Quote
-                            class="h-10 w-10 text-blue-600 dark:text-blue-400"
+                    <div class="flex items-center gap-0.5">
+                        <Star
+                            v-for="i in 5"
+                            :key="i"
+                            :class="[
+                                'size-4',
+                                i <= testimonial.rating ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-200 text-gray-200 dark:fill-gray-700 dark:text-gray-700',
+                            ]"
                         />
                     </div>
-                    <p class="mb-8 text-gray-700 italic dark:text-gray-300">
+
+                    <p class="mt-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                         "{{ testimonial.quote }}"
                     </p>
-                    <div class="flex items-center">
-                        <div class="mr-4">
-                            <div
-                                :class="[
-                                    testimonial.avatarColor,
-                                    'h-12 w-12 rounded-full',
-                                ]"
-                            ></div>
+
+                    <div class="mt-6 flex items-center gap-3 border-t border-gray-100 pt-6 dark:border-gray-800">
+                        <div class="flex size-10 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                            {{ testimonial.initials }}
                         </div>
-                        <div class="flex-1">
-                            <div class="flex items-center justify-between">
-                                <h4
-                                    class="font-bold text-gray-900 dark:text-white"
-                                >
-                                    {{ testimonial.name }}
-                                </h4>
-                                <div class="flex items-center">
-                                    <Star
-                                        v-for="i in 5"
-                                        :key="i"
-                                        class="h-4 w-4"
-                                        :class="
-                                            i <= testimonial.rating
-                                                ? 'fill-yellow-500 text-yellow-500'
-                                                : 'text-gray-300 dark:text-gray-600'
-                                        "
-                                    />
-                                </div>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                {{ testimonial.course }}
-                            </p>
-                            <p
-                                class="mt-1 text-xs text-gray-500 dark:text-gray-500"
-                            >
-                                {{ testimonial.location }}
-                            </p>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ testimonial.name }}</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">{{ testimonial.role }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="mt-12 text-center">
-                <div
-                    class="inline-flex items-center rounded-full bg-blue-100 px-6 py-3 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
-                >
-                    <Star class="mr-2 h-5 w-5" />
-                    <span class="font-medium"
-                        >4.9 average rating from 2,500+ reviews</span
-                    >
+                <div class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2 text-sm font-medium text-gray-600 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
+                    <Star class="size-4 fill-yellow-400 text-yellow-400" />
+                    4.9 average rating from 2,500+ reviews
                 </div>
             </div>
         </div>

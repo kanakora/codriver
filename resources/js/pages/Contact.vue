@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { Mail, MapPin, Phone, Send, User } from 'lucide-vue-next';
+import { Mail, MapPin, Phone, Send, User, ArrowLeft } from 'lucide-vue-next';
 import Header from '@/components/welcome/Header.vue';
 import Footer from '@/components/welcome/Footer.vue';
 import { Button } from '@/components/ui/button';
@@ -23,178 +23,143 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Contact Us">
-        <link rel="preconnect" href="https://rsms.me/" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    </Head>
+    <Head title="Contact Us" />
 
-    <div class="min-h-screen bg-linear-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-950">
+    <div class="min-h-screen bg-white dark:bg-gray-950">
         <Header :can-register="$page.props.canRegister" :auth="$page.props.auth" />
-        
-        <main class="container mx-auto px-4 py-16">
-            <!-- Page Header -->
-            <div class="lg:mx-auto max-w-3xl lg:text-center">
-                <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
+
+        <main class="mx-auto max-w-7xl px-4 pt-32 pb-20 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-3xl text-center">
+                <p class="text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">CONTACT</p>
+                <h1 class="mt-3 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
                     Get in Touch
                 </h1>
-                <p class="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                    Have questions about our driving school platform? We're here to help. 
-                    Send us a message and we'll respond as soon as possible.
+                <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
+                    Have questions about our driving school platform? We're here to help.
                 </p>
             </div>
 
-            <div class="mx-auto mt-16 grid max-w-7xl gap-12 lg:grid-cols-2 lg:gap-16">
-                <!-- Contact Information -->
-                <div class="space-y-8">
-                    <div>
-                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
-                            Contact Information
-                        </h2>
-                        <p class="mt-4 text-gray-600 dark:text-gray-300">
-                            Reach out to us through any of the channels below or fill out the contact form.
-                        </p>
-                    </div>
-
+            <div class="mx-auto mt-16 grid max-w-5xl gap-12 lg:grid-cols-5">
+                <div class="space-y-8 lg:col-span-2">
                     <div class="space-y-6">
-                        <!-- Email -->
                         <div class="flex items-start gap-4">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-                                <Mail class="size-6 text-blue-600 dark:text-blue-400" />
+                            <div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+                                <Mail class="size-5 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <div>
-                                <h3 class="font-medium text-gray-900 dark:text-white">Email</h3>
-                                <p class="mt-1 text-gray-600 dark:text-gray-300">support@codriver.ke</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Typically respond within 24 hours</p>
+                                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Email</h3>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">support@codriver.ke</p>
+                                <p class="text-xs text-gray-400 dark:text-gray-500">Typically respond within 24 hours</p>
                             </div>
                         </div>
 
-                        <!-- Phone -->
                         <div class="flex items-start gap-4">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
-                                <Phone class="size-6 text-green-600 dark:text-green-400" />
+                            <div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+                                <Phone class="size-5 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <div>
-                                <h3 class="font-medium text-gray-900 dark:text-white">Phone</h3>
-                                <p class="mt-1 text-gray-600 dark:text-gray-300">+254 701 232 309</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Mon-Fri from 8am to 6pm</p>
+                                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Phone</h3>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">+254 701 232 309</p>
+                                <p class="text-xs text-gray-400 dark:text-gray-500">Mon-Fri from 8am to 6pm</p>
                             </div>
                         </div>
 
-                        <!-- Location -->
                         <div class="flex items-start gap-4">
-                            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30">
-                                <MapPin class="size-6 text-purple-600 dark:text-purple-400" />
+                            <div class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+                                <MapPin class="size-5 text-emerald-600 dark:text-emerald-400" />
                             </div>
                             <div>
-                                <h3 class="font-medium text-gray-900 dark:text-white">Location</h3>
-                                <p class="mt-1 text-gray-600 dark:text-gray-300">Nairobi, Kenya</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Serving driving schools nationwide</p>
+                                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Location</h3>
+                                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Nairobi, Kenya</p>
+                                <p class="text-xs text-gray-400 dark:text-gray-500">Serving driving schools nationwide</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-                        <h3 class="font-medium text-gray-900 dark:text-white">Quick Support</h3>
-                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                            For urgent matters, please call our support line. For platform access issues, 
-                            include your username or email in your message.
+                    <div class="rounded-2xl border border-gray-100 bg-gray-50/50 p-6 dark:border-gray-800 dark:bg-gray-900/30">
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Quick Support</h3>
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            For urgent matters, please call our support line.
                         </p>
-                        <Link 
-                            :href="route('home')" 
-                            class="mt-4 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400"
+                        <Link
+                            :href="route('home')"
+                            class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600 transition-colors hover:text-emerald-500 dark:text-emerald-400"
                         >
+                            <ArrowLeft class="size-4" />
                             Return to home
                         </Link>
                     </div>
                 </div>
 
-                <!-- Contact Form -->
-                <div class="rounded-2xl border border-gray-200 bg-white p-8 shadow-lg dark:border-gray-800 dark:bg-gray-900">
-                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">Send us a message</h2>
-                    
-                    <Alert v-if="$page.props.flash?.success" class="mt-6 bg-green-50 dark:bg-green-900/20">
-                        <AlertDescription class="text-green-800 dark:text-green-300">
-                            {{ $page.props.flash.success }}
-                        </AlertDescription>
-                    </Alert>
+                <div class="lg:col-span-3">
+                    <div class="rounded-2xl border border-gray-100 bg-white p-8 dark:border-gray-800 dark:bg-gray-900">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Send us a message</h2>
 
-                    <form @submit.prevent="submit" class="mt-8 space-y-6">
-                        <!-- Name -->
-                        <div class="space-y-2">
-                            <Label for="name" class="flex items-center gap-2">
-                                <User class="size-4" />
-                                Full Name
-                            </Label>
-                            <Input
-                                id="name"
-                                v-model="form.name"
-                                type="text"
-                                required
-                                placeholder="John Doe"
+                        <Alert v-if="$page.props.flash?.success" class="mt-6 bg-emerald-50 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-300">
+                            <AlertDescription>{{ $page.props.flash.success }}</AlertDescription>
+                        </Alert>
+
+                        <form @submit.prevent="submit" class="mt-8 space-y-5">
+                            <div class="space-y-1.5">
+                                <Label for="name">Full Name</Label>
+                                <Input
+                                    id="name"
+                                    v-model="form.name"
+                                    type="text"
+                                    required
+                                    placeholder="John Doe"
+                                    :disabled="form.processing"
+                                />
+                                <p v-if="form.errors.name" class="text-sm text-red-600 dark:text-red-400">
+                                    {{ form.errors.name }}
+                                </p>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <Label for="email">Email Address</Label>
+                                <Input
+                                    id="email"
+                                    v-model="form.email"
+                                    type="email"
+                                    required
+                                    placeholder="john@example.com"
+                                    :disabled="form.processing"
+                                />
+                                <p v-if="form.errors.email" class="text-sm text-red-600 dark:text-red-400">
+                                    {{ form.errors.email }}
+                                </p>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <Label for="message">Message</Label>
+                                <Textarea
+                                    id="message"
+                                    v-model="form.message"
+                                    required
+                                    placeholder="Tell us how we can help you..."
+                                    rows="6"
+                                    :disabled="form.processing"
+                                    class="min-h-37.5"
+                                />
+                                <p v-if="form.errors.message" class="text-sm text-red-600 dark:text-red-400">
+                                    {{ form.errors.message }}
+                                </p>
+                                <p class="text-xs text-gray-400 dark:text-gray-500">
+                                    Please include as much detail as possible so we can help you better.
+                                </p>
+                            </div>
+
+                            <Button
+                                type="submit"
                                 :disabled="form.processing"
-                            />
-                            <p v-if="form.errors.name" class="text-sm text-red-600 dark:text-red-400">
-                                {{ form.errors.name }}
-                            </p>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="space-y-2">
-                            <Label for="email" class="flex items-center gap-2">
-                                <Mail class="size-4" />
-                                Email Address
-                            </Label>
-                            <Input
-                                id="email"
-                                v-model="form.email"
-                                type="email"
-                                required
-                                placeholder="john@example.com"
-                                :disabled="form.processing"
-                            />
-                            <p v-if="form.errors.email" class="text-sm text-red-600 dark:text-red-400">
-                                {{ form.errors.email }}
-                            </p>
-                        </div>
-
-                        <!-- Message -->
-                        <div class="space-y-2">
-                            <Label for="message">Message</Label>
-                            <Textarea
-                                id="message"
-                                v-model="form.message"
-                                required
-                                placeholder="Tell us how we can help you..."
-                                rows="6"
-                                :disabled="form.processing"
-                                class="min-h-37.5"
-                            />
-                            <p v-if="form.errors.message" class="text-sm text-red-600 dark:text-red-400">
-                                {{ form.errors.message }}
-                            </p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                Please include as much detail as possible so we can help you better.
-                            </p>
-                        </div>
-
-                        <!-- Submit -->
-                        <Button
-                            type="submit"
-                            :disabled="form.processing"
-                            class="w-full"
-                        >
-                            <Send class="mr-2 size-4" />
-                            <span v-if="form.processing">Sending...</span>
-                            <span v-else>Send Message</span>
-                        </Button>
-
-                        <p class="text-center text-sm text-gray-500 dark:text-gray-400">
-                            By contacting us, you agree to our 
-                            <Link :href="route('home')" class="text-blue-600 hover:text-blue-500 dark:text-blue-400">
-                                Privacy Policy
-                            </Link>.
-                        </p>
-                    </form>
+                                class="w-full"
+                            >
+                                <Send class="mr-2 size-4" />
+                                <span v-if="form.processing">Sending...</span>
+                                <span v-else>Send Message</span>
+                            </Button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>

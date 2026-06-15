@@ -1,6 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { ArrowRight, CheckCircle, TrendingUp, Award, Users } from 'lucide-vue-next';
 
 defineProps({
     canRegister: {
@@ -11,102 +12,80 @@ defineProps({
 </script>
 
 <template>
-    <main class="container mx-auto px-4 py-12 lg:px-8">
-        <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-            <div class="space-y-8">
-                <div class="space-y-4">
-                    <div
-                        class="inline-flex items-center rounded-full bg-green-100 px-4 py-1.5 text-sm font-medium text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                    >
-                        <svg
-                            class="mr-2 h-4 w-4"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                        Certified Instructors • 98% Pass Rate
-                    </div>
-                    <h1
-                        class="title-header text-4xl font-bold tracking-tight text-gray-900 lg:text-5xl xl:text-6xl dark:text-white"
-                    >
-                        Master the Road with
-                        <span class="text-green-600 dark:text-green-400"
-                            >Confidence</span
-                        >
-                    </h1>
-                    <p
-                        class="text-lg text-gray-600 lg:text-xl dark:text-gray-300"
-                    >
-                        Professional driving lessons tailored to your pace. Get
-                        your license faster with our certified instructors and
-                        modern teaching methods.
-                    </p>
+    <section class="relative min-h-dvh overflow-hidden bg-emerald-50 dark:bg-gray-950">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-emerald-300/40 via-emerald-50 to-white dark:from-emerald-900/40 dark:via-gray-950 dark:to-gray-950"></div>
+        <div class="dot-pattern-light absolute inset-0 opacity-[0.04] dark:hidden"></div>
+        <div class="dot-pattern-dark absolute inset-0 opacity-[0.03] hidden dark:block"></div>
+
+        <div class="relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:px-8 lg:pt-40">
+            <div class="mx-auto max-w-4xl text-center">
+                <div class="mb-8 inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-100 px-4 py-1.5 text-sm font-medium text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400">
+                    <CheckCircle class="size-4" />
+                    Certified Instructors &bull; 98% Pass Rate
                 </div>
 
-                <div class="flex flex-col gap-4 sm:flex-row">
+                <h1 class="text-balance text-5xl font-bold leading-tight tracking-tight text-gray-900 sm:text-6xl lg:text-7xl xl:text-8xl dark:text-white">
+                    Master the Road with
+                    <span class="bg-linear-to-r from-emerald-600 to-emerald-500 bg-clip-text text-transparent dark:from-emerald-400 dark:to-emerald-300">Confidence</span>
+                </h1>
+
+                <p class="mx-auto mt-6 max-w-2xl text-balance text-lg leading-relaxed text-gray-600 sm:text-xl dark:text-gray-400">
+                    Professional driving lessons tailored to your pace. Get your license faster with certified instructors and modern teaching methods.
+                </p>
+
+                <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <Link
                         v-if="canRegister"
                         :href="route('register')"
-                        class="rounded-lg bg-green-600 px-8 py-4 text-center text-lg font-semibold text-white shadow-lg shadow-green-500/20 transition-colors hover:bg-green-700"
+                        class="group inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-emerald-600/25 transition-all hover:bg-emerald-500 hover:shadow-emerald-500/30 hover:-translate-y-0.5 dark:bg-emerald-500 dark:shadow-emerald-500/25 dark:hover:bg-emerald-400"
                     >
                         Start Your Driving Journey
+                        <ArrowRight class="size-5 transition-transform group-hover:translate-x-0.5" />
                     </Link>
                     <a
                         href="#features"
-                        class="rounded-lg border border-gray-300 bg-white px-8 py-4 text-center text-lg font-semibold text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                        class="inline-flex items-center gap-2 rounded-xl border border-emerald-300 px-8 py-4 text-lg font-semibold text-emerald-800 transition-all hover:bg-emerald-100 dark:border-white/10 dark:text-white/80 dark:hover:border-white/20 dark:hover:bg-white/5 dark:hover:text-white"
                     >
                         View Courses
                     </a>
                 </div>
 
-                <div class="grid grid-cols-3 gap-6 pt-4">
+                <div class="mt-16 grid grid-cols-3 gap-8 border-t border-emerald-200 pt-10 dark:border-white/10">
                     <div class="text-center">
-                        <div
-                            class="text-3xl font-bold text-green-600 dark:text-green-400"
-                        >
-                            2,500+
-                        </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                        <div class="text-3xl font-bold text-emerald-700 sm:text-4xl dark:text-white">2,500+</div>
+                        <div class="mt-1.5 flex items-center justify-center gap-1.5 text-sm text-emerald-600 dark:text-gray-500">
+                            <Users class="size-4" />
                             Students Trained
                         </div>
                     </div>
                     <div class="text-center">
-                        <div
-                            class="text-3xl font-bold text-green-600 dark:text-green-400"
-                        >
-                            98%
-                        </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                        <div class="text-3xl font-bold text-emerald-700 sm:text-4xl dark:text-white">98%</div>
+                        <div class="mt-1.5 flex items-center justify-center gap-1.5 text-sm text-emerald-600 dark:text-gray-500">
+                            <TrendingUp class="size-4" />
                             Pass Rate
                         </div>
                     </div>
                     <div class="text-center">
-                        <div
-                            class="text-3xl font-bold text-green-600 dark:text-green-400"
-                        >
-                            15+
-                        </div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                        <div class="text-3xl font-bold text-emerald-700 sm:text-4xl dark:text-white">15+</div>
+                        <div class="mt-1.5 flex items-center justify-center gap-1.5 text-sm text-emerald-600 dark:text-gray-500">
+                            <Award class="size-4" />
                             Years Experience
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="relative">
-                <div class="relative overflow-hidden rounded-2xl shadow-2xl">
-                    <img
-                        src="../../../img/hero-driver.jpg"
-                        alt="Hero Image"
-                        class="rounded-xl"
-                    />
-                </div>
-            </div>
         </div>
-    </main>
+
+        <div class="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-emerald-400/30 to-transparent dark:via-emerald-500/20"></div>
+    </section>
 </template>
+
+<style scoped>
+.dot-pattern-light {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059869' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.dot-pattern-dark {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+</style>

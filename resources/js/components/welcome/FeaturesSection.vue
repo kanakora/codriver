@@ -1,87 +1,69 @@
 <script setup>
-import FeatureCard from './FeatureCard.vue';
+import { Shield, Calendar, UserCheck, BarChart3, Clock, MapPin } from 'lucide-vue-next';
+
+const features = [
+    {
+        title: 'Safety First',
+        description: 'Defensive driving techniques from certified instructors in modern, well-maintained vehicles.',
+        icon: Shield,
+    },
+    {
+        title: 'Flexible Scheduling',
+        description: 'Book lessons at your convenience with morning, afternoon, evening, and weekend slots.',
+        icon: Calendar,
+    },
+    {
+        title: 'Personalized Instruction',
+        description: 'One-on-one training tailored to your learning style and pace with patient instructors.',
+        icon: UserCheck,
+    },
+    {
+        title: 'Track Progress',
+        description: 'Monitor your improvement with detailed progress reports and skill assessments.',
+        icon: BarChart3,
+    },
+    {
+        title: 'Quick Results',
+        description: 'Most students complete training and get licensed within 4-6 weeks.',
+        icon: Clock,
+    },
+    {
+        title: 'Convenient Locations',
+        description: 'Multiple training locations across the city for easy access to lessons.',
+        icon: MapPin,
+    },
+];
 </script>
 
 <template>
-    <section
-        id="features"
-        class="bg-gray-50 py-16 lg:py-24 dark:bg-gray-900/50"
-    >
-        <div class="container mx-auto px-4 lg:px-8">
-            <div class="mb-12 text-center lg:mb-16">
-                <h2
-                    class="text-3xl font-bold text-gray-900 lg:text-4xl dark:text-white"
-                >
-                    Why Choose DriveSafe?
+    <section id="features" class="border-b border-gray-100 bg-gray-50/50 py-20 dark:border-gray-800 dark:bg-gray-900/30">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <p class="text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">WHY CHOOSE US</p>
+                <h2 class="mt-3 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+                    Built for Your Success
                 </h2>
-                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
+                <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
                     We provide the best learning experience for new drivers
                 </p>
             </div>
 
-            <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                <FeatureCard
-                    title="Safety First"
-                    description="Our top priority is your safety. Learn defensive driving techniques from certified instructors in modern, well-maintained vehicles."
+            <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div
+                    v-for="feature in features"
+                    :key="feature.title"
+                    class="rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:border-gray-200 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700"
                 >
-                    <template #icon>
-                        <svg
-                            class="h-8 w-8 text-blue-600 dark:text-blue-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                            />
-                        </svg>
-                    </template>
-                </FeatureCard>
-
-                <FeatureCard
-                    title="Flexible Scheduling"
-                    description="Book lessons at your convenience. We offer morning, afternoon, evening, and weekend slots to fit your busy schedule."
-                >
-                    <template #icon>
-                        <svg
-                            class="h-8 w-8 text-blue-600 dark:text-blue-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                        </svg>
-                    </template>
-                </FeatureCard>
-
-                <FeatureCard
-                    title="Personalized Instruction"
-                    description="One-on-one training tailored to your learning style and pace. Build confidence with patient, experienced instructors."
-                >
-                    <template #icon>
-                        <svg
-                            class="h-8 w-8 text-blue-600 dark:text-blue-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                            />
-                        </svg>
-                    </template>
-                </FeatureCard>
+                    <div class="mb-5 inline-flex size-12 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20">
+                        <component :is="feature.icon" class="size-6 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                        {{ feature.title }}
+                    </h3>
+                    <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
+                        {{ feature.description }}
+                    </p>
+                </div>
             </div>
         </div>
     </section>

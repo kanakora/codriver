@@ -13,17 +13,17 @@ defineProps({
 
 <template>
     <div
-        class="rounded-2xl bg-white p-8 shadow-lg transition-transform hover:-translate-y-1 dark:bg-gray-800"
+        class="rounded-2xl border border-gray-100 bg-white p-8 transition-all hover:border-gray-200 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-700"
     >
         <div
-            class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30"
+            class="mb-5 inline-flex size-12 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-900/20"
         >
             <slot name="icon" />
         </div>
-        <h3 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+        <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
             {{ title }}
         </h3>
-        <p class="text-gray-600 dark:text-gray-300">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             {{ description }}
         </p>
     </div>

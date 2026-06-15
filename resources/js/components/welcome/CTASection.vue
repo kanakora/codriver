@@ -1,6 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { ArrowRight } from 'lucide-vue-next';
 
 defineProps({
     canRegister: {
@@ -11,85 +12,72 @@ defineProps({
 </script>
 
 <template>
-    <section class="py-16 lg:py-24">
-        <div class="container mx-auto px-4 lg:px-8">
-            <div class="rounded-3xl border p-8 lg:p-16">
-                <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-                    <div>
-                        <h2 class="text-3xl font-bold lg:text-4xl">
-                            Ready to Start Your Driving Journey?
-                        </h2>
-                        <p class="mt-4 text-lg text-neutral-500">
-                            Join thousands of successful drivers who started
-                            their journey with Codriver. Book your first lesson
-                            today!
-                        </p>
-                        <div class="mt-8">
-                            <Link
-                                v-if="canRegister"
-                                :href="route('register')"
-                                class="inline-flex items-center rounded-lg bg-green-500 px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-gray-100"
-                            >
-                                Enroll Now
-                                <svg
-                                    class="ml-2 h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                                    />
-                                </svg>
-                            </Link>
-                            <Link
-                                v-else
-                                :href="route('login')"
-                                class="inline-flex items-center rounded-lg bg-green-500 px-8 py-4 text-lg font-semibold text-white transition-colors hover:bg-gray-100"
-                            >
-                                Sign In to Continue
-                            </Link>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div
-                            class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
-                        >
-                            <div class="text-4xl font-bold">100%</div>
-                            <div class="mt-2 text-sm text-green-900">
-                                Satisfaction Rate
-                            </div>
-                        </div>
-                        <div
-                            class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
-                        >
-                            <div class="text-4xl font-bold">24/7</div>
-                            <div class="mt-2 text-sm text-green-900">
-                                Support Available
-                            </div>
-                        </div>
-                        <div
-                            class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
-                        >
-                            <div class="text-4xl font-bold">5.0</div>
-                            <div class="mt-2 text-sm text-green-900">
-                                Average Rating
-                            </div>
-                        </div>
-                        <div
-                            class="rounded-xl bg-green-200/40 p-6 backdrop-blur-sm"
-                        >
-                            <div class="text-4xl font-bold">30+</div>
-                            <div class="mt-2 text-sm text-green-900">
-                                Modern Vehicles
-                            </div>
-                        </div>
-                    </div>
+    <section class="relative overflow-hidden bg-emerald-50 py-20 dark:bg-gray-950">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-emerald-300/30 via-transparent to-transparent dark:from-emerald-900/30"></div>
+        <div class="dot-pattern-light absolute inset-0 opacity-[0.04] dark:hidden"></div>
+        <div class="dot-pattern-dark absolute inset-0 opacity-[0.02] hidden dark:block"></div>
+
+        <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+            <h2 class="text-balance text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
+                Ready to Start Your Driving Journey?
+            </h2>
+            <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
+                Join thousands of successful drivers who started their journey with Codriver. Book your first lesson today!
+            </p>
+
+            <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Link
+                    v-if="canRegister"
+                    :href="route('register')"
+                    class="group inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-emerald-600/25 transition-all hover:bg-emerald-500 hover:-translate-y-0.5 dark:bg-emerald-500 dark:shadow-emerald-500/25 dark:hover:bg-emerald-400"
+                >
+                    Enroll Now
+                    <ArrowRight class="size-5 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <Link
+                    v-else
+                    :href="route('login')"
+                    class="group inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-emerald-600/25 transition-all hover:bg-emerald-500 hover:-translate-y-0.5 dark:bg-emerald-500 dark:shadow-emerald-500/25 dark:hover:bg-emerald-400"
+                >
+                    Sign In to Continue
+                    <ArrowRight class="size-5 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <Link
+                    :href="route('contact')"
+                    class="inline-flex items-center gap-2 rounded-xl border border-emerald-300 px-8 py-4 text-lg font-semibold text-emerald-800 transition-all hover:bg-emerald-100 dark:border-white/10 dark:text-white/80 dark:hover:border-white/20 dark:hover:bg-white/5 dark:hover:text-white"
+                >
+                    Contact Us
+                </Link>
+            </div>
+
+            <div class="mt-16 grid grid-cols-2 gap-6 sm:grid-cols-4">
+                <div class="rounded-xl border border-emerald-200 p-6 dark:border-white/10">
+                    <div class="text-3xl font-bold text-emerald-700 dark:text-white">100%</div>
+                    <div class="mt-1 text-sm text-emerald-600 dark:text-gray-500">Satisfaction Rate</div>
+                </div>
+                <div class="rounded-xl border border-emerald-200 p-6 dark:border-white/10">
+                    <div class="text-3xl font-bold text-emerald-700 dark:text-white">24/7</div>
+                    <div class="mt-1 text-sm text-emerald-600 dark:text-gray-500">Support Available</div>
+                </div>
+                <div class="rounded-xl border border-emerald-200 p-6 dark:border-white/10">
+                    <div class="text-3xl font-bold text-emerald-700 dark:text-white">5.0</div>
+                    <div class="mt-1 text-sm text-emerald-600 dark:text-gray-500">Average Rating</div>
+                </div>
+                <div class="rounded-xl border border-emerald-200 p-6 dark:border-white/10">
+                    <div class="text-3xl font-bold text-emerald-700 dark:text-white">30+</div>
+                    <div class="mt-1 text-sm text-emerald-600 dark:text-gray-500">Modern Vehicles</div>
                 </div>
             </div>
         </div>
     </section>
 </template>
+
+<style scoped>
+.dot-pattern-light {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059869' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.dot-pattern-dark {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+</style>

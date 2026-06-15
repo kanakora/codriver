@@ -4,114 +4,67 @@ import { UserPlus, Calendar, Car, BadgeCheck } from 'lucide-vue-next';
 const steps = [
     {
         number: '01',
-        title: 'Sign Up & Assessment',
-        description:
-            'Create your account and complete a quick driving assessment to determine your starting level.',
+        title: 'Sign Up',
+        description: 'Sign up and create an account with us to gain access to training materials made by our instructors.',
         icon: UserPlus,
-        color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
     },
     {
         number: '02',
         title: 'Schedule Your Lessons',
-        description:
-            'Choose convenient time slots that fit your schedule. Morning, evening, and weekend options available.',
+        description: 'Choose convenient time slots that fit your schedule. Morning, evening, and weekend options available.',
         icon: Calendar,
-        color: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400',
     },
     {
         number: '03',
         title: 'Learn with Expert Instructors',
-        description:
-            'Receive one-on-one instruction in modern vehicles equipped with dual controls for safety.',
+        description: 'Receive one-on-one instruction in modern vehicles equipped with dual controls for safety.',
         icon: Car,
-        color: 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
     },
     {
         number: '04',
         title: 'Get Your License',
-        description:
-            'Take your road test with confidence. Our students have a 98% first-time pass rate.',
+        description: 'Take your road test with confidence. Our students have a 98% first-time pass rate.',
         icon: BadgeCheck,
-        color: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
     },
 ];
 </script>
 
 <template>
-    <section class="bg-gray-50 py-16 lg:py-24 dark:bg-gray-900/50">
-        <div class="container mx-auto px-4 lg:px-8">
-            <div class="mb-12 text-center lg:mb-16">
-                <h2
-                    class="text-3xl font-bold text-gray-900 lg:text-4xl dark:text-white"
-                >
-                    How It Works
+    <section class="border-b border-gray-100 bg-white py-20 dark:border-gray-800 dark:bg-gray-950">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <p class="text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">HOW IT WORKS</p>
+                <h2 class="mt-3 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+                    Four Simple Steps
                 </h2>
-                <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
-                    Get from beginner to licensed driver in four simple steps
+                <p class="mt-4 text-lg text-gray-500 dark:text-gray-400">
+                    From beginner to licensed driver in just 4 steps
                 </p>
             </div>
 
-            <div class="relative">
-                <!-- Connecting line for desktop -->
+            <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 <div
-                    class="absolute top-12 right-0 left-0 hidden h-0.5 bg-linear-to-r from-blue-500 via-emerald-500 to-amber-500 lg:block"
-                ></div>
+                    v-for="(step, index) in steps"
+                    :key="step.number"
+                    class="relative text-center"
+                >
+                    <div class="mx-auto flex size-16 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-900/20">
+                        <component :is="step.icon" class="size-7 text-emerald-600 dark:text-emerald-400" />
+                    </div>
 
-                <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                    <div
-                        v-for="step in steps"
-                        :key="step.number"
-                        class="relative rounded-2xl bg-white p-8 text-center dark:bg-gray-800"
-                    >
-                        <!-- Step number with background -->
-                        <div class="absolute -top-6 left-1/2 -translate-x-1/2">
-                            <div
-                                class="flex h-12 w-12 items-center justify-center rounded-full border-4 border-white bg-linear-to-br from-green-600 to-green-700 text-lg font-bold text-white dark:border-gray-900"
-                            >
-                                {{ step.number }}
-                            </div>
+                    <div v-if="index < steps.length - 1" class="absolute top-8 left-[calc(50%+2.5rem)] hidden h-0.5 w-[calc(100%-5rem)] bg-gray-200 lg:block dark:bg-gray-800"></div>
+
+                    <div class="mt-6">
+                        <div class="inline-flex size-8 items-center justify-center rounded-full bg-emerald-600 text-sm font-bold text-white">
+                            {{ step.number }}
                         </div>
-
-                        <!-- Icon -->
-                        <div class="mb-6 flex justify-center">
-                            <div
-                                :class="[
-                                    step.color,
-                                    'inline-flex h-16 w-16 items-center justify-center rounded-2xl',
-                                ]"
-                            >
-                                <component :is="step.icon" class="h-8 w-8" />
-                            </div>
-                        </div>
-
-                        <!-- Content -->
-                        <h3
-                            class="mb-4 text-xl font-bold text-gray-900 dark:text-white"
-                        >
+                        <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
                             {{ step.title }}
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-300">
+                        <p class="mt-2 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
                             {{ step.description }}
                         </p>
                     </div>
-                </div>
-            </div>
-
-            <div class="mt-16 text-center">
-                <p class="text-lg text-gray-700 dark:text-gray-300">
-                    Most students complete their training and get licensed
-                    within
-                    <span class="font-bold text-green-600 dark:text-green-400"
-                        >4-6 weeks</span
-                    >.
-                </p>
-                <div
-                    class="mt-6 inline-flex items-center rounded-full bg-linear-to-r from-green-600 to-green-700 px-8 py-3 text-white"
-                >
-                    <Calendar class="mr-2 h-5 w-5" />
-                    <span class="font-medium"
-                        >Flexible scheduling available</span
-                    >
                 </div>
             </div>
         </div>
