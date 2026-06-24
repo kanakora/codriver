@@ -7,11 +7,11 @@ const plans = [
     {
         name: 'Beginner Course',
         description: 'Perfect for first-time drivers',
-        price: 'Ksh. 6,499',
-        duration: '6 weeks',
+        price: 'FREE',
+        duration: '6 hours',
         popular: false,
         features: [
-            '10 hours of driving instruction',
+            '6 hours of driving instruction',
             'Classroom theory sessions',
             'Basic vehicle controls',
             'Parking practice',
@@ -23,11 +23,11 @@ const plans = [
     {
         name: 'Intermediate Package',
         description: 'Most popular choice',
-        price: 'Ksh. 8,499',
-        duration: '8 weeks',
+        price: 'Ksh. 9',
+        duration: '24 hours',
         popular: true,
         features: [
-            '20 hours of driving instruction',
+            '24 hours of driving instruction',
             'All Beginner Course features',
             'Defensive driving techniques',
             'Night driving practice',
@@ -40,11 +40,11 @@ const plans = [
     {
         name: 'Advanced Mastery',
         description: 'Complete driver training',
-        price: 'Ksh. 12,499',
-        duration: '12 weeks',
+        price: 'Ksh. 99',
+        duration: '1 Month',
         popular: false,
         features: [
-            '30 hours of driving instruction',
+            '1 Month of driving instruction',
             'All Intermediate Package features',
             'Extreme weather driving',
             'Commercial vehicle basics',
