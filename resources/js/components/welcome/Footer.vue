@@ -34,9 +34,7 @@ import AppLogo from '../AppLogo.vue';
             >
                 <p class="text-xs">
                     Maintained with ❤️ by
-                    <a href="https://bretoreta.me/ref=codriver.ke"
-                        ><b>Bret Oreta</b></a
-                    >
+                    <a href="#"><b>Kanakora</b></a>
                 </p>
                 <p class="text-sm">
                     &copy; 2026 Codriver. All Rights Reserved.

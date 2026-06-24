@@ -1,9 +1,9 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
-import { Moon, Sun, Menu, X } from 'lucide-vue-next';
+import { Moon, Sun, Menu, X, ChevronDown } from 'lucide-vue-next';
 import { route } from 'ziggy-js';
 import { useAppearance } from '@/composables/useAppearance';
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import AppLogo from '../AppLogo.vue';
 
 defineProps({
@@ -19,6 +19,7 @@ defineProps({
 
 const { resolvedAppearance, updateAppearance } = useAppearance();
 const isMobileMenuOpen = ref(false);
+const isMobileServicesOpen = ref(false);
 const isScrolled = ref(false);
 const SCROLL_THRESHOLD = 60;
 
@@ -26,12 +27,15 @@ const toggleDarkMode = () => {
     updateAppearance(resolvedAppearance.value === 'dark' ? 'light' : 'dark');
 };
 
-const menuItems = [
-    { name: 'Home', route: 'home' },
-    { name: 'Duty Calculator', route: 'dashboard' },
-    { name: 'Insurance', route: 'dashboard' },
-    { name: 'About Us', route: 'dashboard' },
-    { name: 'Contact Us', route: 'contact' },
+const serviceItems = [
+    { name: 'Classes', hash: '#services' },
+    { name: 'Duty Calculator', hash: '#services' },
+    { name: 'Insurance', hash: '#services' },
+    { name: 'NTSA Services', hash: '#services' },
+    { name: 'Signs', hash: '#services' },
+    { name: 'Traffic Rules', hash: '#services' },
+    { name: 'Vehicle Classes', hash: '#services' },
+    { name: 'Driving Schools', hash: '#services' },
 ];
 
 let ticking = false;
@@ -79,9 +83,7 @@ onUnmounted(() => {
 
             <nav class="hidden items-center gap-8 md:flex">
                 <Link
-                    v-for="item in menuItems"
-                    :key="item.name"
-                    :href="route(item.route)"
+                    :href="route('home')"
                     :class="[
                         'text-sm font-medium transition-colors',
                         isScrolled
@@ -89,7 +91,57 @@ onUnmounted(() => {
                             : 'text-gray-700 hover:text-gray-900 dark:text-white/70 dark:hover:text-white',
                     ]"
                 >
-                    {{ item.name }}
+                    Home
+                </Link>
+
+                <div class="group relative">
+                    <button
+                        :class="[
+                            'flex items-center gap-1 text-sm font-medium transition-colors',
+                            isScrolled
+                                ? 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                                : 'text-gray-700 hover:text-gray-900 dark:text-white/70 dark:hover:text-white',
+                        ]"
+                    >
+                        Services
+                        <ChevronDown class="size-3.5 transition-transform group-hover:rotate-180" />
+                    </button>
+                    <div
+                        class="invisible absolute top-full left-1/2 z-50 mt-2 w-48 -translate-x-1/2 rounded-xl border border-gray-100 bg-white p-1.5 shadow-lg opacity-0 transition-all group-hover:visible group-hover:opacity-100 dark:border-gray-800 dark:bg-gray-900"
+                    >
+                        <Link
+                            v-for="item in serviceItems"
+                            :key="item.name"
+                            :href="route('home') + item.hash"
+                            class="block rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+                        >
+                            {{ item.name }}
+                        </Link>
+                    </div>
+                </div>
+
+                <a
+                    :href="route('home') + '#pricing'"
+                    :class="[
+                        'text-sm font-medium transition-colors',
+                        isScrolled
+                            ? 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                            : 'text-gray-700 hover:text-gray-900 dark:text-white/70 dark:hover:text-white',
+                    ]"
+                >
+                    Pricing
+                </a>
+
+                <Link
+                    :href="route('contact')"
+                    :class="[
+                        'text-sm font-medium transition-colors',
+                        isScrolled
+                            ? 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                            : 'text-gray-700 hover:text-gray-900 dark:text-white/70 dark:hover:text-white',
+                    ]"
+                >
+                    Contact Us
                 </Link>
             </nav>
 
@@ -183,9 +235,7 @@ onUnmounted(() => {
         >
             <div class="flex flex-col gap-2">
                 <Link
-                    v-for="item in menuItems"
-                    :key="item.name"
-                    :href="route(item.route)"
+                    :href="route('home')"
                     :class="[
                         'rounded-lg px-4 py-2.5 text-sm font-medium transition-colors',
                         isScrolled
@@ -194,7 +244,62 @@ onUnmounted(() => {
                     ]"
                     @click="isMobileMenuOpen = false"
                 >
-                    {{ item.name }}
+                    Home
+                </Link>
+
+                <div>
+                    <button
+                        @click="isMobileServicesOpen = !isMobileServicesOpen"
+                        :class="[
+                            'flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium transition-colors',
+                            isScrolled
+                                ? 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                                : 'text-gray-700 hover:bg-gray-100 dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-white',
+                        ]"
+                    >
+                        Services
+                        <ChevronDown
+                            class="size-4 transition-transform"
+                            :class="isMobileServicesOpen ? 'rotate-180' : ''"
+                        />
+                    </button>
+                    <div v-if="isMobileServicesOpen" class="ml-4 flex flex-col border-l border-gray-200 pl-3 dark:border-gray-700">
+                        <Link
+                            v-for="item in serviceItems"
+                            :key="item.name"
+                            :href="route('home') + item.hash"
+                            class="rounded-lg px-3 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+                            @click="isMobileMenuOpen = false"
+                        >
+                            {{ item.name }}
+                        </Link>
+                    </div>
+                </div>
+
+                <a
+                    :href="route('home') + '#pricing'"
+                    :class="[
+                        'rounded-lg px-4 py-2.5 text-sm font-medium transition-colors',
+                        isScrolled
+                            ? 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                            : 'text-gray-700 hover:bg-gray-100 dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-white',
+                    ]"
+                    @click="isMobileMenuOpen = false"
+                >
+                    Pricing
+                </a>
+
+                <Link
+                    :href="route('contact')"
+                    :class="[
+                        'rounded-lg px-4 py-2.5 text-sm font-medium transition-colors',
+                        isScrolled
+                            ? 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                            : 'text-gray-700 hover:bg-gray-100 dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-white',
+                    ]"
+                    @click="isMobileMenuOpen = false"
+                >
+                    Contact Us
                 </Link>
 
                 <template v-if="auth.user">

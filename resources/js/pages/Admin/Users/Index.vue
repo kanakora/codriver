@@ -12,7 +12,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import InputError from '@/components/InputError.vue';
@@ -254,12 +254,21 @@ const breadcrumbs = [
                                     </select>
                                 </TableCell>
                                 <TableCell class="text-right">
-                                    <Button
-                                        size="sm"
-                                        @click="updateRoles(user.id)"
-                                    >
-                                        Save
-                                    </Button>
+                                    <div class="flex items-center justify-end gap-2">
+                                        <Link
+                                            :href="route('admin.users.edit', { user: user.id })"
+                                        >
+                                            <Button variant="outline" size="sm">
+                                                Edit
+                                            </Button>
+                                        </Link>
+                                        <Button
+                                            size="sm"
+                                            @click="updateRoles(user.id)"
+                                        >
+                                            Save
+                                        </Button>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                             <TableRow v-if="users.data.length === 0">

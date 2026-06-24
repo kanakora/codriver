@@ -1,25 +1,20 @@
-<script setup lang="ts">
+<script setup>
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Switch } from '@/components/ui/switch';
-import { computed } from 'vue';
+import { Moon, Sun } from 'lucide-vue-next';
 import { useAppearance } from '@/composables/useAppearance';
-import type { BreadcrumbItem } from '@/types';
 
-withDefaults(
-    defineProps<{
-        breadcrumbs?: BreadcrumbItem[];
-    }>(),
-    {
-        breadcrumbs: () => [],
-    },
-);
+defineProps({
+    breadcrumbs: {
+        type: Array,
+        default: () => []
+    }
+})
 
 const { resolvedAppearance, updateAppearance } = useAppearance();
-const isDark = computed(() => resolvedAppearance.value === 'dark');
 
-const toggleAppearance = (value: boolean | null) => {
-    updateAppearance(value ? 'dark' : 'light');
+const toggleAppearance = () => {
+    updateAppearance(resolvedAppearance.value === 'dark' ? 'light' : 'dark');
 };
 </script>
 
@@ -34,12 +29,24 @@ const toggleAppearance = (value: boolean | null) => {
             </template>
         </div>
         <div class="flex items-center gap-2">
-            <span class="text-xs text-muted-foreground">Dark mode</span>
-            <Switch
-                :model-value="isDark"
-                @update:modelValue="toggleAppearance"
-                aria-label="Toggle dark mode"
-            />
+            <button
+                @click="toggleAppearance"
+                class='relative flex size-9 items-center justify-center rounded-lg transition-colors overflow-hidden text-gray-700 hover:bg-gray-900/5 dark:text-white/70 dark:hover:bg-white/10 dark:hover:text-white'
+                :aria-label="resolvedAppearance === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+            >
+                <Sun
+                    :class="[
+                        'size-4 absolute transition-all duration-500',
+                        resolvedAppearance === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-75',
+                    ]"
+                />
+                <Moon
+                    :class="[
+                        'size-4 absolute transition-all duration-500',
+                        resolvedAppearance === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75',
+                    ]"
+                />
+            </button>
         </div>
     </header>
 </template>

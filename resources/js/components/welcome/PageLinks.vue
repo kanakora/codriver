@@ -30,7 +30,7 @@ const quickLinks: QuickLink[] = [
 </script>
 
 <template>
-  <section class="border-b border-gray-100 bg-white py-20 dark:border-gray-800 dark:bg-gray-950">
+  <section id="services" class="border-b border-gray-100 bg-white py-20 dark:border-gray-800 dark:bg-gray-950">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-2xl text-center">
         <p class="text-sm font-semibold tracking-wide text-emerald-600 dark:text-emerald-400">PLATFORM</p>
